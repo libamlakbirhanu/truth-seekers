@@ -1,0 +1,15 @@
+{
+  "name": "truth_seekers",
+  "version": "1.0.0",
+  "description": "a forum website where people can raise questions about religion and get answers from anyone who is willing to help",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "[religion",
+    "forum]"
+  ],
+  "author": "Libamlak Birhanu",
+  "license": "ISC"
+}
