@@ -1,15 +1,21 @@
 {
-  "name": "truth_seekers",
-  "version": "1.0.0",
-  "description": "a forum website where people can raise questions about religion and get answers from anyone who is willing to help",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "[religion",
-    "forum]"
-  ],
-  "author": "Libamlak Birhanu",
-  "license": "ISC"
+	"name": "truth_seekers",
+	"version": "1.0.0",
+	"description": "a forum website where people can raise questions about religion and get answers from anyone who is willing to help",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"dev": "nodemon server.js"
+	},
+	"keywords": [
+		"[religion",
+		"forum]"
+	],
+	"author": "Libamlak Birhanu",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"mongoose": "^5.12.14"
+	}
 }
