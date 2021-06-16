@@ -12,6 +12,7 @@ const SeekerSchema = new mongoose.Schema({
 		required: [true, 'email is required'],
 		unique: [true, 'email is already taken'],
 		lowercase: true,
+		validate: [validator.isEmail, 'email is not valid'],
 	},
 	password: {
 		type: String,
