@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const SeekerSchema = new mongoose.Schema({
 	name: {
@@ -33,6 +34,27 @@ const SeekerSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
+	active: {
+		type: Boolean,
+		default: true,
+		select: false,
+	},
+});
+
+SeekerSchema.pre(/^find/, async function (next) {
+	this.find({ active: { $ne: false } });
+
+	next();
+});
+
+SeekerSchema.pre('save', async function (next) {
+	if (!this.isModified('password')) return next();
+
+	const salt = await bcrypt.genSalt(12);
+	this.password = await bcrypt.hash(this.password, salt);
+
+	this.confirmPassword = undefined;
+	next();
 });
 
 module.exports = Seeker = mongoose.model('seeker', SeekerSchema);
