@@ -1,7 +1,6 @@
 const router = require('express').Router();
+const seekController = require('./../../controllers/seekController');
 
-router.get('/', (req, res) => {
-	res.send('Hello from seeks');
-});
+router.route('/').get(seekController.getSeeks).post(seekController.createSeek);
 
 module.exports = router;

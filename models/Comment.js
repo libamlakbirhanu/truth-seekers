@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
 
-const SeekSchema = mongoose.Schema({
+const CommentSchema = mongoose.Schema({
+	seek: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'seek',
+		required: [true, 'a comment must belong to a seek'],
+	},
 	author: {
 		type: mongoose.Schema.ObjectId,
 		ref: 'seeker',
-		required: [true, 'a seek must belong to a seeker'],
+		required: [true, 'a comment must belong to a seeker'],
 	},
 	body: {
 		type: String,
@@ -18,10 +23,4 @@ const SeekSchema = mongoose.Schema({
 	downvotes: { type: Number, default: 0 },
 });
 
-SeekSchema.virtual('comments', {
-	ref: 'comment',
-	foreignField: 'seek',
-	localField: '_id',
-});
-
-module.exports = Seek = mongoose.model('seek', SeekSchema);
+module.exports = Comment = mongoose.model('comment', CommentSchema);
