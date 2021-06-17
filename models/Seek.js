@@ -6,6 +6,10 @@ const SeekSchema = mongoose.Schema({
 		ref: 'seeker',
 		required: [true, 'a seek must belong to a seeker'],
 	},
+	title: {
+		type: String,
+		required: [true, 'title can not be empty'],
+	},
 	body: {
 		type: String,
 		required: [true, 'a comment can not be empty'],
