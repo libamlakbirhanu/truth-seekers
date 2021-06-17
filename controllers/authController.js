@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const Seeker = require('./../models/Seeker');
 
 exports.signup = async (req, res, next) => {
