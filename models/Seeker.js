@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const SeekerSchema = new mongoose.Schema({
 	name: {
@@ -35,6 +36,8 @@ const SeekerSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
+	passwordResetToken: String,
+	passwordResetExpires: Date,
 	active: {
 		type: Boolean,
 		default: true,
@@ -57,5 +60,17 @@ SeekerSchema.pre('save', async function (next) {
 	this.confirmPassword = undefined;
 	next();
 });
+
+SeekerSchema.methods.createPasswordResetToken = function () {
+	const resetToken = crypto.randomBytes(32).toString('hex');
+
+	this.passwordResetToken = crypto
+		.createHash('sha256')
+		.update(resetToken)
+		.digest('hex');
+	this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+	return resetToken;
+};
 
 module.exports = Seeker = mongoose.model('seeker', SeekerSchema);
