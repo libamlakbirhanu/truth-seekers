@@ -137,21 +137,23 @@ exports.updatePassword = async (req, res, next) => {
 };
 
 exports.protect = async (req, res, next) => {
-	let token;
-	if (
-		req.headers.authorization &&
-		req.headers.authorization.startsWith('Bearer ')
-	)
-		token = req.headers.authorization.split(' ')[1];
-	else if (req.cookies.authToken) token = req.cookies.authToken;
-
-	if (!token)
-		return customErrorMessage(
-			'You are not logged in. Please log in to get access.',
-			300,
-			res
-		);
 	try {
+		let token;
+
+		if (
+			req.headers.authorization &&
+			req.headers.authorization.startsWith('Bearer ')
+		)
+			token = req.headers.authorization.split(' ')[1];
+		else if (req.cookies.authToken) token = req.cookies.authToken;
+
+		if (!token)
+			return customErrorMessage(
+				'You are not logged in. Please log in to get access.',
+				300,
+				res
+			);
+
 		const decoded = jwt.verify(token, process.env.JWTSECRET);
 		const currentUser = await Seeker.findById(decoded.user.id);
 

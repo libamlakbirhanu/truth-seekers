@@ -1,16 +1,20 @@
 const Comment = require('./../models/Comment');
+const { errorMessage } = require('./../utils/ErrorMessage');
 
 exports.createComment = async (req, res, next) => {
 	try {
-		const doc = await Comment.create(req.body);
+		const body = req.body;
+		body.author = req.user._id;
+
+		const doc = await Comment.create(body);
+
 		res.status(200).json({
 			status: 'success',
 			result: doc,
 		});
 	} catch (err) {
-		return res.status(500).json({
-			err: err.message,
-		});
+		console.log(err);
+		// errorMessage(err, 400, res);
 	}
 };
 
