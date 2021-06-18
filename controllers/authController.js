@@ -151,15 +151,18 @@ exports.protect = async (req, res, next) => {
 			300,
 			res
 		);
+	try {
+		const decoded = jwt.verify(token, process.env.JWTSECRET);
+		const currentUser = await Seeker.findById(decoded.user.id);
 
-	const decoded = jwt.verify(token, process.env.JWTSECRET);
-	const currentUser = await Seeker.findById(decoded.user.id);
+		if (!currentUser)
+			return customErrorMessage('Seeker does not exist anymore.', 401, res);
 
-	if (!currentUser)
-		return customErrorMessage('Seeker does not exist anymore.', 401, res);
+		req.user = currentUser;
+		// res.locals.user = currentUser;
 
-	req.user = currentUser;
-	// res.locals.user = currentUser;
-
-	next();
+		next();
+	} catch (err) {
+		return customErrorMessage(err.message, 500, res);
+	}
 };

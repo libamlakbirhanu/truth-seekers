@@ -29,4 +29,13 @@ SeekSchema.virtual('comments', {
 	localField: '_id',
 });
 
+SeekSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'comments',
+		select: '-__v',
+	});
+
+	next();
+});
+
 module.exports = Seek = mongoose.model('seek', SeekSchema);

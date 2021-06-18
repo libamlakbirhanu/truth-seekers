@@ -49,7 +49,7 @@ const SeekerSchema = new mongoose.Schema({
 	},
 });
 
-SeekerSchema.pre(/^find/, async function (next) {
+SeekerSchema.pre(/^find/, function (next) {
 	this.find({ active: { $ne: false } });
 
 	next();
