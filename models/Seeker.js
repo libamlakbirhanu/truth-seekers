@@ -43,6 +43,10 @@ const SeekerSchema = new mongoose.Schema({
 		default: true,
 		select: false,
 	},
+	likedSeeks: {
+		type: [mongoose.Schema.ObjectId],
+		ref: 'seek',
+	},
 });
 
 SeekerSchema.pre(/^find/, async function (next) {

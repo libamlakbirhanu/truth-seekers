@@ -5,6 +5,11 @@ const crypto = require('crypto');
 const Seeker = require('./../models/Seeker');
 const { errorMessage, customErrorMessage } = require('../utils/errormessage');
 
+const isEmpty = (value) => {
+	if (typeof value === 'undefined' || value.trim() === '') return true;
+	return false;
+};
+
 const createToken = (id) => {
 	const payload = {
 		user: { id },
@@ -50,6 +55,9 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
 	const { email, password } = req.body;
 	const user = await Seeker.findOne({ email }).select('+password');
+
+	if (isEmpty(email) || isEmpty(password))
+		return customErrorMessage('fields can not be empty', 400, res);
 
 	if (!user || !(await bcrypt.compare(password, user.password)))
 		return customErrorMessage('incorrect credentials', 401, res);

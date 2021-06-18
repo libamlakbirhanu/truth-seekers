@@ -20,6 +20,7 @@ const SeekSchema = mongoose.Schema({
 	},
 	upvotes: { type: Number, default: 0 },
 	downvotes: { type: Number, default: 0 },
+	commentCount: { type: Number, default: 0 },
 });
 
 SeekSchema.virtual('comments', {
