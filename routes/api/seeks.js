@@ -11,6 +11,7 @@ router.patch('/:id/downvote', authController.protect, seekController.downvote);
 router
 	.route('/:id')
 	.patch(authController.protect, seekController.updateSeek)
-	.delete(authController.protect, seekController.deleteSeek);
+	.delete(authController.protect, seekController.deleteSeek)
+	.get(authController.protect, seekController.getSeek);
 
 module.exports = router;

@@ -25,6 +25,19 @@ exports.getSeeks = async (req, res, next) => {
 	}
 };
 
+exports.getSeek = async (req, res, next) => {
+	try {
+		const doc = await Seek.findById(req.params.id);
+
+		res.status(200).json({
+			status: 'success',
+			data: doc,
+		});
+	} catch (err) {
+		return errorMessage(err, 500, res);
+	}
+};
+
 exports.createSeek = async (req, res, next) => {
 	try {
 		const body = req.body;
@@ -38,8 +51,6 @@ exports.createSeek = async (req, res, next) => {
 		return errorMessage(err, 500, res);
 	}
 };
-
-// TODO: implement the handler functions below
 
 exports.updateSeek = async (req, res, next) => {
 	try {
