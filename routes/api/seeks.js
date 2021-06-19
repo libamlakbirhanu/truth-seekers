@@ -1,10 +1,16 @@
 const router = require('express').Router();
 const seekController = require('./../../controllers/seekController');
+const authController = require('./../../controllers/authController');
 
-router.route('/').get(seekController.getSeeks).post(seekController.createSeek);
-// TODO: update a seek
-// TODO: upvote a seek
-// TODO: downvote a seek
-// TODO: delete a seek
+router
+	.route('/')
+	.get(seekController.getSeeks)
+	.post(authController.protect, seekController.createSeek);
+router.patch('/:id/upvote', authController.protect, seekController.upvote);
+router.patch('/:id/downvote', authController.protect, seekController.downvote);
+router
+	.route('/:id')
+	.patch(authController.protect, seekController.updateSeek)
+	.delete(authController.protect, seekController.deleteSeek);
 
 module.exports = router;

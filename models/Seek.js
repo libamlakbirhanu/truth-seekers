@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const SeekSchema = mongoose.Schema(
+const SeekSchema = new mongoose.Schema(
 	{
 		author: {
 			type: mongoose.Schema.ObjectId,
@@ -48,9 +48,26 @@ SeekSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'comments',
 		select: '-__v',
+		options: { sort: { createdAt: -1 } },
 	});
 
 	next();
 });
+
+SeekSchema.methods.incrementUpvotes = function () {
+	return ++this.upvotes;
+};
+
+SeekSchema.methods.decrementUpvotes = function () {
+	return --this.upvotes;
+};
+
+SeekSchema.methods.incrementDownvotes = function () {
+	return ++this.downvotes;
+};
+
+SeekSchema.methods.decrementDownvotes = function () {
+	return --this.downvotes;
+};
 
 module.exports = Seek = mongoose.model('seek', SeekSchema);
