@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const SeekerSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		required: [true, 'name is required'],
+		required: [true, 'name can not be empty'],
 	},
 	email: {
 		type: String,

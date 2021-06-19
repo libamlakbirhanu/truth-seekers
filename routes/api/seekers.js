@@ -7,12 +7,16 @@ router.post('/login', authController.login);
 router.get('/logout', authController.logout);
 router.post('/forgot-password', authController.forgotPassword);
 router.patch('/reset-password/:token', authController.resetPassword);
-router.get('/_me', authController.protect, seekerController.getMe);
-router.get('/:id', seekerController.getSeeker);
 router.patch(
 	'/update-password',
 	authController.protect,
 	authController.updatePassword
 );
+
+router.patch('/', authController.protect, seekerController.updateMe);
+router.delete('/', authController.protect, seekerController.deleteMe);
+router.get('/', seekerController.getSeekers);
+router.get('/_me', authController.protect, seekerController.getMe);
+router.get('/:id', seekerController.getSeeker);
 
 module.exports = router;

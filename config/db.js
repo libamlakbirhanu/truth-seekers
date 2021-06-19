@@ -8,6 +8,7 @@ module.exports = connectDB = async () => {
 				useCreateIndex: true,
 				useUnifiedTopology: true,
 				useNewUrlParser: true,
+				useFindAndModify: false,
 			},
 			() => {
 				console.log('mongodb connected successfully');
