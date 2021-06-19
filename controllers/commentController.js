@@ -13,8 +13,7 @@ exports.createComment = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
-		console.log(err);
-		// errorMessage(err, 400, res);
+		errorMessage(err, 400, res);
 	}
 };
 
