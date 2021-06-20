@@ -1,15 +1,7 @@
 const Seek = require('./../models/Seek');
 const Seeker = require('./../models/Seeker');
 const { customErrorMessage, errorMessage } = require('./../utils/errorMessage');
-
-const seekBelongsToCurrentUser = async (sid, uid) => {
-	const seek = await Seek.findById(sid).find({
-		author: { $ne: uid },
-	});
-
-	if (seek) return false;
-	return true;
-};
+const docBelongsToCurrentUser = require('./../utils/ownerCheck');
 
 exports.getSeeks = async (req, res, next) => {
 	try {
@@ -54,7 +46,7 @@ exports.createSeek = async (req, res, next) => {
 
 exports.updateSeek = async (req, res, next) => {
 	try {
-		if (!(await seekBelongsToCurrentUser(req.params.id, req.user.id)))
+		if (!(await docBelongsToCurrentUser(Seek, req.params.id, req.user.id)))
 			return customErrorMessage(
 				'the seek does not belong to the current user or the seek does not exist',
 				400,
@@ -78,7 +70,7 @@ exports.updateSeek = async (req, res, next) => {
 
 exports.deleteSeek = async (req, res, next) => {
 	try {
-		if (!(await seekBelongsToCurrentUser(req.params.id, req.user.id)))
+		if (!(await docBelongsToCurrentUser(Seek, req.params.id, req.user.id)))
 			return customErrorMessage(
 				'the seek does not belong to the current user or the seek does not exist',
 				400,

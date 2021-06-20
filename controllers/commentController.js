@@ -1,10 +1,19 @@
 const Comment = require('./../models/Comment');
-const { errorMessage } = require('./../utils/ErrorMessage');
+const Seek = require('./../models/Seek');
+const { errorMessage, customErrorMessage } = require('./../utils/ErrorMessage');
+const docBelongsToCurrentUser = require('./../utils/ownerCheck');
 
 exports.createComment = async (req, res, next) => {
 	try {
 		const body = req.body;
 		body.author = req.user._id;
+
+		const seek = await Seek.findById(body.seek);
+
+		if (!seek) return customErrorMessage('seek does not exist', 400, res);
+
+		seek.commentCount++;
+		await seek.save();
 
 		const doc = await Comment.create(body);
 
@@ -13,7 +22,7 @@ exports.createComment = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
-		errorMessage(err, 400, res);
+		return errorMessage(err, 400, res);
 	}
 };
 
@@ -25,8 +34,66 @@ exports.getComment = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
-		return res.status(500).json({
-			err: err.message,
+		return errorMessage(err, 500, res);
+	}
+};
+
+exports.getComments = async (req, res, next) => {
+	try {
+		const docs = await Comment.find({ seek: req.params.id });
+		res.status(200).json({
+			status: 'success',
+			length: docs.length,
+			result: { docs },
 		});
+	} catch (err) {
+		return errorMessage(err, 500, res);
+	}
+};
+
+exports.updateComment = async (req, res, next) => {
+	try {
+		if (!(await docBelongsToCurrentUser(Comment, req.params.id, req.user.id)))
+			return customErrorMessage(
+				'the comment does not belong to the current user or the comment does not exist',
+				403,
+				res
+			);
+
+		const newDoc = await Comment.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+			runValidators: true,
+		});
+
+		res.status(200).json({
+			status: 'success',
+			result: newDoc,
+		});
+	} catch (err) {
+		return errorMessage(err, 500, res);
+	}
+};
+
+exports.deleteComment = async (req, res, next) => {
+	try {
+		if (!(await docBelongsToCurrentUser(Comment, req.params.id, req.user.id)))
+			return customErrorMessage(
+				'the comment does not belong to the current user or the comment does not exist',
+				403,
+				res
+			);
+
+		const doc = await Comment.findByIdAndDelete(req.params.id);
+
+		const seek = await Seek.findById(doc.seek);
+
+		seek.commentCount--;
+		await seek.save();
+
+		res.status(200).json({
+			status: 'success',
+		});
+	} catch (err) {
+		return errorMessage(err, 500, res);
 	}
 };

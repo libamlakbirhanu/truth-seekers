@@ -23,4 +23,10 @@ const CommentSchema = mongoose.Schema({
 	downvotes: { type: Number, default: 0 },
 });
 
+CommentSchema.pre('find', function (next) {
+	this.sort('-createdAt');
+
+	next();
+});
+
 module.exports = Comment = mongoose.model('comment', CommentSchema);
