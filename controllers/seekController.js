@@ -1,4 +1,5 @@
 const Seek = require('./../models/Seek');
+const Comment = require('./../models/Comment');
 const Seeker = require('./../models/Seeker');
 const { customErrorMessage, errorMessage } = require('./../utils/errorMessage');
 const docBelongsToCurrentUser = require('./../utils/ownerCheck');
@@ -77,6 +78,7 @@ exports.deleteSeek = async (req, res, next) => {
 				res
 			);
 
+		await Comment.deleteMany({ seek: req.params.id });
 		await Seek.findByIdAndDelete(req.params.id);
 
 		res.status(200).json({
