@@ -51,6 +51,14 @@ const SeekerSchema = new mongoose.Schema({
 		type: [mongoose.Schema.ObjectId],
 		ref: 'seek',
 	},
+	likedComments: {
+		type: [mongoose.Schema.ObjectId],
+		ref: 'comment',
+	},
+	dislikedComments: {
+		type: [mongoose.Schema.ObjectId],
+		ref: 'comment',
+	},
 });
 
 SeekerSchema.pre(/^find/, function (next) {
