@@ -109,7 +109,11 @@ exports.upvote = async (req, res, next) => {
 		);
 
 		if (liked)
-			return customErrorMessage('You have already upvoted this seek', 400, res);
+			return customErrorMessage(
+				'You have already upvoted this comment',
+				400,
+				res
+			);
 
 		if (disliked) {
 			comment.downvotes = comment.decrementDownvotes();
@@ -145,7 +149,7 @@ exports.downvote = async (req, res, next) => {
 
 		if (disliked)
 			return customErrorMessage(
-				'You have already downvoted this seek',
+				'You have already downvoted this comment',
 				400,
 				res
 			);
