@@ -50,7 +50,7 @@ exports.updateSeek = async (req, res, next) => {
 		if (!(await docBelongsToCurrentUser(Seek, req.params.id, req.user.id)))
 			return customErrorMessage(
 				'the seek does not belong to the current user or the seek does not exist',
-				400,
+				403,
 				res
 			);
 
@@ -74,7 +74,7 @@ exports.deleteSeek = async (req, res, next) => {
 		if (!(await docBelongsToCurrentUser(Seek, req.params.id, req.user.id)))
 			return customErrorMessage(
 				'the seek does not belong to the current user or the seek does not exist',
-				400,
+				403,
 				res
 			);
 
