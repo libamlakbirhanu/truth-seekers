@@ -29,4 +29,20 @@ CommentSchema.pre('find', function (next) {
 	next();
 });
 
+CommentSchema.methods.incrementUpvotes = function () {
+	return ++this.upvotes;
+};
+
+CommentSchema.methods.decrementUpvotes = function () {
+	return --this.upvotes;
+};
+
+CommentSchema.methods.incrementDownvotes = function () {
+	return ++this.downvotes;
+};
+
+CommentSchema.methods.decrementDownvotes = function () {
+	return --this.downvotes;
+};
+
 module.exports = Comment = mongoose.model('comment', CommentSchema);

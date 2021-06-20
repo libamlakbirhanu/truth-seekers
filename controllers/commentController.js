@@ -97,3 +97,77 @@ exports.deleteComment = async (req, res, next) => {
 		return errorMessage(err, 500, res);
 	}
 };
+
+exports.upvote = async (req, res, next) => {
+	try {
+		const comment = await Comment.findById(req.params.id);
+		const seeker = await Seeker.findById(req.user.id);
+
+		const liked = seeker.likedComments.find((item) => item == req.params.id);
+		const disliked = seeker.dislikedComments.find(
+			(item) => item == req.params.id
+		);
+
+		if (liked)
+			return customErrorMessage('You have already upvoted this seek', 400, res);
+
+		if (disliked) {
+			comment.downvotes = comment.decrementDownvotes();
+			seeker.dislikedComments.splice(
+				seeker.dislikedComments.indexOf(req.params.id),
+				1
+			);
+		}
+
+		comment.upvotes = comment.incrementUpvotes();
+		seeker.likedComments = seeker.likedComments.concat([req.params.id]);
+
+		await seeker.save();
+		const doc = await comment.save();
+		res.status(200).json({
+			status: 'success',
+			result: doc,
+		});
+	} catch (err) {
+		return errorMessage(err, 500, res);
+	}
+};
+
+exports.downvote = async (req, res, next) => {
+	try {
+		const comment = await Comment.findById(req.params.id);
+		const seeker = await Seeker.findById(req.user.id);
+
+		const disliked = seeker.dislikedComments.find(
+			(item) => item == req.params.id
+		);
+		const liked = seeker.likedComments.find((item) => item == req.params.id);
+
+		if (disliked)
+			return customErrorMessage(
+				'You have already downvoted this seek',
+				400,
+				res
+			);
+
+		if (liked) {
+			comment.upvotes = comment.decrementUpvotes();
+			seeker.likedComments.splice(
+				seeker.likedComments.indexOf(req.params.id),
+				1
+			);
+		}
+
+		comment.downvotes = comment.incrementDownvotes();
+		seeker.dislikedComments = seeker.dislikedComments.concat([req.params.id]);
+
+		await seeker.save();
+		const doc = await comment.save();
+		res.status(200).json({
+			status: 'success',
+			result: doc,
+		});
+	} catch (err) {
+		return errorMessage(err, 500, res);
+	}
+};
