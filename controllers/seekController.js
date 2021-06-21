@@ -93,7 +93,13 @@ exports.deleteSeek = async (req, res, next) => {
 			);
 
 		await Comment.deleteMany({ seek: req.params.id });
-		await Seek.findByIdAndDelete(req.params.id);
+		const doc = await Seek.findByIdAndDelete(req.params.id);
+
+		await createNotifications(
+			`${req.user.name} has deleted his/her seek with the title "${doc.title}"`,
+			null,
+			req.user.id
+		);
 
 		res.status(200).json({
 			status: 'success',
