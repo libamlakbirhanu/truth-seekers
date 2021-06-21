@@ -1,6 +1,7 @@
 const Seek = require('./../models/Seek');
 const Comment = require('./../models/Comment');
 const Seeker = require('./../models/Seeker');
+const Notification = require('./../models/Notification');
 const { customErrorMessage, errorMessage } = require('./../utils/errorMessage');
 const docBelongsToCurrentUser = require('./../utils/ownerCheck');
 const createNotifications = require('./../utils/createNotifications');
@@ -92,12 +93,25 @@ exports.deleteSeek = async (req, res, next) => {
 				res
 			);
 
+		const seekers = await Seeker.find();
+
+		seekers.map(async (seeker) => {
+			seeker.likedSeeks.splice(seeker.likedSeeks.indexOf(req.params.id), 1);
+			seeker.dislikedSeeks.splice(
+				seeker.dislikedSeeks.indexOf(req.params.id),
+				1
+			);
+			await seeker.save();
+		});
+
 		await Comment.deleteMany({ seek: req.params.id });
+		await Notification.deleteMany({ targetDocument: req.params.id });
+
 		const doc = await Seek.findByIdAndDelete(req.params.id);
 
 		await createNotifications(
 			`${req.user.name} has deleted his/her seek with the title "${doc.title}"`,
-			null,
+			doc.id,
 			req.user.id
 		);
 
