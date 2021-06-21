@@ -189,7 +189,6 @@ exports.downvote = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
-		console.error(err);
-		// return errorMessage(err, 500, res);
+		return errorMessage(err, 500, res);
 	}
 };
