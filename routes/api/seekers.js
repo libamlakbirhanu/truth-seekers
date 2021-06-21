@@ -17,6 +17,11 @@ router.patch('/', authController.protect, seekerController.updateMe);
 router.delete('/', authController.protect, seekerController.deleteMe);
 router.get('/', seekerController.getSeekers);
 router.get('/_me', authController.protect, seekerController.getMe);
+router.get(
+	'/notifications',
+	authController.protect,
+	seekerController.notifications
+);
 router.get('/:id', seekerController.getSeeker);
 
 module.exports = router;

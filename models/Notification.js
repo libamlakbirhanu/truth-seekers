@@ -21,6 +21,12 @@ const NotificationSchema = new mongoose.Schema({
 	},
 });
 
+NotificationSchema.pre(/^find/, function (next) {
+	this.sort('-createdAt');
+
+	next();
+});
+
 module.exports = Notification = mongoose.model(
 	'notification',
 	NotificationSchema

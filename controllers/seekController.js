@@ -3,6 +3,7 @@ const Comment = require('./../models/Comment');
 const Seeker = require('./../models/Seeker');
 const { customErrorMessage, errorMessage } = require('./../utils/errorMessage');
 const docBelongsToCurrentUser = require('./../utils/ownerCheck');
+const createNotifications = require('./../utils/createNotifications');
 
 exports.getSeeks = async (req, res, next) => {
 	try {
@@ -36,6 +37,13 @@ exports.createSeek = async (req, res, next) => {
 		const body = req.body;
 		body.author = req.user._id;
 		const doc = await Seek.create(body);
+
+		await createNotifications(
+			`${req.user.name} has created a seek with a title "${doc.title}"`,
+			doc.id,
+			req.user.id
+		);
+
 		res.status(200).json({
 			status: 'success',
 			result: doc,
@@ -58,6 +66,12 @@ exports.updateSeek = async (req, res, next) => {
 			new: true,
 			runValidators: true,
 		});
+
+		await createNotifications(
+			`${req.user.name} has updated his/her seek with the title "${doc.title}"`,
+			doc.id,
+			req.user.id
+		);
 
 		res.status(200).json({
 			status: 'success',
@@ -95,6 +109,8 @@ exports.upvote = async (req, res, next) => {
 		const seek = await Seek.findById(req.params.id);
 		const seeker = await Seeker.findById(req.user.id);
 
+		if (!seek) return customErrorMessage('seek does not exist', 404, res);
+
 		const liked = seeker.likedSeeks.find((item) => item == req.params.id);
 		const disliked = seeker.dislikedSeeks.find((item) => item == req.params.id);
 
@@ -112,8 +128,17 @@ exports.upvote = async (req, res, next) => {
 		seek.upvotes = seek.incrementUpvotes();
 		seeker.likedSeeks = seeker.likedSeeks.concat([req.params.id]);
 
+		const sender =
+			req.user.id === seek.author.id ? 'his/her' : `${seek.author.name}'s`;
 		await seeker.save();
 		const doc = await seek.save();
+
+		await createNotifications(
+			`${req.user.name} has upvoted ${sender} seek with the title "${seek.title}"`,
+			seek.id,
+			req.user.id
+		);
+
 		res.status(200).json({
 			status: 'success',
 			result: doc,
@@ -127,6 +152,8 @@ exports.downvote = async (req, res, next) => {
 	try {
 		const seek = await Seek.findById(req.params.id);
 		const seeker = await Seeker.findById(req.user.id);
+
+		if (!seek) return customErrorMessage('seek does not exist', 404, res);
 
 		const disliked = seeker.dislikedSeeks.find((item) => item == req.params.id);
 		const liked = seeker.likedSeeks.find((item) => item == req.params.id);
@@ -146,13 +173,23 @@ exports.downvote = async (req, res, next) => {
 		seek.downvotes = seek.incrementDownvotes();
 		seeker.dislikedSeeks = seeker.dislikedSeeks.concat([req.params.id]);
 
+		const sender =
+			req.user.id === seek.author.id ? 'his/her' : `${seek.author.name}'s`;
 		await seeker.save();
 		const doc = await seek.save();
+
+		await createNotifications(
+			`${req.user.name} has downvoted ${sender} seek with the title "${seek.title}"`,
+			seek.id,
+			req.user.id
+		);
+
 		res.status(200).json({
 			status: 'success',
 			result: doc,
 		});
 	} catch (err) {
-		return errorMessage(err, 500, res);
+		console.error(err);
+		// return errorMessage(err, 500, res);
 	}
 };

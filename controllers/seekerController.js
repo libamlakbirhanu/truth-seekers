@@ -1,4 +1,5 @@
 const Seeker = require('./../models/Seeker');
+const Notification = require('./../models/Notification');
 const { errorMessage, customErrorMessage } = require('./../utils/errormessage');
 
 exports.getMe = async (req, res, next) => {
@@ -76,5 +77,23 @@ exports.getSeeker = async (req, res, next) => {
 		return res.status(500).json({
 			err: err.message,
 		});
+	}
+};
+
+exports.notifications = async (req, res, next) => {
+	try {
+		const docs = await Notification.find({ sender: { $ne: req.user.id } });
+
+		docs.map((doc) => {
+			doc.message = doc.message.replace(`${req.user.name}'s`, 'your');
+		});
+
+		return res.status(200).json({
+			status: 'success',
+			length: docs.length,
+			data: { notifications: docs },
+		});
+	} catch (err) {
+		return errorMessage(err, 500, res);
 	}
 };
