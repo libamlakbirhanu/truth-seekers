@@ -6,6 +6,16 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ extended: false, limit: '10kb' }));
 
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header(
+		'Access-control-Allow-Headers',
+		'Origin, X-Requested-With, Content-Type, Accept'
+	);
+	res.header('Access-control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+
+	next();
+});
 app.use(cookieParser());
 
 // ROUTES
