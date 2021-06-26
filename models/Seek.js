@@ -38,7 +38,7 @@ SeekSchema.virtual('comments', {
 SeekSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'author',
-		select: 'name email',
+		select: 'name email photo',
 	});
 
 	next();

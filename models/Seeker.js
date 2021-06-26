@@ -18,7 +18,7 @@ const SeekerSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: [true, 'password is required'],
-		minlength: 8,
+		minlength: [8, 'password has to be atlease 8 characters long'],
 		select: false,
 	},
 	confirmPassword: {
@@ -32,6 +32,7 @@ const SeekerSchema = new mongoose.Schema({
 		},
 		select: false,
 	},
+	photo: { type: String, default: 'default.jpg' },
 	date: {
 		type: Date,
 		default: Date.now,

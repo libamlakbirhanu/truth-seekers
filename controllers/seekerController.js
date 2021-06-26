@@ -1,6 +1,57 @@
+const multer = require('multer');
+const sharp = require('sharp');
+const fs = require('fs');
+
 const Seeker = require('./../models/Seeker');
 const Notification = require('./../models/Notification');
 const { errorMessage, customErrorMessage } = require('./../utils/errormessage');
+
+const filterObj = (obj, ...allowedFields) => {
+	const newObj = {};
+	Object.keys(obj).forEach((el) => {
+		if (allowedFields.includes(el)) newObj[el] = obj[el];
+	});
+	return newObj;
+};
+
+// const multerStorage = multer.diskStorage({
+// 	destination: (req, file, cb) => {
+// 		cb(null, 'assets/image/seekers');
+// 	},
+// 	filename: (req, file, cb) => {
+// 		cb(
+// 			null,
+// 			`${file.fieldname}-${req.user.id}-${Date.now()}.${
+// 				file.mimetype.split('/')[1]
+// 			}`
+// 		);
+// 	},
+// });
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+	if (file.mimetype.split('/')[0] === 'image') cb(null, true);
+	else cb(new Error('the file you uploaded is not an image'), false);
+};
+
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+
+exports.uploadPhoto = upload.single('photo');
+
+exports.resizePhoto = (req, res, next) => {
+	if (!req.file) return next();
+
+	req.file.filename = `${req.file.fieldname}-${req.user.id}-${Date.now()}.jpeg`;
+
+	sharp(req.file.buffer)
+		.resize(500, 500)
+		.toFormat('jpeg')
+		.jpeg({ quality: 90 })
+		.toFile(`assets/image/seekers/${req.file.filename}`);
+
+	next();
+};
 
 exports.getMe = async (req, res, next) => {
 	try {
@@ -34,8 +85,16 @@ exports.getSeekers = async (req, res, next) => {
 exports.updateMe = async (req, res, next) => {
 	try {
 		const userId = req.user._id;
+		const filteredBody = filterObj(req.body, 'name', 'email');
 
-		const doc = await Seeker.findByIdAndUpdate(userId, req.body, {
+		if (req.file) filteredBody.photo = req.file.filename;
+
+		if (req.user.photo !== 'default.jpg')
+			fs.unlink(`assets/image/seekers/${req.user.photo}`, (err) => {
+				if (err) console.error(err);
+			});
+
+		const doc = await Seeker.findByIdAndUpdate(userId, filteredBody, {
 			new: true,
 			runValidators: true,
 		});
@@ -43,7 +102,7 @@ exports.updateMe = async (req, res, next) => {
 		if (!doc)
 			return customErrorMessage('there is no user with the given Id', 404, res);
 
-		res.status(203).json({
+		res.status(200).json({
 			status: 'success',
 			result: doc,
 		});

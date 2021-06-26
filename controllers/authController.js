@@ -33,13 +33,7 @@ const sendToken = (user, statusCode, req, res) => {
 
 	res.status(statusCode).json({
 		status: 'success',
-		token,
-		data:
-			statusCode === 201
-				? {
-						user,
-				  }
-				: null,
+		data: user,
 	});
 };
 
@@ -48,7 +42,7 @@ exports.signup = async (req, res, next) => {
 		const newUser = await Seeker.create(req.body);
 		sendToken(newUser, 201, req, res);
 	} catch (err) {
-		return errorMessage(err, 500, res);
+		return errorMessage(err, 400, res);
 	}
 };
 
@@ -60,7 +54,7 @@ exports.login = async (req, res, next) => {
 		return customErrorMessage('fields can not be empty', 400, res);
 
 	if (!user || !(await bcrypt.compare(password, user.password)))
-		return customErrorMessage('incorrect credentials', 401, res);
+		return customErrorMessage('incorrect credentials', 400, res);
 
 	sendToken(user, 200, req, res);
 };
@@ -164,6 +158,32 @@ exports.protect = async (req, res, next) => {
 		// res.locals.user = currentUser;
 
 		next();
+	} catch (err) {
+		return customErrorMessage(err.message, 500, res);
+	}
+};
+
+exports.isLoggedIn = async (req, res, next) => {
+	try {
+		let token;
+
+		if (
+			req.headers.authorization &&
+			req.headers.authorization.startsWith('Bearer ')
+		)
+			token = req.headers.authorization.split(' ')[1];
+		else if (req.cookies.authToken) token = req.cookies.authToken;
+
+		if (!token) return;
+
+		const decoded = jwt.verify(token, process.env.JWTSECRET);
+		const currentUser = await Seeker.findById(decoded.user.id);
+
+		if (currentUser && token)
+			return res.status(200).json({
+				status: 'success',
+				user: currentUser,
+			});
 	} catch (err) {
 		return customErrorMessage(err.message, 500, res);
 	}
