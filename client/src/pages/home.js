@@ -1,42 +1,46 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+
 import Grid from '@material-ui/core/Grid';
 
 import Seek from '../components/Seek';
+import Profile from '../components/Profile';
+import { getSeeks } from '../redux/actions/dataActions';
 
 class home extends Component {
-	state = {
-		seeks: null,
-	};
-
-	async componentDidMount() {
-		try {
-			const res = await axios.get('/seeks');
-
-			this.setState({
-				seeks: res.data.data.docs,
-			});
-		} catch (err) {
-			console.error(err);
-		}
+	componentDidMount() {
+		this.props.getSeeks();
 	}
 
 	render() {
-		const seekMarkup = this.state.seeks
-			? this.state.seeks.map((seek) => <Seek key={seek.id} seek={seek} />)
+		const {
+			user,
+			data: { seeks, loading },
+		} = this.props;
+		const seekMarkup = !loading
+			? seeks.map((seek) => <Seek key={seek.id} seek={seek} />)
 			: 'content loading...';
-
 		return (
 			<Grid container spacing={2}>
 				<Grid item sm={8} xs={12}>
 					<div>{seekMarkup}</div>
 				</Grid>
-				<Grid item sm={4} xs={12}>
-					<p>Profile...</p>
+				<Grid item sm={3} xs={12}>
+					<Profile
+						currentUser={user.currentUser}
+						isAuthenticated={user.isAuthenticated}
+					/>
 				</Grid>
 			</Grid>
 		);
 	}
 }
 
-export default home;
+const mapStateToProps = (state) => {
+	return {
+		user: state.user,
+		data: state.data,
+	};
+};
+
+export default connect(mapStateToProps, { getSeeks })(home);

@@ -45,7 +45,6 @@ class signup extends Component {
 
 	render() {
 		const { classes, UI } = this.props;
-		console.log(UI);
 
 		return (
 			<div className={classes.center}>

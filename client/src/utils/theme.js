@@ -36,7 +36,8 @@ const themeUtil = {
 			padding: 15,
 		},
 		textField: {
-			width: '100%',
+			width: '80%',
+			margin: 'auto',
 			marginBottom: 20,
 		},
 		button: {

@@ -5,26 +5,56 @@ import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import HomeIcon from '@material-ui/icons/Home';
+import AddIcon from '@material-ui/icons/Add';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 
-function Navbar({ user: { isAuthenticated } }) {
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-
+function Navbar({ classes, user: { isAuthenticated } }) {
 	return (
 		<AppBar>
 			<Toolbar className="nav-container">
 				{isAuthenticated ? (
-					<Button color="inherit" component={Link} to="/logout">
-						logout
-					</Button>
-				) : (
-					<Button color="inherit" component={Link} to="/login">
-						login
-					</Button>
-				)}
+					<>
+						<Tooltip title="post new seek" placement="top">
+							<IconButton
+							// onClick={handleImageEdit}
+							// className={classes.editIcon}
+							>
+								<AddIcon />
+							</IconButton>
+						</Tooltip>
+						<Link to="/">
+							<Tooltip title="home" placement="top">
+								<IconButton
+								// onClick={handleImageEdit}
+								// className={classes.editIcon}
+								>
+									<HomeIcon />
+								</IconButton>
+							</Tooltip>
+						</Link>
 
-				<Button color="inherit" component={Link} to="/">
-					home
-				</Button>
+						<Tooltip title="view notifications" placement="top">
+							<IconButton
+							// onClick={handleImageEdit}
+							// className={classes.editIcon}
+							>
+								<NotificationsIcon />
+							</IconButton>
+						</Tooltip>
+					</>
+				) : (
+					<>
+						<Button color="inherit" component={Link} to="/login">
+							login
+						</Button>
+						<Button color="inherit" component={Link} to="/">
+							<HomeIcon />
+						</Button>
+					</>
+				)}
 			</Toolbar>
 		</AppBar>
 	);

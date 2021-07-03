@@ -8,7 +8,16 @@ import CardMedia from '@material-ui/core/CardMedia';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-// import userImage from `${seek.photo}`;
+import ChatIcon from '@material-ui/icons/Chat';
+import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import Tooltip from '@material-ui/core/tooltip';
+import IconButton from '@material-ui/core/IconButton';
+
+import { connect } from 'react-redux';
+import { upvoteSeek, downvoteSeek } from '../redux/actions/dataActions';
 
 const styles = {
 	card: {
@@ -31,12 +40,83 @@ const styles = {
 		width: '100%',
 		paddingLeft: 0,
 	},
+	counts: {
+		marginRight: 10,
+		color: 'primary',
+	},
 };
 
 class Seek extends Component {
+	likedSeek = () => {
+		if (
+			this.props.user.currentUser.likedSeeks.length > 0 &&
+			this.props.user.currentUser.likedSeeks.find(
+				(id) => id === this.props.seek.id
+			)
+		)
+			return true;
+		else return false;
+	};
+	dislikedSeek = () => {
+		if (
+			this.props.user.currentUser.dislikedSeeks.length > 0 &&
+			this.props.user.currentUser.dislikedSeeks.find(
+				(id) => id === this.props.seek.id
+			)
+		)
+			return true;
+		else return false;
+	};
+
 	render() {
 		dayjs.extend(relativeTime);
-		const { classes, seek } = this.props;
+		const {
+			classes,
+			seek,
+			upvoteSeek,
+			downvoteSeek,
+			user: { isAuthenticated },
+		} = this.props;
+
+		const upvoteButton = !isAuthenticated ? (
+			<Tooltip title="upvote" placement="top">
+				<IconButton component={Link} to="/login">
+					<ThumbUpOutlinedIcon color="primary" />
+				</IconButton>
+			</Tooltip>
+		) : !this.likedSeek() ? (
+			<Tooltip title="upvote" placement="top">
+				<IconButton onClick={() => upvoteSeek(seek.id)}>
+					<ThumbUpOutlinedIcon color="primary" />
+				</IconButton>
+			</Tooltip>
+		) : (
+			<Tooltip title="upvote" placement="top">
+				<IconButton>
+					<ThumbUpIcon color="primary" />
+				</IconButton>
+			</Tooltip>
+		);
+
+		const downvoteButton = !isAuthenticated ? (
+			<Tooltip title="downvote" placement="top">
+				<IconButton component={Link} to="/login">
+					<ThumbDownOutlinedIcon color="primary" />
+				</IconButton>
+			</Tooltip>
+		) : !this.dislikedSeek() ? (
+			<Tooltip title="downvote" placement="top">
+				<IconButton onClick={() => downvoteSeek(seek.id)}>
+					<ThumbDownOutlinedIcon color="primary" />
+				</IconButton>
+			</Tooltip>
+		) : (
+			<Tooltip title="downvote" placement="top">
+				<IconButton>
+					<ThumbDownIcon color="primary" />
+				</IconButton>
+			</Tooltip>
+		);
 
 		return (
 			<Card className={classes.card}>
@@ -46,12 +126,7 @@ class Seek extends Component {
 					className={classes.image}
 				/>
 				<CardContent className={classes.p25}>
-					<Typography
-						variant="h5"
-						component={Link}
-						to={`/seekers/${seek.author._id}`}
-						color="primary"
-					>
+					<Typography variant="h5" color="primary">
 						{`${seek.author.name[0].toUpperCase()}${seek.author.name.slice(
 							1,
 							seek.author.name.length
@@ -61,15 +136,43 @@ class Seek extends Component {
 						{dayjs(seek.createdAt).fromNow()}
 					</Typography>
 				</CardContent>
-				<CardContent className={classes.content}>
+				<CardContent
+					className={classes.content}
+					component={Link}
+					to={`/seeks/${seek.id}`}
+				>
 					<Typography variant="h5" className={classes.title}>
 						{seek.title}
 					</Typography>
-					<Typography variant="body2">{seek.body}</Typography>
+					<Typography variant="body2">
+						{seek.body.length > 200
+							? `${seek.body.substring(0, 201)}...`
+							: seek.body}
+					</Typography>
 				</CardContent>
+				<div className={classes.actionButtons}>
+					{upvoteButton}
+					<span className={classes.counts}>{seek.upvotes}</span>
+					{downvoteButton}
+					<span className={classes.counts}>{seek.downvotes}</span>
+					<Tooltip title="comment" placement="top">
+						<IconButton>
+							<ChatIcon color="primary" />
+						</IconButton>
+					</Tooltip>
+					<span className={classes.counts}>{seek.commentCount}</span>
+				</div>
 			</Card>
 		);
 	}
 }
 
-export default withStyles(styles)(Seek);
+const mapStateToProps = (state) => {
+	return {
+		user: state.user,
+	};
+};
+
+export default connect(mapStateToProps, { upvoteSeek, downvoteSeek })(
+	withStyles(styles)(Seek)
+);

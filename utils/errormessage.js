@@ -1,5 +1,7 @@
 exports.errorMessage = (err, statusCode, res) => {
-	const message = err.message.split(':')[2].trim();
+	let message = err.message.split(':')[2].trim();
+
+	if (message.indexOf(',') !== -1) message = message.split(',')[0].trim();
 
 	return res.status(statusCode).json({
 		status: 'error',

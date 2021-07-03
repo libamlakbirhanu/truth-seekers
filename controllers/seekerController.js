@@ -89,7 +89,11 @@ exports.updateMe = async (req, res, next) => {
 
 		if (req.file) filteredBody.photo = req.file.filename;
 
-		if (req.user.photo !== 'default.jpg')
+		if (
+			req.user.photo !== 'default.jpg' &&
+			fs.existsSync(`assets/image/seekers/${req.user.photo}`) &&
+			req.file
+		)
 			fs.unlink(`assets/image/seekers/${req.user.photo}`, (err) => {
 				if (err) console.error(err);
 			});

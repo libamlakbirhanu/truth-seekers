@@ -18,7 +18,7 @@ const SeekerSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: [true, 'password is required'],
-		minlength: [8, 'password has to be atlease 8 characters long'],
+		minlength: [8, 'password has to be atleast 8 characters long'],
 		select: false,
 	},
 	confirmPassword: {

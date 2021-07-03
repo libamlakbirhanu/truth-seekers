@@ -8,6 +8,7 @@ import {
 	LOADING_UI,
 	SET_ERRORS,
 	CLEAR_ERRORS,
+	LOADING,
 } from '../types';
 
 export const userLogin = (userData, history) => (dispatch) => {
@@ -105,7 +106,39 @@ export const userLogout = (history) => (dispatch) => {
 		.catch((err) => console.error(err));
 };
 
+export const uploadImage = (formData) => (dispatch) => {
+	axios
+		.patch('/seekers/', formData)
+		.then((res) => {
+			window.location.reload();
+		})
+		.catch((err) => console.log(err));
+};
+
+export const editUser = (userDetails) => (dispatch) => {
+	dispatch({
+		type: LOADING,
+	});
+
+	axios
+		.patch('/seekers/', userDetails)
+		.then((res) => {
+			dispatch({
+				type: SET_USER,
+				user: userDetails,
+			});
+			window.location.reload();
+		})
+		.catch((err) => {
+			console.error(err.response.data.message);
+			return false;
+		});
+};
+
 export const authCheck = () => (dispatch) => {
+	dispatch({
+		type: LOADING,
+	});
 	axios
 		.get('/seekers/authcheck')
 		.then((res) => {

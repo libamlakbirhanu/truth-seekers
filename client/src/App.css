@@ -7,6 +7,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background-color: #f2f2f2;
+	font-size: 14;
 }
 
 .container {
@@ -19,6 +20,21 @@ body {
 	justify-content: center;
 }
 
+.nav-container svg {
+	color: white;
+}
+
 a {
 	text-decoration: none;
+}
+
+.editButton {
+	padding: 12px !important;
+	padding-bottom: 2px !important;
+	cursor: pointer;
+}
+
+.editButton:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+	border-radius: 50%;
 }
