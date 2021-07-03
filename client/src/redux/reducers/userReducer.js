@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
 		case SET_USER:
 			return {
 				...state,
-				currentUser: action.user,
+				currentUser: { ...state.currentUser, ...action.user },
 				loading: false,
 			};
 		case REMOVE_USER:

@@ -60,7 +60,9 @@ class EditDetails extends Component {
 		};
 
 		if (userDetails.name !== name || userDetails.email !== email) {
-			if (this.props.editUser(userDetails)) this.handleClose();
+			if (this.props.editUser(userDetails)) {
+				this.handleClose();
+			}
 		} else this.handleClose();
 	};
 

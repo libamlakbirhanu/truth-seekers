@@ -1,4 +1,10 @@
-import { SET_SEEKS, LOADING_DATA, UPVOTE_SEEK, DOWNVOTE_SEEK } from '../types';
+import {
+	SET_SEEKS,
+	LOADING_DATA,
+	UPVOTE_SEEK,
+	DOWNVOTE_SEEK,
+	DELETE_SEEK,
+} from '../types';
 
 const initialState = {
 	seeks: [],
@@ -29,7 +35,15 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 			};
+		case DELETE_SEEK:
+			const tempSeeks = [...state.seeks];
+			const i = state.seeks.findIndex((seek) => seek.id === action.payload.id);
+			tempSeeks.splice(i, 1);
 
+			return {
+				...state,
+				seeks: [...tempSeeks],
+			};
 		default:
 			return state;
 	}

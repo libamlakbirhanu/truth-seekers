@@ -110,12 +110,16 @@ export const uploadImage = (formData) => (dispatch) => {
 	axios
 		.patch('/seekers/', formData)
 		.then((res) => {
-			window.location.reload();
+			dispatch({
+				type: SET_USER,
+				user: res.data.result,
+			});
 		})
 		.catch((err) => console.log(err));
 };
 
 export const editUser = (userDetails) => (dispatch) => {
+	let close = 'not empty';
 	dispatch({
 		type: LOADING,
 	});
@@ -127,12 +131,12 @@ export const editUser = (userDetails) => (dispatch) => {
 				type: SET_USER,
 				user: userDetails,
 			});
-			window.location.reload();
 		})
 		.catch((err) => {
-			console.error(err.response.data.message);
-			return false;
+			console.error(err);
+			close = null;
 		});
+	return close;
 };
 
 export const authCheck = () => (dispatch) => {

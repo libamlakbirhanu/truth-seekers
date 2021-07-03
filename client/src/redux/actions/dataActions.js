@@ -1,4 +1,10 @@
-import { SET_SEEKS, LOADING_DATA, UPVOTE_SEEK, DOWNVOTE_SEEK } from '../types';
+import {
+	SET_SEEKS,
+	LOADING_DATA,
+	UPVOTE_SEEK,
+	DOWNVOTE_SEEK,
+	DELETE_SEEK,
+} from '../types';
 import axios from 'axios';
 
 export const getSeeks = () => (dispatch) => {
@@ -32,6 +38,18 @@ export const downvoteSeek = (id) => (dispatch) => {
 			dispatch({
 				type: DOWNVOTE_SEEK,
 				payload: res.data.result,
+			});
+		})
+		.catch((err) => console.error(err));
+};
+
+export const deleteSeek = (id) => (dispatch) => {
+	axios
+		.delete(`/seeks/${id}`)
+		.then((res) => {
+			dispatch({
+				type: DELETE_SEEK,
+				payload: res.data.doc,
 			});
 		})
 		.catch((err) => console.error(err));

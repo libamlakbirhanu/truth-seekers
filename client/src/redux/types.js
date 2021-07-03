@@ -14,3 +14,4 @@ export const SET_SEEKS = 'SET_SEEKS';
 export const SET_SEEK = 'SET_SEEK';
 export const UPVOTE_SEEK = 'UPVOTE_SEEK';
 export const DOWNVOTE_SEEK = 'DOWNVOTE_SEEK';
+export const DELETE_SEEK = 'DELETE_SEEK';

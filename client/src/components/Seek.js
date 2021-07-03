@@ -16,8 +16,14 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import Tooltip from '@material-ui/core/tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
+import DeleteSeek from './DeleteSeek';
+
 import { connect } from 'react-redux';
-import { upvoteSeek, downvoteSeek } from '../redux/actions/dataActions';
+import {
+	upvoteSeek,
+	downvoteSeek,
+	deleteSeek,
+} from '../redux/actions/dataActions';
 
 const styles = {
 	card: {
@@ -75,25 +81,25 @@ class Seek extends Component {
 			seek,
 			upvoteSeek,
 			downvoteSeek,
-			user: { isAuthenticated },
+			user: { isAuthenticated, currentUser },
 		} = this.props;
 
 		const upvoteButton = !isAuthenticated ? (
 			<Tooltip title="upvote" placement="top">
 				<IconButton component={Link} to="/login">
-					<ThumbUpOutlinedIcon color="primary" />
+					<ThumbUpOutlinedIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
 		) : !this.likedSeek() ? (
 			<Tooltip title="upvote" placement="top">
 				<IconButton onClick={() => upvoteSeek(seek.id)}>
-					<ThumbUpOutlinedIcon color="primary" />
+					<ThumbUpOutlinedIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
 		) : (
 			<Tooltip title="upvote" placement="top">
 				<IconButton>
-					<ThumbUpIcon color="primary" />
+					<ThumbUpIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
 		);
@@ -101,36 +107,50 @@ class Seek extends Component {
 		const downvoteButton = !isAuthenticated ? (
 			<Tooltip title="downvote" placement="top">
 				<IconButton component={Link} to="/login">
-					<ThumbDownOutlinedIcon color="primary" />
+					<ThumbDownOutlinedIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
 		) : !this.dislikedSeek() ? (
 			<Tooltip title="downvote" placement="top">
 				<IconButton onClick={() => downvoteSeek(seek.id)}>
-					<ThumbDownOutlinedIcon color="primary" />
+					<ThumbDownOutlinedIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
 		) : (
 			<Tooltip title="downvote" placement="top">
 				<IconButton>
-					<ThumbDownIcon color="primary" />
+					<ThumbDownIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
 		);
 
+		const deleteButton =
+			isAuthenticated && currentUser._id === seek.author._id ? (
+				<DeleteSeek onclick={() => this.props.deleteSeek(seek.id)} />
+			) : null;
+
 		return (
 			<Card className={classes.card}>
 				<CardMedia
-					image={`http://localhost:5000/static/image/seekers/${seek.author.photo}`}
+					image={`http://localhost:5000/static/image/seekers/${
+						currentUser && currentUser._id === seek.author._id
+							? currentUser.photo
+							: seek.author.photo
+					}`}
 					title="profile image"
 					className={classes.image}
 				/>
 				<CardContent className={classes.p25}>
 					<Typography variant="h5" color="primary">
-						{`${seek.author.name[0].toUpperCase()}${seek.author.name.slice(
-							1,
-							seek.author.name.length
-						)}`}
+						{currentUser._id === seek.author._id
+							? `${currentUser.name[0].toUpperCase()}${currentUser.name.slice(
+									1,
+									currentUser.name.length
+							  )}`
+							: `${seek.author.name[0].toUpperCase()}${seek.author.name.slice(
+									1,
+									seek.author.name.length
+							  )}`}
 					</Typography>
 					<Typography variant="body2" color="textSecondary">
 						{dayjs(seek.createdAt).fromNow()}
@@ -157,10 +177,11 @@ class Seek extends Component {
 					<span className={classes.counts}>{seek.downvotes}</span>
 					<Tooltip title="comment" placement="top">
 						<IconButton>
-							<ChatIcon color="primary" />
+							<ChatIcon color="primary" fontSize="small" />
 						</IconButton>
 					</Tooltip>
 					<span className={classes.counts}>{seek.commentCount}</span>
+					{deleteButton}
 				</div>
 			</Card>
 		);
@@ -173,6 +194,8 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { upvoteSeek, downvoteSeek })(
-	withStyles(styles)(Seek)
-);
+export default connect(mapStateToProps, {
+	upvoteSeek,
+	downvoteSeek,
+	deleteSeek,
+})(withStyles(styles)(Seek));

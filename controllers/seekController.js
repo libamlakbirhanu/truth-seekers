@@ -117,9 +117,10 @@ exports.deleteSeek = async (req, res, next) => {
 
 		res.status(200).json({
 			status: 'success',
+			doc,
 		});
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 		return errorMessage(err, 500, res);
 	}
 };

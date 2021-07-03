@@ -6,10 +6,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import HomeIcon from '@material-ui/icons/Home';
-import AddIcon from '@material-ui/icons/Add';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+
+import PostSeek from './PostSeek';
 
 function Navbar({ classes, user: { isAuthenticated } }) {
 	return (
@@ -17,20 +18,10 @@ function Navbar({ classes, user: { isAuthenticated } }) {
 			<Toolbar className="nav-container">
 				{isAuthenticated ? (
 					<>
-						<Tooltip title="post new seek" placement="top">
-							<IconButton
-							// onClick={handleImageEdit}
-							// className={classes.editIcon}
-							>
-								<AddIcon />
-							</IconButton>
-						</Tooltip>
+						<PostSeek />
 						<Link to="/">
 							<Tooltip title="home" placement="top">
-								<IconButton
-								// onClick={handleImageEdit}
-								// className={classes.editIcon}
-								>
+								<IconButton>
 									<HomeIcon />
 								</IconButton>
 							</Tooltip>
