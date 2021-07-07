@@ -54,7 +54,7 @@ export class DeleteSeek extends Component {
 						<Button onClick={this.handleClose} color="primary">
 							Cancel
 						</Button>
-						<Button onClick={this.deleteSeek} color="secondary">
+						<Button onClick={this.deleteSeek} style={{ color: '#FF0000' }}>
 							Delete
 						</Button>
 					</DialogActions>
