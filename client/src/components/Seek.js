@@ -55,6 +55,7 @@ const styles = {
 class Seek extends Component {
 	likedSeek = () => {
 		if (
+			this.props.user.currentUser &&
 			this.props.user.currentUser.likedSeeks.length > 0 &&
 			this.props.user.currentUser.likedSeeks.find(
 				(id) => id === this.props.seek.id
