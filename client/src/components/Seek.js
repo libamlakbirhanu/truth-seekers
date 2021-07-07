@@ -142,7 +142,7 @@ class Seek extends Component {
 				/>
 				<CardContent className={classes.p25}>
 					<Typography variant="h5" color="primary">
-						{currentUser._id === seek.author._id
+						{currentUser && currentUser._id === seek.author._id
 							? `${currentUser.name[0].toUpperCase()}${currentUser.name.slice(
 									1,
 									currentUser.name.length
