@@ -28,9 +28,12 @@ export const createSeek = (newSeek) => (dispatch) => {
 	axios
 		.post('/seeks', newSeek)
 		.then((res) => {
-			dispatch({ type: POST_SEEK, payload: res.data.data.docs });
+			dispatch({ type: POST_SEEK, payload: res.data.result });
+			dispatch({
+				type: LOADING_UI,
+			});
 		})
-		.catch((err) => console.error(err.response));
+		.catch((err) => console.error(err));
 };
 
 export const upvoteSeek = (id) => (dispatch) => {

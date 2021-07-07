@@ -35,6 +35,15 @@ SeekSchema.virtual('comments', {
 	localField: '_id',
 });
 
+SeekSchema.post('save', function (req, res, next) {
+	this.populate({
+		path: 'author',
+		select: 'name email photo',
+	});
+
+	next();
+});
+
 SeekSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'author',

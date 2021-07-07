@@ -115,7 +115,7 @@ export const uploadImage = (formData) => (dispatch) => {
 				user: res.data.result,
 			});
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => console.error(err));
 };
 
 export const editUser = (userDetails) => (dispatch) => {

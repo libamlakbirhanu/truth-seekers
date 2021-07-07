@@ -37,7 +37,12 @@ exports.createSeek = async (req, res, next) => {
 	try {
 		const body = req.body;
 		body.author = req.user._id;
-		const doc = await Seek.create(body);
+
+		const seek = new Seek({ ...body });
+
+		seek.populate('author', (err) => err && console.error(err));
+
+		const doc = await seek.save();
 
 		await createNotifications(
 			`${req.user.name} has created a seek with a title "${doc.title}"`,
@@ -50,6 +55,7 @@ exports.createSeek = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
+		console.error(err);
 		return errorMessage(err, 500, res);
 	}
 };

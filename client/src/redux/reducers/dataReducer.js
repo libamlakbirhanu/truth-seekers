@@ -4,6 +4,7 @@ import {
 	UPVOTE_SEEK,
 	DOWNVOTE_SEEK,
 	DELETE_SEEK,
+	POST_SEEK,
 } from '../types';
 
 const initialState = {
@@ -43,6 +44,11 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				seeks: [...tempSeeks],
+			};
+		case POST_SEEK:
+			return {
+				...state,
+				seeks: [action.payload, ...state.seeks],
 			};
 		default:
 			return state;
