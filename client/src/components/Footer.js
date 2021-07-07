@@ -12,6 +12,7 @@ const styles = {
 	cardContainer: {
 		padding: '25px 0',
 		display: 'flex',
+		flexWrap: 'wrap',
 		justifyContent: 'space-around',
 		alignItems: 'center',
 		marginBottom: 50,
