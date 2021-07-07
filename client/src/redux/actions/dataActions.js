@@ -1,11 +1,13 @@
+import axios from 'axios';
 import {
 	SET_SEEKS,
 	LOADING_DATA,
+	LOADING_UI,
 	UPVOTE_SEEK,
 	DOWNVOTE_SEEK,
 	DELETE_SEEK,
+	POST_SEEK,
 } from '../types';
-import axios from 'axios';
 
 export const getSeeks = () => (dispatch) => {
 	dispatch({
@@ -15,6 +17,18 @@ export const getSeeks = () => (dispatch) => {
 		.get('/seeks')
 		.then((res) => {
 			dispatch({ type: SET_SEEKS, payload: res.data.data.docs });
+		})
+		.catch((err) => console.error(err.response));
+};
+
+export const createSeek = (newSeek) => (dispatch) => {
+	dispatch({
+		type: LOADING_UI,
+	});
+	axios
+		.post('/seeks', newSeek)
+		.then((res) => {
+			dispatch({ type: POST_SEEK, payload: res.data.data.docs });
 		})
 		.catch((err) => console.error(err.response));
 };
