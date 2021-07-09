@@ -24,6 +24,10 @@ const styles = (theme) => ({
 	progressLoader: {
 		position: 'absolute',
 	},
+	dialogBox: {
+		width: '500px',
+		margin: 'auto',
+	},
 });
 
 class PostSeek extends Component {
@@ -51,6 +55,8 @@ class PostSeek extends Component {
 
 	handleClose = () => {
 		this.setState({
+			title: '',
+			body: '',
 			open: false,
 		});
 	};
@@ -83,6 +89,7 @@ class PostSeek extends Component {
 					onClose={this.handleClose}
 					fullWidth
 					maxWidth="sm"
+					className={classes.dialogBox}
 				>
 					<DialogTitle>Post a seek</DialogTitle>
 					<DialogContent>
