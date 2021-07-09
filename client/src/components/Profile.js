@@ -87,6 +87,7 @@ const Profile = (props) => {
 						to={`/seekers/${currentUser._id}`}
 						className={classes.image}
 						image={`http://localhost:5000/static/image/seekers/${currentUser.photo}`}
+						key={currentUser.photo}
 					></CardMedia>
 					<input
 						type="file"

@@ -138,6 +138,7 @@ class Seek extends Component {
 							? currentUser.photo
 							: seek.author.photo
 					}`}
+					key={currentUser && currentUser.photo}
 					title="profile image"
 					className={classes.image}
 				/>
@@ -157,10 +158,12 @@ class Seek extends Component {
 						{dayjs(seek.createdAt).fromNow()}
 					</Typography>
 				</CardContent>
+
 				<CardContent
 					className={classes.content}
 					component={Link}
 					to={`/seeks/${seek.id}`}
+					title="expand seek"
 				>
 					<Typography variant="h5" className={classes.title}>
 						{seek.title}
@@ -171,6 +174,7 @@ class Seek extends Component {
 							: seek.body}
 					</Typography>
 				</CardContent>
+
 				<div className={classes.actionButtons}>
 					{upvoteButton}
 					<span className={classes.counts}>{seek.upvotes}</span>
