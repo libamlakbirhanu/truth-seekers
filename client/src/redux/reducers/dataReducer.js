@@ -5,6 +5,7 @@ import {
 	UPVOTE_SEEK,
 	DOWNVOTE_SEEK,
 	DELETE_SEEK,
+	CLEAR_SEEK,
 	POST_SEEK,
 } from '../types';
 
@@ -31,6 +32,11 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				seek: action.payload,
+			};
+		case CLEAR_SEEK:
+			return {
+				...state,
+				seek: {},
 			};
 		case DOWNVOTE_SEEK:
 		case UPVOTE_SEEK:

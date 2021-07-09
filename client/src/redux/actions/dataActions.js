@@ -6,6 +6,7 @@ import {
 	UPVOTE_SEEK,
 	DOWNVOTE_SEEK,
 	DELETE_SEEK,
+  CLEAR_SEEK,
 	POST_SEEK,
 	SET_SEEK,
 } from '../types';
@@ -33,6 +34,12 @@ export const getSeek = (id) => (dispatch) => {
 		})
 		.catch((err) => console.error(err));
 };
+
+export const clearSeek = () => dispatch => {
+  dispatch({
+    type: CLEAR_SEEK,
+  })
+}
 
 export const createSeek = (newSeek) => (dispatch) => {
 	dispatch({
