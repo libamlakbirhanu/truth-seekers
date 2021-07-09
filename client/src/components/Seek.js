@@ -66,6 +66,7 @@ class Seek extends Component {
 	};
 	dislikedSeek = () => {
 		if (
+			this.props.user.currentUser &&
 			this.props.user.currentUser.dislikedSeeks.length > 0 &&
 			this.props.user.currentUser.dislikedSeeks.find(
 				(id) => id === this.props.seek.id
@@ -80,6 +81,7 @@ class Seek extends Component {
 		const {
 			classes,
 			seek,
+			fullContent,
 			upvoteSeek,
 			downvoteSeek,
 			user: { isAuthenticated, currentUser },
@@ -162,14 +164,16 @@ class Seek extends Component {
 				<CardContent
 					className={classes.content}
 					component={Link}
-					to={`/seeks/${seek.id}`}
+					to={`/seek/${seek.id}`}
 					title="expand seek"
 				>
 					<Typography variant="h5" className={classes.title}>
 						{seek.title}
 					</Typography>
 					<Typography variant="body2">
-						{seek.body.length > 200
+						{fullContent
+							? seek.body
+							: seek.body.length > 200
 							? `${seek.body.substring(0, 201)}...`
 							: seek.body}
 					</Typography>

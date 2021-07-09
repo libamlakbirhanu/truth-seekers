@@ -1,5 +1,6 @@
 import {
 	SET_SEEKS,
+	SET_SEEK,
 	LOADING_DATA,
 	UPVOTE_SEEK,
 	DOWNVOTE_SEEK,
@@ -25,6 +26,11 @@ const reducer = (state = initialState, action) => {
 				...state,
 				seeks: action.payload,
 				loading: false,
+			};
+		case SET_SEEK:
+			return {
+				...state,
+				seek: action.payload,
 			};
 		case DOWNVOTE_SEEK:
 		case UPVOTE_SEEK:

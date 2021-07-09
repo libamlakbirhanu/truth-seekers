@@ -7,6 +7,7 @@ import {
 	DOWNVOTE_SEEK,
 	DELETE_SEEK,
 	POST_SEEK,
+	SET_SEEK,
 } from '../types';
 
 export const getSeeks = () => (dispatch) => {
@@ -19,6 +20,18 @@ export const getSeeks = () => (dispatch) => {
 			dispatch({ type: SET_SEEKS, payload: res.data.data.docs });
 		})
 		.catch((err) => console.error(err.response));
+};
+
+export const getSeek = (id) => (dispatch) => {
+	axios
+		.get(`/seeks/${id}`)
+		.then((res) => {
+			dispatch({
+				type: SET_SEEK,
+				payload: res.data.data,
+			});
+		})
+		.catch((err) => console.error(err));
 };
 
 export const createSeek = (newSeek) => (dispatch) => {
