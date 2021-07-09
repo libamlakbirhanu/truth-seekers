@@ -25,7 +25,7 @@ const themeUtil = {
 			marginTop: 30,
 		},
 		formContainer: {
-			width: 350,
+			width: 300,
 			textAlign: 'center',
 		},
 		block: {
@@ -36,7 +36,7 @@ const themeUtil = {
 			padding: 15,
 		},
 		textField: {
-			width: '80%',
+			width: '100%',
 			margin: 'auto',
 			marginBottom: 20,
 		},
