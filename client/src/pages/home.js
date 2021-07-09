@@ -8,9 +8,9 @@ import Profile from '../components/Profile';
 import { getSeeks } from '../redux/actions/dataActions';
 
 class home extends Component {
-	componentDidMount() {
-		this.props.getSeeks();
-	}
+	// componentDidMount() {
+	// 	this.props.getSeeks();
+	// }
 
 	render() {
 		const {
