@@ -44,7 +44,7 @@ class login extends Component {
 			<div className={classes.center}>
 				<div className={classes.formContainer}>
 					<img src={logo} title="LOGO" alt="LOGO" className={classes.image} />
-					<Typography variant="h2" className={classes.block}>
+					<Typography variant="h3" className={classes.block}>
 						Login
 					</Typography>
 					{UI.error && (
