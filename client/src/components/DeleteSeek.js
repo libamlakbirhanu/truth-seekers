@@ -9,7 +9,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const styles = {};
+const styles = {
+	dialogBox: {
+		width: '500px',
+		margin: 'auto',
+	},
+};
 
 export class DeleteSeek extends Component {
 	state = {
@@ -36,6 +41,7 @@ export class DeleteSeek extends Component {
 	};
 
 	render() {
+		const { classes } = this.props;
 		return (
 			<>
 				<Tooltip title="delete" placement="top">
@@ -48,6 +54,7 @@ export class DeleteSeek extends Component {
 					onClose={this.handleClose}
 					fullWidth
 					maxWidth="sm"
+					className={classes.dialogBox}
 				>
 					<DialogTitle>Are you sure you want to delete this seek?</DialogTitle>
 					<DialogActions>
