@@ -121,7 +121,7 @@ const Profile = (props) => {
 					</div>
 					<div className={classes.bottomActions}>
 						<Tooltip title="log out" placement="top">
-							<IconButton onClick={() => props.userLogout(props.history)}>
+							<IconButton onClick={() => props.userLogout()}>
 								<ExitToAppIcon color="primary" fontSize="small" />
 							</IconButton>
 						</Tooltip>

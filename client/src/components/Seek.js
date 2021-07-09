@@ -16,14 +16,14 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import Tooltip from '@material-ui/core/tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
-import DeleteSeek from './DeleteSeek';
-
 import { connect } from 'react-redux';
 import {
 	upvoteSeek,
 	downvoteSeek,
 	deleteSeek,
 } from '../redux/actions/dataActions';
+
+import DeleteSeek from './DeleteSeek';
 
 const styles = {
 	card: {

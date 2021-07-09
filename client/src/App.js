@@ -8,7 +8,6 @@ import themeUtil from './utils/theme';
 
 import home from './pages/home';
 import login from './pages/login';
-import logout from './pages/logout';
 import signup from './pages/signup';
 import seek from './pages/seek';
 import Navbar from './components/Navbar';
@@ -33,7 +32,6 @@ function App(props) {
 							<Route exact path="/" component={home} />
 							<Route exact path="/login" component={login} />
 							<Route exact path="/signup" component={signup} />
-							<Route exact path="/logout" component={logout} />
 							<Route exact path="/seek/:id" component={seek} />
 						</Switch>
 						<Footer />
