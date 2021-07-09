@@ -40,10 +40,12 @@ const reducer = (state = initialState, action) => {
 			};
 		case DOWNVOTE_SEEK:
 		case UPVOTE_SEEK:
+			const isSeekEmpty = JSON.stringify(state.seek) === '{}' || !state.seek;
 			let index = state.seeks.findIndex(
 				(seek) => seek.id === action.payload.id
 			);
 			state.seeks[index] = { ...action.payload };
+			if (!isSeekEmpty) state.seek = { ...action.payload };
 
 			return {
 				...state,
