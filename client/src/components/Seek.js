@@ -15,6 +15,7 @@ import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import Tooltip from '@material-ui/core/tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 
 import { connect } from 'react-redux';
 import {
@@ -48,7 +49,10 @@ const styles = {
 	},
 	counts: {
 		marginRight: 10,
-		color: 'primary',
+		color: '#800080',
+	},
+	expand: {
+		marginBottom: '-5px',
 	},
 };
 
@@ -161,25 +165,31 @@ class Seek extends Component {
 					</Typography>
 				</CardContent>
 
-				<CardContent
-					className={classes.content}
-					component={Link}
-					to={`/seek/${seek.id}`}
-					title="expand seek"
-				>
+				<CardContent className={classes.content}>
 					<Typography variant="h5" className={classes.title}>
 						{seek.title}
 					</Typography>
 					<Typography variant="body2">
-						{fullContent
-							? seek.body
-							: seek.body.length > 200
-							? `${seek.body.substring(0, 201)}...`
-							: seek.body}
+						{fullContent ? (
+							seek.body
+						) : seek.body.length > 200 ? (
+							<>
+								{seek.body.substring(0, 200).trim()}...
+								<Link to={`/seek/${seek.id}`} title="expand seek">
+									<UnfoldMoreIcon
+										color="primary"
+										fontSize="small"
+										className={classes.expand}
+									/>
+								</Link>
+							</>
+						) : (
+							seek.body
+						)}
 					</Typography>
 				</CardContent>
 
-				<div className={classes.actionButtons}>
+				<div>
 					{upvoteButton}
 					<span className={classes.counts}>{seek.upvotes}</span>
 					{downvoteButton}
