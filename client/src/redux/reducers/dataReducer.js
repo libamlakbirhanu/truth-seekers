@@ -31,7 +31,7 @@ const reducer = (state = initialState, action) => {
 				(seek) => seek.author._id === action.user
 			);
 
-			state.seeks[userIndex].author.photo = action.photo;
+			if (userIndex !== -1) state.seeks[userIndex].author.photo = action.photo;
 
 			return {
 				...state,
