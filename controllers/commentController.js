@@ -12,10 +12,10 @@ exports.createComment = async (req, res, next) => {
 
 		if (!seek) return customErrorMessage('seek does not exist', 400, res);
 
-		seek.commentCount++;
 		await seek.save();
 
 		const comment = new Comment({ ...body });
+		seek.commentCount++;
 
 		comment.populate('author', (err) => err && console.error(err));
 
