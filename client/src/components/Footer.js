@@ -6,7 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 
-import logo from './../assets/logo-dark.png';
+import logo from './../assets/footer.png';
 
 const styles = {
 	cardContainer: {
@@ -33,8 +33,9 @@ const styles = {
 	image: {
 		width: 100,
 		height: 100,
-		borderRadius: '50%',
+		borderRadius: 10,
 		boxShadow: '5px 5px 15px',
+		transform: 'rotate(45deg)',
 	},
 	content: {
 		width: '300px',

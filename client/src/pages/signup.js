@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import { userSignup } from '../redux/actions/userActions';
 
-import logo from '../assets/logo-dark.png';
+import logo from '../assets/truthseekers.png';
 
 const styles = (theme) => ({
 	...theme.spreadIt,
