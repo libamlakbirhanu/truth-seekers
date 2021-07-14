@@ -65,10 +65,10 @@ export class seek extends Component {
 	render() {
 		const { classes, seek, isAuthenticated } = this.props;
 		const isSeekEmpty = JSON.stringify(seek) === '{}' || !seek;
-
+		console.log(seek.commentCount);
 		return !isSeekEmpty ? (
 			<div className={classes.container}>
-				<Seek seek={seek} fullContent={true} />
+				<Seek seek={seek} commentCount={seek.commentCount} fullContent={true} />
 				{isAuthenticated && (
 					<>
 						<TextField

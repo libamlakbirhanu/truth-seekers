@@ -199,7 +199,7 @@ class Seek extends Component {
 							<ChatIcon color="primary" fontSize="small" />
 						</IconButton>
 					</Tooltip>
-					<span className={classes.counts}>{seek.commentCount}</span>
+					<span className={classes.counts}>{this.props.commentCount}</span>
 					{deleteButton}
 				</div>
 			</Card>

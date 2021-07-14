@@ -109,7 +109,7 @@ export const createComment = (commentData) => (dispatch) => {
 			});
 		})
 		.catch((err) => {
-			console.error('error', err);
+			console.error('error', err.response);
 			dispatch({
 				type: LOADING_UI,
 			});
