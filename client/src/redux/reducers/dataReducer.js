@@ -9,6 +9,7 @@ import {
 	POST_SEEK,
 	POST_COMMENT,
 	DELETE_COMMENT,
+	UPLOAD_PHOTO,
 } from '../types';
 
 const initialState = {
@@ -24,6 +25,16 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				loading: true,
+			};
+		case UPLOAD_PHOTO:
+			let userIndex = state.seeks.findIndex(
+				(seek) => seek.author._id === action.user
+			);
+
+			state.seeks[userIndex].author.photo = action.photo;
+
+			return {
+				...state,
 			};
 		case SET_SEEKS:
 			return {

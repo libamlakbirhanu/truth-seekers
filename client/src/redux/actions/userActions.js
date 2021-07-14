@@ -9,6 +9,7 @@ import {
 	SET_ERRORS,
 	CLEAR_ERRORS,
 	LOADING,
+	UPLOAD_PHOTO,
 } from '../types';
 
 export const userLogin = (userData, history) => (dispatch) => {
@@ -109,6 +110,11 @@ export const uploadImage = (formData) => (dispatch) => {
 	axios
 		.patch('/seekers/', formData)
 		.then((res) => {
+			dispatch({
+				type: UPLOAD_PHOTO,
+				user: res.data.result._id,
+				photo: res.data.result.photo,
+			});
 			dispatch({
 				type: SET_USER,
 				user: res.data.result,

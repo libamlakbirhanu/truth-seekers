@@ -4,6 +4,7 @@ export const SET_USER = 'SET_USER';
 export const REMOVE_USER = 'REMOVE_USER';
 export const LOADING_USER = 'LOADING_USER';
 export const LOADING = 'LOADING';
+export const UPLOAD_PHOTO = 'UPLOAD_PHOTO';
 
 export const LOADING_UI = 'LOADING_UI';
 export const LOADING_DATA = 'LOADING_DATA';

@@ -48,9 +48,8 @@ exports.resizePhoto = (req, res, next) => {
 		.resize(500, 500)
 		.toFormat('jpeg')
 		.jpeg({ quality: 90 })
-		.toFile(`assets/image/seekers/${req.file.filename}`);
-
-	next();
+		.toFile(`assets/image/seekers/${req.file.filename}`)
+		.then(() => next());
 };
 
 exports.getMe = async (req, res, next) => {
