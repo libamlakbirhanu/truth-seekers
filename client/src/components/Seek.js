@@ -24,7 +24,7 @@ import {
 	deleteSeek,
 } from '../redux/actions/dataActions';
 
-import DeleteSeek from './DeleteSeek';
+import Delete from './Delete';
 
 const styles = {
 	card: {
@@ -133,7 +133,7 @@ class Seek extends Component {
 
 		const deleteButton =
 			isAuthenticated && currentUser._id === seek.author._id ? (
-				<DeleteSeek onclick={() => this.props.deleteSeek(seek.id)} />
+				<Delete onclick={() => this.props.deleteSeek(seek.id)} target="seek" />
 			) : null;
 
 		return (

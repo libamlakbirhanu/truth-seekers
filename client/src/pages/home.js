@@ -8,17 +8,15 @@ import Profile from '../components/Profile';
 import { getSeeks } from '../redux/actions/dataActions';
 
 class home extends Component {
-	// componentDidMount() {
-	// 	this.props.getSeeks();
-	// }
-
 	render() {
 		const {
 			user,
 			data: { seeks, loading },
 		} = this.props;
 		const seekMarkup = !loading
-			? seeks.map((seek) => <Seek key={seek.id} seek={seek} />)
+			? seeks.map((seek) => (
+					<Seek key={seek.id} seek={seek} commentCount={seek.commentCount} />
+			  ))
 			: 'content loading...';
 		return (
 			<Grid container spacing={2}>

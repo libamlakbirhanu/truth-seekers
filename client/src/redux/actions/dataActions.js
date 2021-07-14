@@ -10,6 +10,7 @@ import {
 	POST_SEEK,
 	SET_SEEK,
 	POST_COMMENT,
+	DELETE_COMMENT,
 } from '../types';
 
 export const getSeeks = () => (dispatch) => {
@@ -114,4 +115,16 @@ export const createComment = (commentData) => (dispatch) => {
 				type: LOADING_UI,
 			});
 		});
+};
+
+export const deleteComment = (id) => (dispatch) => {
+	axios
+		.delete(`/comments/${id}`)
+		.then((res) => {
+			dispatch({
+				type: DELETE_COMMENT,
+				payload: res.data.doc,
+			});
+		})
+		.catch((err) => console.error(err));
 };

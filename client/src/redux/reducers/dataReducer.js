@@ -8,6 +8,7 @@ import {
 	CLEAR_SEEK,
 	POST_SEEK,
 	POST_COMMENT,
+	DELETE_COMMENT,
 } from '../types';
 
 const initialState = {
@@ -78,6 +79,21 @@ const reducer = (state = initialState, action) => {
 
 			return {
 				...state,
+			};
+		case DELETE_COMMENT:
+			state.seek.comments = state.seek.comments.filter(
+				(comment) => comment._id !== action.payload._id
+			);
+			const delIndex = state.seeks.findIndex(
+				(seek) => seek.id === action.payload.seek
+			);
+
+			state.seeks[delIndex].comments = state.seek.comments;
+			state.seeks[delIndex].commentCount--;
+
+			return {
+				...state,
+				seek: { ...state.seek, commentCount: --state.seek.commentCount },
 			};
 		default:
 			return state;

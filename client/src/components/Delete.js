@@ -16,7 +16,7 @@ const styles = {
 	},
 };
 
-export class DeleteSeek extends Component {
+export class Delete extends Component {
 	state = {
 		open: false,
 	};
@@ -33,7 +33,7 @@ export class DeleteSeek extends Component {
 		});
 	};
 
-	deleteSeek = () => {
+	delete = () => {
 		this.props.onclick();
 		this.setState({
 			open: false,
@@ -41,12 +41,12 @@ export class DeleteSeek extends Component {
 	};
 
 	render() {
-		const { classes } = this.props;
+		const { classes, target } = this.props;
 		return (
 			<>
 				<Tooltip title="delete" placement="top">
 					<IconButton onClick={this.handleOpen}>
-						<DeleteOutlineIcon color="secondary" fontSize="small" />
+						<DeleteOutlineIcon style={{ color: 'red' }} fontSize="small" />
 					</IconButton>
 				</Tooltip>
 				<Dialog
@@ -56,12 +56,12 @@ export class DeleteSeek extends Component {
 					maxWidth="sm"
 					className={classes.dialogBox}
 				>
-					<DialogTitle>Are you sure you want to delete this seek?</DialogTitle>
+					<DialogTitle>{`Are you sure you want to delete this ${target}?`}</DialogTitle>
 					<DialogActions>
 						<Button onClick={this.handleClose} color="primary">
 							Cancel
 						</Button>
-						<Button onClick={this.deleteSeek} style={{ color: '#FF0000' }}>
+						<Button onClick={this.delete} style={{ color: '#FF0000' }}>
 							Delete
 						</Button>
 					</DialogActions>
@@ -71,4 +71,4 @@ export class DeleteSeek extends Component {
 	}
 }
 
-export default withStyles(styles)(DeleteSeek);
+export default withStyles(styles)(Delete);

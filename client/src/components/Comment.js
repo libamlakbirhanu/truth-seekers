@@ -16,6 +16,9 @@ import dayjs from 'dayjs';
 
 import { connect } from 'react-redux';
 
+import Delete from './Delete';
+import { deleteComment } from './../redux/actions/dataActions';
+
 const styles = {
 	commentContainer: {
 		display: 'flex',
@@ -73,7 +76,7 @@ export class Comment extends Component {
 		const {
 			comment,
 			classes,
-			user: { isAuthenticated },
+			user: { isAuthenticated, currentUser },
 		} = this.props;
 
 		const upvoteButton = !isAuthenticated ? (
@@ -116,6 +119,14 @@ export class Comment extends Component {
 			</Tooltip>
 		);
 
+		const deleteButton =
+			isAuthenticated && currentUser._id === comment.author._id ? (
+				<Delete
+					onclick={() => this.props.deleteComment(comment._id)}
+					target="comment"
+				/>
+			) : null;
+
 		return (
 			<div className={classes.commentContainer}>
 				<div>
@@ -135,6 +146,7 @@ export class Comment extends Component {
 							<span className={classes.counts}>{comment.upvotes}</span>
 							{downvoteButton}
 							<span className={classes.counts}>{comment.downvotes}</span>
+							{deleteButton}
 						</div>
 					</Card>
 					<span className={classes.weakColor}>
@@ -150,4 +162,6 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Comment));
+export default connect(mapStateToProps, { deleteComment })(
+	withStyles(styles)(Comment)
+);

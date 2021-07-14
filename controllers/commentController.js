@@ -12,14 +12,13 @@ exports.createComment = async (req, res, next) => {
 
 		if (!seek) return customErrorMessage('seek does not exist', 400, res);
 
-		await seek.save();
-
 		const comment = new Comment({ ...body });
 		seek.commentCount++;
 
 		comment.populate('author', (err) => err && console.error(err));
 
 		const doc = await comment.save();
+		await seek.save();
 
 		res.status(200).json({
 			status: 'success',
@@ -96,6 +95,7 @@ exports.deleteComment = async (req, res, next) => {
 
 		res.status(200).json({
 			status: 'success',
+			doc,
 		});
 	} catch (err) {
 		return errorMessage(err, 500, res);
