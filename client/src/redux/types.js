@@ -17,3 +17,4 @@ export const DOWNVOTE_SEEK = 'DOWNVOTE_SEEK';
 export const DELETE_SEEK = 'DELETE_SEEK';
 export const CLEAR_SEEK = 'CLEAR_SEEK';
 export const POST_SEEK = 'POST_SEEK';
+export const POST_COMMENT = 'POST_COMMENT';

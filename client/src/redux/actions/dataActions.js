@@ -6,9 +6,10 @@ import {
 	UPVOTE_SEEK,
 	DOWNVOTE_SEEK,
 	DELETE_SEEK,
-  CLEAR_SEEK,
+	CLEAR_SEEK,
 	POST_SEEK,
 	SET_SEEK,
+	POST_COMMENT,
 } from '../types';
 
 export const getSeeks = () => (dispatch) => {
@@ -32,14 +33,14 @@ export const getSeek = (id) => (dispatch) => {
 				payload: res.data.data,
 			});
 		})
-		.catch((err) => console.error(err));
+		.catch((err) => console.error(err.response));
 };
 
-export const clearSeek = () => dispatch => {
-  dispatch({
-    type: CLEAR_SEEK,
-  })
-}
+export const clearSeek = () => (dispatch) => {
+	dispatch({
+		type: CLEAR_SEEK,
+	});
+};
 
 export const createSeek = (newSeek) => (dispatch) => {
 	dispatch({
@@ -90,4 +91,27 @@ export const deleteSeek = (id) => (dispatch) => {
 			});
 		})
 		.catch((err) => console.error(err));
+};
+
+export const createComment = (commentData) => (dispatch) => {
+	dispatch({
+		type: LOADING_UI,
+	});
+	axios
+		.post('/comments', commentData)
+		.then((res) => {
+			dispatch({
+				type: POST_COMMENT,
+				payload: res.data.result,
+			});
+			dispatch({
+				type: LOADING_UI,
+			});
+		})
+		.catch((err) => {
+			console.error('error', err);
+			dispatch({
+				type: LOADING_UI,
+			});
+		});
 };

@@ -146,12 +146,11 @@ export const authCheck = () => (dispatch) => {
 		.get('/seekers/authcheck')
 		.then((res) => {
 			dispatch({
-				type: USER_LOGGEDIN,
-			});
-
-			dispatch({
 				type: SET_USER,
 				user: res.data.user,
+			});
+			dispatch({
+				type: USER_LOGGEDIN,
 			});
 		})
 		.catch((err) => console.error(err));

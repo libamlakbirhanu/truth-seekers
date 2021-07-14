@@ -15,7 +15,11 @@ exports.createComment = async (req, res, next) => {
 		seek.commentCount++;
 		await seek.save();
 
-		const doc = await Comment.create(body);
+		const comment = new Comment({ ...body });
+
+		comment.populate('author', (err) => err && console.error(err));
+
+		const doc = await comment.save();
 
 		res.status(200).json({
 			status: 'success',

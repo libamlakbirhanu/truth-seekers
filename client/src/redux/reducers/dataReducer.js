@@ -7,6 +7,7 @@ import {
 	DELETE_SEEK,
 	CLEAR_SEEK,
 	POST_SEEK,
+	POST_COMMENT,
 } from '../types';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+	const isSeekEmpty = JSON.stringify(state.seek) === '{}' || !state.seek;
 	switch (action.type) {
 		case LOADING_DATA:
 			return {
@@ -40,7 +42,6 @@ const reducer = (state = initialState, action) => {
 			};
 		case DOWNVOTE_SEEK:
 		case UPVOTE_SEEK:
-			const isSeekEmpty = JSON.stringify(state.seek) === '{}' || !state.seek;
 			let index = state.seeks.findIndex(
 				(seek) => seek.id === action.payload.id
 			);
@@ -63,6 +64,20 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				seeks: [action.payload, ...state.seeks],
+			};
+		case POST_COMMENT:
+			const seekIndex = state.seeks.findIndex(
+				(seek) => seek.id === action.payload.seek
+			);
+			state.seeks[seekIndex].commentCount++;
+			state.seeks[seekIndex].comments = state.seeks[seekIndex].comments.concat(
+				action.payload
+			);
+			state.seek.commentCount++;
+			state.seek.comments = [action.payload, ...state.seek.comments];
+
+			return {
+				...state,
 			};
 		default:
 			return state;

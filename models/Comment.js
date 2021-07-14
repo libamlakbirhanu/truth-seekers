@@ -25,6 +25,10 @@ const CommentSchema = mongoose.Schema({
 
 CommentSchema.pre('find', function (next) {
 	this.sort('-createdAt');
+	this.populate({
+		path: 'author',
+		select: 'name photo',
+	});
 
 	next();
 });

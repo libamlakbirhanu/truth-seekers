@@ -12,6 +12,6 @@ router
 	.route('/:id')
 	.patch(authController.protect, seekController.updateSeek)
 	.delete(authController.protect, seekController.deleteSeek)
-	.get(authController.protect, seekController.getSeek);
+	.get(seekController.getSeek);
 
 module.exports = router;
