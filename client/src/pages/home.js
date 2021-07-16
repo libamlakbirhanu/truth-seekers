@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 
 import Seek from '../components/Seek';
 import Profile from '../components/Profile';
+import SkeletonSeek from '../components/SkeletonSeek';
 import { getSeeks } from '../redux/actions/dataActions';
 
 class home extends Component {
@@ -13,11 +14,16 @@ class home extends Component {
 			user,
 			data: { seeks, loading },
 		} = this.props;
-		const seekMarkup = !loading
-			? seeks.map((seek) => (
-					<Seek key={seek.id} seek={seek} commentCount={seek.commentCount} />
-			  ))
-			: 'content loading...';
+		const seekMarkup = !loading ? (
+			seeks.map((seek) => (
+				<Seek key={seek.id} seek={seek} commentCount={seek.commentCount} />
+			))
+		) : (
+			<>
+				<SkeletonSeek />
+				<SkeletonSeek />
+			</>
+		);
 		return (
 			<Grid container spacing={2}>
 				<Grid item sm={8} xs={12}>

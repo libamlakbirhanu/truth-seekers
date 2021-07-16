@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -79,7 +78,9 @@ class Notifications extends Component {
 				})
 			) : (
 				<MenuItem onClick={this.handleClose}>
-					you have no notifications yet
+					<Typography variant="body1" color="primary">
+						you have no notifications yet
+					</Typography>
 				</MenuItem>
 			);
 

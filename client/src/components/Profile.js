@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 import { uploadImage, userLogout } from '../redux/actions/userActions';
 import EditDetails from './EditDetails';
+import SkeletonUser from './SkeletonUser';
 
 import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -76,7 +77,10 @@ const handleImageEdit = () => {
 };
 
 const Profile = (props) => {
-	const { classes, currentUser, isAuthenticated, loading } = props;
+	const {
+		classes,
+		user: { currentUser, isAuthenticated, loading },
+	} = props;
 
 	const profileMarkup = !loading ? (
 		<Card className={classes.card}>
@@ -154,7 +158,7 @@ const Profile = (props) => {
 			)}
 		</Card>
 	) : (
-		<p>loading...</p>
+		<SkeletonUser />
 	);
 
 	return profileMarkup;

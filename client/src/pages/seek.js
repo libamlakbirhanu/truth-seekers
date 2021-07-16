@@ -15,6 +15,7 @@ import {
 
 import Seek from './../components/Seek';
 import Comment from './../components/Comment';
+import SkeletonSeek from './../components/SkeletonSeek';
 
 const styles = (theme) => ({
 	...theme.spreadIt,
@@ -116,7 +117,11 @@ export class seek extends Component {
 				)}
 			</div>
 		) : (
-			'Content loading...'
+			<>
+				<div className={classes.container}>
+					<SkeletonSeek />
+				</div>
+			</>
 		);
 	}
 }
