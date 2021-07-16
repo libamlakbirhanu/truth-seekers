@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -78,6 +79,14 @@ class Seek extends Component {
 		)
 			return true;
 		else return false;
+	};
+
+	goToComment = (seek, history) => {
+		history.push(`/seek/${seek}`);
+		this.props.user.isAuthenticated &&
+			setTimeout(() => {
+				document.getElementById('commentBody').focus();
+			}, 500);
 	};
 
 	render() {
@@ -194,7 +203,11 @@ class Seek extends Component {
 					<span className={classes.counts}>{seek.upvotes}</span>
 					{downvoteButton}
 					<span className={classes.counts}>{seek.downvotes}</span>
-					<Tooltip title="comment" placement="top">
+					<Tooltip
+						title="comment"
+						placement="top"
+						onClick={() => this.goToComment(seek.id, this.props.history)}
+					>
 						<IconButton>
 							<ChatIcon color="primary" fontSize="small" />
 						</IconButton>
@@ -217,4 +230,4 @@ export default connect(mapStateToProps, {
 	upvoteSeek,
 	downvoteSeek,
 	deleteSeek,
-})(withStyles(styles)(Seek));
+})(withRouter(withStyles(styles)(Seek)));

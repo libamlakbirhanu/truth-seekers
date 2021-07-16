@@ -50,8 +50,8 @@ class signup extends Component {
 			<div className={classes.center}>
 				<div className={classes.formContainer}>
 					<img src={logo} title="LOGO" alt="LOGO" className={classes.image} />
-					<Typography variant="h3" className={classes.block}>
-						Signup
+					<Typography color="primary" variant="h3" className={classes.block}>
+						SIGNUP
 					</Typography>
 					{UI.error && (
 						<div className={classes.errorBox}>{UI.error.message}</div>

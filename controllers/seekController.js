@@ -111,6 +111,7 @@ exports.deleteSeek = async (req, res, next) => {
 		});
 
 		await Comment.deleteMany({ seek: req.params.id });
+		await Notification.deleteMany({ targetDocument: req.params.id });
 
 		const doc = await Seek.findByIdAndDelete(req.params.id);
 
