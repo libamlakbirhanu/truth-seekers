@@ -45,7 +45,7 @@ exports.createSeek = async (req, res, next) => {
 		const doc = await seek.save();
 
 		await createNotifications(
-			`${req.user.name} has created a seek with a title "${doc.title}"`,
+			`${req.user.name} created a seek with a title "${doc.title}"`,
 			doc.id,
 			req.user.id
 		);
@@ -111,15 +111,8 @@ exports.deleteSeek = async (req, res, next) => {
 		});
 
 		await Comment.deleteMany({ seek: req.params.id });
-		await Notification.deleteMany({ targetDocument: req.params.id });
 
 		const doc = await Seek.findByIdAndDelete(req.params.id);
-
-		await createNotifications(
-			`${req.user.name} has deleted his/her seek with the title "${doc.title}"`,
-			doc.id,
-			req.user.id
-		);
 
 		res.status(200).json({
 			status: 'success',
@@ -161,7 +154,7 @@ exports.upvote = async (req, res, next) => {
 		const doc = await seek.save();
 
 		await createNotifications(
-			`${req.user.name} has upvoted ${sender} seek with the title "${seek.title}"`,
+			`${req.user.name} upvoted ${sender} seek with the title "${seek.title}"`,
 			seek.id,
 			req.user.id
 		);
@@ -206,7 +199,7 @@ exports.downvote = async (req, res, next) => {
 		const doc = await seek.save();
 
 		await createNotifications(
-			`${req.user.name} has downvoted ${sender} seek with the title "${seek.title}"`,
+			`${req.user.name} downvoted ${sender} seek with the title "${seek.title}"`,
 			seek.id,
 			req.user.id
 		);

@@ -15,6 +15,12 @@ const NotificationSchema = new mongoose.Schema({
 		ref: 'seek',
 		required: [true, 'this field can not be empty'],
 	},
+	readBy: [
+		{
+			type: mongoose.Schema.ObjectId,
+			ref: 'seeker',
+		},
+	],
 	createdAt: {
 		type: Date,
 		default: Date.now,

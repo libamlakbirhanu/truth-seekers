@@ -159,3 +159,10 @@ exports.notifications = async (req, res, next) => {
 		return errorMessage(err, 500, res);
 	}
 };
+
+exports.markNotificationsRead = async (req, res, next) => {
+	const docs = await Notification.updateMany(
+		{ sender: { $ne: req.user.id } },
+		{ $addToSet: { readBy: [req.user._id] } }
+	);
+};

@@ -10,6 +10,8 @@ import {
 	CLEAR_ERRORS,
 	LOADING,
 	UPLOAD_PHOTO,
+	SET_NOTIFICATIONS,
+	MARK_NOTIFICATIONS_READ,
 } from '../types';
 
 export const userLogin = (userData, history) => (dispatch) => {
@@ -144,6 +146,22 @@ export const editUser = (userDetails) => (dispatch) => {
 	return close;
 };
 
+export const setNotifications = () => (dispatch) => {
+	axios
+		.get('/seekers/notifications')
+		.then((res) =>
+			dispatch({ type: SET_NOTIFICATIONS, payload: res.data.data })
+		)
+		.catch((err) => console.error(err));
+};
+
+export const markNotificationsRead = () => (dispatch) => {
+	dispatch({
+		type: MARK_NOTIFICATIONS_READ,
+	});
+	axios.post('/seekers/notifications').catch((err) => console.error(err));
+};
+
 export const authCheck = () => (dispatch) => {
 	dispatch({
 		type: LOADING,
@@ -159,5 +177,5 @@ export const authCheck = () => (dispatch) => {
 				type: USER_LOGGEDIN,
 			});
 		})
-		.catch((err) => console.error(err));
+		.catch((err) => console.error(err.response));
 };

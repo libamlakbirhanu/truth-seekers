@@ -28,6 +28,9 @@ const styles = (theme) => ({
 		width: '500px',
 		margin: 'auto',
 	},
+	plusIcon: {
+		margin: '6px 16px',
+	},
 });
 
 class PostSeek extends Component {
@@ -79,7 +82,11 @@ class PostSeek extends Component {
 		const { classes } = this.props;
 		return (
 			<>
-				<Tooltip title="post new seek" placement="top">
+				<Tooltip
+					title="post new seek"
+					placement="top"
+					className={classes.plusIcon}
+				>
 					<IconButton onClick={this.handleOpen}>
 						<AddIcon />
 					</IconButton>

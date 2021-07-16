@@ -5,6 +5,8 @@ export const REMOVE_USER = 'REMOVE_USER';
 export const LOADING_USER = 'LOADING_USER';
 export const LOADING = 'LOADING';
 export const UPLOAD_PHOTO = 'UPLOAD_PHOTO';
+export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
+export const MARK_NOTIFICATIONS_READ = 'MARK_NOTIFICATIONS_READ';
 
 export const LOADING_UI = 'LOADING_UI';
 export const LOADING_DATA = 'LOADING_DATA';

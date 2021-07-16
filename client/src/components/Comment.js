@@ -30,9 +30,6 @@ const styles = {
 		maxWidth: '350px',
 		marginBottom: 5,
 	},
-	weakColor: {
-		color: 'rgba(0,0,0,.5)',
-	},
 	image: {
 		width: '50px',
 		height: '50px',
@@ -149,7 +146,7 @@ export class Comment extends Component {
 							{deleteButton}
 						</div>
 					</Card>
-					<span className={classes.weakColor}>
+					<span className="weakColor">
 						{dayjs(comment.createdAt).format('h:mm a, MMMM DD')}
 					</span>
 				</div>

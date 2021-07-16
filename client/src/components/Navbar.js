@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -6,13 +6,18 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import HomeIcon from '@material-ui/icons/Home';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
 import PostSeek from './PostSeek';
+import Notifications from './Notifications';
+import { setNotifications } from './../redux/actions/userActions';
 
-function Navbar({ classes, user: { isAuthenticated } }) {
+function Navbar({ setNotifications, classes, user: { isAuthenticated } }) {
+	useEffect(() => {
+		isAuthenticated && setNotifications();
+	}, [setNotifications, isAuthenticated]);
+
 	return (
 		<AppBar>
 			<Toolbar className="nav-container">
@@ -26,15 +31,7 @@ function Navbar({ classes, user: { isAuthenticated } }) {
 								</IconButton>
 							</Tooltip>
 						</Link>
-
-						<Tooltip title="view notifications" placement="top">
-							<IconButton
-							// onClick={handleImageEdit}
-							// className={classes.editIcon}
-							>
-								<NotificationsIcon />
-							</IconButton>
-						</Tooltip>
+						<Notifications />
 					</>
 				) : (
 					<>
@@ -42,7 +39,7 @@ function Navbar({ classes, user: { isAuthenticated } }) {
 							login
 						</Button>
 						<Button color="inherit" component={Link} to="/">
-							<HomeIcon />
+							home
 						</Button>
 					</>
 				)}
@@ -57,4 +54,4 @@ const mapStoreToProps = (state) => {
 	};
 };
 
-export default connect(mapStoreToProps)(Navbar);
+export default connect(mapStoreToProps, { setNotifications })(Navbar);

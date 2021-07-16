@@ -29,6 +29,11 @@ router.get(
 	authController.protect,
 	seekerController.notifications
 );
+router.post(
+	'/notifications',
+	authController.protect,
+	seekerController.markNotificationsRead
+);
 router.get('/:id', authController.protect, seekerController.getSeeker);
 
 module.exports = router;

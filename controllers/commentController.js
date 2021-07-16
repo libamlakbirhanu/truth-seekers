@@ -2,6 +2,7 @@ const Comment = require('./../models/Comment');
 const Seek = require('./../models/Seek');
 const { errorMessage, customErrorMessage } = require('./../utils/ErrorMessage');
 const docBelongsToCurrentUser = require('./../utils/ownerCheck');
+const createNotifications = require('./../utils/createNotifications');
 
 exports.createComment = async (req, res, next) => {
 	try {
@@ -18,7 +19,15 @@ exports.createComment = async (req, res, next) => {
 		comment.populate('author', (err) => err && console.error(err));
 
 		const doc = await comment.save();
+		const sender =
+			req.user.id === seek.author.id ? 'his/her' : `${seek.author.name}'s`;
 		await seek.save();
+
+		await createNotifications(
+			`${req.user.name} commented on ${sender} seek with the title "${seek.title}"`,
+			seek.id,
+			req.user.id
+		);
 
 		res.status(200).json({
 			status: 'success',

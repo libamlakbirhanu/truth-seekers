@@ -10,6 +10,10 @@ body {
 	font-size: 14;
 }
 
+.MuiTypography-body1 {
+	font-size: 12px !important;
+}
+
 .container {
 	margin: 80px auto 0 auto;
 	width: 75%;
@@ -32,9 +36,32 @@ a {
 	padding: 12px !important;
 	padding-bottom: 2px !important;
 	cursor: pointer;
+	border-radius: 50%;
 }
 
 .editButton:hover {
 	background-color: rgba(0, 0, 0, 0.05);
-	border-radius: 50%;
+}
+
+.editButton:active {
+	animation: focused 0.5s;
+	animation-timing-function: ease-out;
+	animation-fill-mode: forwards;
+}
+
+.weakColor {
+	color: rgba(0, 0, 0, 0.5);
+}
+
+.unread {
+	background-color: #dcb2fa !important;
+}
+
+@keyframes focused {
+	from {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+	to {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
 }

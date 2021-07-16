@@ -6,11 +6,14 @@ import {
 	LOADING,
 	UPVOTE_SEEK,
 	DOWNVOTE_SEEK,
+	SET_NOTIFICATIONS,
+	MARK_NOTIFICATIONS_READ,
 } from '../types';
 
 const initialState = {
 	isAuthenticated: false,
 	currentUser: {},
+	notifications: [],
 	loading: false,
 };
 
@@ -56,6 +59,27 @@ const reducer = (state = initialState, action) => {
 			state.currentUser.likedSeeks = state.currentUser.likedSeeks.filter(
 				(el) => el !== action.payload.id
 			);
+			return {
+				...state,
+			};
+		case SET_NOTIFICATIONS:
+			state.notifications = [...action.payload.notifications];
+			state.notifications.forEach((notification) => {
+				notification.readBy &&
+				notification.readBy.includes(state.currentUser._id)
+					? (notification.read = true)
+					: (notification.read = false);
+			});
+
+			return {
+				...state,
+			};
+		case MARK_NOTIFICATIONS_READ:
+			state.notifications.forEach((notification) => {
+				notification.read = true;
+				notification.readBy.concat(state.currentUser._id);
+			});
+
 			return {
 				...state,
 			};
