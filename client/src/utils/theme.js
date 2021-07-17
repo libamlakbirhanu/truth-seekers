@@ -22,7 +22,7 @@ const themeUtil = {
 			justifyContent: 'center',
 		},
 		form: {
-			marginTop: 30,
+			marginTop: 20,
 		},
 		formContainer: {
 			width: 300,
@@ -32,8 +32,9 @@ const themeUtil = {
 			display: 'block',
 		},
 		image: {
-			width: 100,
+			width: 150,
 			padding: 15,
+			paddingTop: 25,
 		},
 		textField: {
 			width: '100%',

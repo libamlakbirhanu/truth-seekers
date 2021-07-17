@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -44,9 +43,6 @@ class login extends Component {
 			<div className={classes.center}>
 				<div className={classes.formContainer}>
 					<img src={logo} title="LOGO" alt="LOGO" className={classes.image} />
-					<Typography color="primary" variant="h3" className={classes.block}>
-						LOGIN
-					</Typography>
 					{UI.error && (
 						<div className={classes.errorBox}>{UI.error.message}</div>
 					)}

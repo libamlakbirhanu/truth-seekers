@@ -14,7 +14,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -102,7 +102,7 @@ const Profile = (props) => {
 					/>
 					<Tooltip title="edit profile picture" placement="top">
 						<IconButton onClick={handleImageEdit} className={classes.editIcon}>
-							<EditIcon color="primary" fontSize="small" />
+							<AddAPhotoIcon color="primary" fontSize="small" />
 						</IconButton>
 					</Tooltip>
 					<div className={classes.userContent}>
