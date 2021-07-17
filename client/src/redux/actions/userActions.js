@@ -163,12 +163,12 @@ export const markNotificationsRead = () => (dispatch) => {
 };
 
 export const authCheck = () => (dispatch) => {
-	dispatch({
-		type: LOADING,
-	});
 	axios
 		.get('/seekers/authcheck')
 		.then((res) => {
+			dispatch({
+				type: LOADING,
+			});
 			dispatch({
 				type: SET_USER,
 				user: res.data.user,

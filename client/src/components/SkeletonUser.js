@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Card from '@material-ui/core/Card';
 
 const styles = {
 	card: {
@@ -40,7 +39,7 @@ class SkeletonUser extends Component {
 		const { classes } = this.props;
 
 		return (
-			<Card className={classes.card}>
+			<>
 				<div
 					style={{
 						display: 'flex',
@@ -65,7 +64,7 @@ class SkeletonUser extends Component {
 					<div className={classes.longText}></div>
 					<div className={classes.shortText}></div>
 				</div>
-			</Card>
+			</>
 		);
 	}
 }

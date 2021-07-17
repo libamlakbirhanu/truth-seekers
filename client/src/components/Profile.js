@@ -82,83 +82,88 @@ const Profile = (props) => {
 		user: { currentUser, isAuthenticated, loading },
 	} = props;
 
-	const profileMarkup = !loading ? (
+	const profileMarkup = (
 		<Card className={classes.card}>
-			{isAuthenticated ? (
-				<>
-					<CardMedia
-						component={Link}
-						to={`/seekers/${currentUser._id}`}
-						className={classes.image}
-						image={`http://localhost:5000/static/image/seekers/${currentUser.photo}`}
-						key={currentUser.photo}
-					></CardMedia>
-					<input
-						type="file"
-						id="imageInput"
-						name="photo"
-						hidden="hidden"
-						onChange={(event) => handleImageChange(event)(props)}
-					/>
-					<Tooltip title="edit profile picture" placement="top">
-						<IconButton onClick={handleImageEdit} className={classes.editIcon}>
-							<AddAPhotoIcon color="primary" fontSize="small" />
-						</IconButton>
-					</Tooltip>
-					<div className={classes.userContent}>
-						<Typography
+			{!loading ? (
+				isAuthenticated ? (
+					<>
+						<CardMedia
 							component={Link}
 							to={`/seekers/${currentUser._id}`}
-						>{`@${currentUser.name}`}</Typography>
-					</div>
-					<div className={classes.userContent}>
-						<EmailIcon color="primary" fontSize="small" />
-						<div className={classes.sizedBox}></div>
-						{currentUser.email}
-					</div>
-					<div className={classes.userContent}>
-						<CalendarToday color="primary" fontSize="small" />
-						<div className={classes.sizedBox}></div>
-						<span>{`Joined ${dayjs(currentUser.date).format(
-							'MMM YYYY'
-						)}`}</span>
-					</div>
-					<div className={classes.bottomActions}>
-						<Tooltip title="log out" placement="top">
-							<IconButton onClick={() => props.userLogout()}>
-								<ExitToAppIcon color="primary" fontSize="small" />
+							className={classes.image}
+							image={`http://localhost:5000/static/image/seekers/${currentUser.photo}`}
+							key={currentUser.photo}
+						></CardMedia>
+						<input
+							type="file"
+							id="imageInput"
+							name="photo"
+							hidden="hidden"
+							onChange={(event) => handleImageChange(event)(props)}
+						/>
+						<Tooltip title="edit profile picture" placement="top">
+							<IconButton
+								onClick={handleImageEdit}
+								className={classes.editIcon}
+							>
+								<AddAPhotoIcon color="primary" fontSize="small" />
 							</IconButton>
 						</Tooltip>
-						<EditDetails />
+						<div className={classes.userContent}>
+							<Typography
+								component={Link}
+								to={`/seekers/${currentUser._id}`}
+							>{`@${currentUser.name}`}</Typography>
+						</div>
+						<div className={classes.userContent}>
+							<EmailIcon color="primary" fontSize="small" />
+							<div className={classes.sizedBox}></div>
+							{currentUser.email}
+						</div>
+						<div className={classes.userContent}>
+							<CalendarToday color="primary" fontSize="small" />
+							<div className={classes.sizedBox}></div>
+							<span>{`Joined ${dayjs(currentUser.date).format(
+								'MMM YYYY'
+							)}`}</span>
+						</div>
+						<div className={classes.bottomActions}>
+							<Tooltip title="log out" placement="top">
+								<IconButton onClick={() => props.userLogout()}>
+									<ExitToAppIcon color="primary" fontSize="small" />
+								</IconButton>
+							</Tooltip>
+							<EditDetails />
+						</div>
+					</>
+				) : (
+					<div className={classes.center}>
+						<p>No profile found, please login or signup...</p>
+						<br />
+						<Button
+							className={classes.button}
+							variant="contained"
+							color="primary"
+							component={Link}
+							to="/login"
+						>
+							Login
+						</Button>
+						<Button
+							className={classes.button}
+							variant="contained"
+							color="secondary"
+							component={Link}
+							to="/signup"
+						>
+							Signup
+						</Button>
 					</div>
-				</>
+				)
 			) : (
-				<div className={classes.center}>
-					<p>No profile found, please login or signup...</p>
-					<br />
-					<Button
-						className={classes.button}
-						variant="contained"
-						color="primary"
-						component={Link}
-						to="/login"
-					>
-						Login
-					</Button>
-					<Button
-						className={classes.button}
-						variant="contained"
-						color="secondary"
-						component={Link}
-						to="/signup"
-					>
-						Signup
-					</Button>
-				</div>
+				<SkeletonUser />
 			)}
 		</Card>
-	) : (
-		<SkeletonUser />
 	);
 
 	return profileMarkup;
