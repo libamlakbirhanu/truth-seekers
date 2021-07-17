@@ -35,7 +35,7 @@ const styles = {
 		flexWrap: 'wrap',
 	},
 	title: {
-		marginBottom: 5,
+		marginBottom: 10,
 		fontWeight: 'bold',
 	},
 	image: {
@@ -44,7 +44,7 @@ const styles = {
 		borderRadius: '50%',
 	},
 	content: {
-		marginTop: 10,
+		marginTop: 5,
 		width: '100%',
 		paddingLeft: 0,
 	},

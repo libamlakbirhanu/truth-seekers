@@ -126,7 +126,7 @@ class PostSeek extends Component {
 
 					<DialogActions>
 						<Button onClick={this.handleClose} color="primary">
-							Cancel
+							<span style={{ fontSize: 12 }}>Cancel</span>
 						</Button>
 						<Button
 							onClick={this.handleSubmit}
@@ -141,7 +141,7 @@ class PostSeek extends Component {
 									className={classes.progressLoader}
 								/>
 							)}
-							Post
+							<span style={{ fontSize: 12 }}>Post</span>
 						</Button>
 					</DialogActions>
 				</Dialog>

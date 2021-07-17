@@ -113,10 +113,10 @@ class EditDetails extends Component {
 
 					<DialogActions>
 						<Button onClick={this.handleClose} color="primary">
-							Cancel
+							<span style={{ fontSize: 14 }}>Cancel</span>
 						</Button>
 						<Button onClick={this.handleSubmit} color="primary">
-							Save
+							<span style={{ fontSize: 14 }}>Save</span>
 						</Button>
 					</DialogActions>
 				</Dialog>

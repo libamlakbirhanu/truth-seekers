@@ -170,11 +170,11 @@ export const authCheck = () => (dispatch) => {
 				type: LOADING,
 			});
 			dispatch({
-				type: SET_USER,
-				user: res.data.user,
+				type: USER_LOGGEDIN,
 			});
 			dispatch({
-				type: USER_LOGGEDIN,
+				type: SET_USER,
+				user: res.data.user,
 			});
 		})
 		.catch((err) => console.error(err.response));

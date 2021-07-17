@@ -21,7 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = {
 	card: {
-		padding: '10px 25px',
+		padding: '10px 5px',
 		position: 'relative',
 	},
 	image: {
@@ -101,7 +101,7 @@ const Profile = (props) => {
 							hidden="hidden"
 							onChange={(event) => handleImageChange(event)(props)}
 						/>
-						<Tooltip title="edit profile picture" placement="top">
+						<Tooltip title="change profile picture" placement="top">
 							<IconButton
 								onClick={handleImageEdit}
 								className={classes.editIcon}
