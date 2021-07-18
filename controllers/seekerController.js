@@ -144,7 +144,10 @@ exports.getSeeker = async (req, res, next) => {
 
 exports.notifications = async (req, res, next) => {
 	try {
-		const docs = await Notification.find({ sender: { $ne: req.user.id } });
+		const docs = await Notification.find({
+			sender: { $ne: req.user.id },
+			createdAt: { $gte: req.user.date },
+		});
 
 		docs.map((doc) => {
 			doc.message = doc.message.replace(`${req.user.name}'s`, 'your');
