@@ -23,9 +23,11 @@ import {
 	upvoteSeek,
 	downvoteSeek,
 	deleteSeek,
+	editSeek,
 } from '../redux/actions/dataActions';
 
 import Delete from './Delete';
+import EditDetails from './EditDetails';
 
 const styles = {
 	card: {
@@ -33,10 +35,12 @@ const styles = {
 		padding: 25,
 		display: 'flex',
 		flexWrap: 'wrap',
+		position: 'relative',
 	},
 	title: {
 		marginBottom: 10,
 		fontWeight: 'bold',
+		color: 'rgba(0,0,0,0.75)',
 	},
 	image: {
 		width: 100,
@@ -97,6 +101,7 @@ class Seek extends Component {
 			fullContent,
 			upvoteSeek,
 			downvoteSeek,
+			editSeek,
 			user: { isAuthenticated, currentUser },
 		} = this.props;
 
@@ -145,20 +150,39 @@ class Seek extends Component {
 				<Delete onclick={() => this.props.deleteSeek(seek.id)} target="seek" />
 			) : null;
 
+		const editButton =
+			isAuthenticated && currentUser._id === seek.author._id ? (
+				<EditDetails
+					target={seek}
+					details={{ firstTextField: 'title', secondTextField: 'body' }}
+					edit={editSeek}
+				/>
+			) : null;
+
+		const imageUrl = `http://localhost:5000/static/image/seekers/${
+			currentUser && currentUser._id === seek.author._id
+				? currentUser.photo
+				: seek.author.photo
+		}`;
+
 		return (
 			<Card className={classes.card}>
-				<CardMedia
-					image={`http://localhost:5000/static/image/seekers/${
-						currentUser && currentUser._id === seek.author._id
-							? currentUser.photo
-							: seek.author.photo
-					}`}
-					key={currentUser && currentUser.photo}
-					title="profile image"
-					className={classes.image}
-				/>
+				<Link to={{ pathname: imageUrl }} target="_blank">
+					<CardMedia
+						image={imageUrl}
+						key={currentUser && currentUser.photo}
+						title="profile image"
+						className={classes.image}
+					/>
+				</Link>
+
 				<CardContent className={classes.p25}>
-					<Typography variant="h5" color="primary">
+					<Typography
+						variant="h5"
+						color="primary"
+						component={Link}
+						to={`/seeker/${seek.author._id}`}
+					>
 						{currentUser && currentUser._id === seek.author._id
 							? `${currentUser.name[0].toUpperCase()}${currentUser.name.slice(
 									1,
@@ -173,6 +197,7 @@ class Seek extends Component {
 						{dayjs(seek.createdAt).fromNow()}
 					</Typography>
 				</CardContent>
+				<div>{editButton}</div>
 
 				<CardContent className={classes.content}>
 					<Typography variant="h5" className={classes.title}>
@@ -230,4 +255,5 @@ export default connect(mapStateToProps, {
 	upvoteSeek,
 	downvoteSeek,
 	deleteSeek,
+	editSeek,
 })(withRouter(withStyles(styles)(Seek)));

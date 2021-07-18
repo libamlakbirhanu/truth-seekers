@@ -126,7 +126,6 @@ export const uploadImage = (formData) => (dispatch) => {
 };
 
 export const editUser = (userDetails) => (dispatch) => {
-	let close = 'not empty';
 	dispatch({
 		type: LOADING,
 	});
@@ -141,9 +140,10 @@ export const editUser = (userDetails) => (dispatch) => {
 		})
 		.catch((err) => {
 			console.error(err);
-			close = null;
+			dispatch({
+				type: LOADING,
+			});
 		});
-	return close;
 };
 
 export const setNotifications = () => (dispatch) => {

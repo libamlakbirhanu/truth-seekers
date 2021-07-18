@@ -19,6 +19,8 @@ import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import { editUser } from './../redux/actions/userActions';
+
 const styles = {
 	card: {
 		padding: '10px 5px',
@@ -46,6 +48,7 @@ const styles = {
 	},
 	center: {
 		textAlign: 'center',
+		padding: '0 20px',
 	},
 	button: {
 		display: 'block',
@@ -77,23 +80,25 @@ const handleImageEdit = () => {
 };
 
 const Profile = (props) => {
-	const {
-		classes,
-		user: { currentUser, isAuthenticated, loading },
-	} = props;
+	const { classes, loading, editUser, currentUser, isAuthenticated } = props;
+
+	const imageUrl = isAuthenticated
+		? `http://localhost:5000/static/image/seekers/${currentUser.photo}`
+		: '';
 
 	const profileMarkup = (
 		<Card className={classes.card}>
 			{!loading ? (
 				isAuthenticated ? (
 					<>
-						<CardMedia
-							component={Link}
-							to={`/seekers/${currentUser._id}`}
-							className={classes.image}
-							image={`http://localhost:5000/static/image/seekers/${currentUser.photo}`}
-							key={currentUser.photo}
-						></CardMedia>
+						<Link to={{ pathname: imageUrl }} target="_blank">
+							<CardMedia
+								className={classes.image}
+								image={imageUrl}
+								key={currentUser.photo}
+							/>
+						</Link>
+
 						<input
 							type="file"
 							id="imageInput"
@@ -112,13 +117,13 @@ const Profile = (props) => {
 						<div className={classes.userContent}>
 							<Typography
 								component={Link}
-								to={`/seekers/${currentUser._id}`}
+								to={`/seeker/${currentUser._id}`}
 							>{`@${currentUser.name}`}</Typography>
 						</div>
 						<div className={classes.userContent}>
 							<EmailIcon color="primary" fontSize="small" />
 							<div className={classes.sizedBox}></div>
-							{currentUser.email}
+							<span>{currentUser.email}</span>
 						</div>
 						<div className={classes.userContent}>
 							<CalendarToday color="primary" fontSize="small" />
@@ -133,7 +138,11 @@ const Profile = (props) => {
 									<ExitToAppIcon color="primary" fontSize="small" />
 								</IconButton>
 							</Tooltip>
-							<EditDetails />
+							<EditDetails
+								target={currentUser}
+								details={{ firstTextField: 'name', secondTextField: 'email' }}
+								edit={editUser}
+							/>
 						</div>
 					</>
 				) : (
@@ -171,13 +180,14 @@ const Profile = (props) => {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user,
+		loading: state.user.loading,
 	};
 };
 
 const mapStateToDispatch = {
 	uploadImage,
 	userLogout,
+	editUser,
 };
 
 export default connect(

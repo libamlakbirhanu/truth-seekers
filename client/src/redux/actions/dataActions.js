@@ -8,6 +8,7 @@ import {
 	DELETE_SEEK,
 	CLEAR_SEEK,
 	POST_SEEK,
+	EDIT_SEEK,
 	SET_SEEK,
 	POST_COMMENT,
 	DELETE_COMMENT,
@@ -56,6 +57,20 @@ export const createSeek = (newSeek) => (dispatch) => {
 			});
 		})
 		.catch((err) => console.error(err));
+};
+
+export const editSeek = (seekDetails) => (dispatch) => {
+	axios
+		.patch(`/seeks/${seekDetails.id}`, seekDetails)
+		.then((res) => {
+			dispatch({
+				type: EDIT_SEEK,
+				payload: res.data.result,
+			});
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 };
 
 export const upvoteSeek = (id) => (dispatch) => {

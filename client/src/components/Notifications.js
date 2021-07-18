@@ -69,7 +69,7 @@ class Notifications extends Component {
 							>
 								{not.message}
 								<span
-									style={{ display: 'block' }}
+									style={{ display: 'block', fontSize: '12px' }}
 									className="weakColor"
 								>{` ${time}`}</span>
 							</Typography>

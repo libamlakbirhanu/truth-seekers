@@ -10,6 +10,7 @@ import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
 import seek from './pages/seek';
+import profile from './pages/profile';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { authCheck } from './redux/actions/userActions';
@@ -33,6 +34,7 @@ function App(props) {
 							<Route exact path="/login" component={login} />
 							<Route exact path="/signup" component={signup} />
 							<Route exact path="/seek/:id" component={seek} />
+							<Route exact path="/seeker/:id" component={profile} />
 						</Switch>
 						<Footer />
 					</div>

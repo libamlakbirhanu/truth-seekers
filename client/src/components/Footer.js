@@ -22,20 +22,21 @@ const styles = {
 		boxShadow: '5px 5px 10px',
 	},
 	footerText: {
-		color: '#F2F2F2',
+		color: 'rgba(255,255,255,0.7)',
 		textAlign: 'center',
-		fontSize: 14,
+		fontSize: 12,
 	},
 	footerHeader: {
-		color: '#F2F2F2',
+		color: 'rgba(255,255,255,0.8)',
 		textAlign: 'center',
+		fontWeight: 'bold',
 	},
 	image: {
 		width: 100,
 		height: 100,
 		borderRadius: 10,
+		paddingTop: 20,
 		boxShadow: '5px 5px 15px',
-		transform: 'rotate(45deg)',
 	},
 	content: {
 		width: '300px',
@@ -48,7 +49,12 @@ class Footer extends Component {
 
 		return (
 			<Card className={classes.cardContainer}>
-				<CardMedia image={logo} title="LOGO" className={classes.image} />
+				<CardMedia
+					image={logo}
+					title="LOGO"
+					className={classes.image}
+					id="footerLogo"
+				/>
 				<CardContent className={classes.content}>
 					<Typography variant="h4" className={classes.footerHeader}>
 						Newsletter

@@ -75,7 +75,7 @@ exports.updateSeek = async (req, res, next) => {
 		});
 
 		await createNotifications(
-			`${req.user.name} has updated his/her seek with the title "${doc.title}"`,
+			`${req.user.name} updated his/her seek with the title "${doc.title}"`,
 			doc.id,
 			req.user.id
 		);

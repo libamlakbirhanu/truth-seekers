@@ -44,7 +44,7 @@ const reducer = (state = initialState, action) => {
 		case LOADING:
 			return {
 				...state,
-				loading: true,
+				loading: !state.loading,
 			};
 		case UPVOTE_SEEK:
 			state.currentUser.likedSeeks.unshift(action.payload.id);

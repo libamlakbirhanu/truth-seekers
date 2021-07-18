@@ -7,6 +7,7 @@ import {
 	DELETE_SEEK,
 	CLEAR_SEEK,
 	POST_SEEK,
+	EDIT_SEEK,
 	POST_COMMENT,
 	DELETE_COMMENT,
 	UPLOAD_PHOTO,
@@ -77,6 +78,15 @@ const reducer = (state = initialState, action) => {
 				...state,
 				seeks: [action.payload, ...state.seeks],
 			};
+		case EDIT_SEEK:
+			const targetSeek = state.seeks.findIndex(
+				(seek) => seek._id === action.payload._id
+			);
+			state.seeks[targetSeek] = { ...action.payload };
+			state.seek =
+				JSON.stringify(state.seek) !== '{}' ? { ...action.payload } : {};
+
+			return { ...state };
 		case POST_COMMENT:
 			const seekIndex = state.seeks.findIndex(
 				(seek) => seek.id === action.payload.seek

@@ -11,36 +11,28 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 
-import { connect } from 'react-redux';
-
-import { editUser } from '../redux/actions/userActions';
-
 const styles = (theme) => ({
 	...theme.spreadIt,
 });
 
 class EditDetails extends Component {
 	state = {
-		name: '',
-		email: '',
+		[this.props.details.firstTextField]: '',
+		[this.props.details.secondTextField]: '',
 		open: false,
 	};
 
-	mapUserDetailsToState = (user) => {
+	mapDetailsToState = (target) => {
+		const { firstTextField, secondTextField } = this.props.details;
+
 		this.setState({
-			name: user.name ? user.name : '',
-			email: user.email ? user.email : '',
+			[firstTextField]: target[firstTextField] ? target[firstTextField] : '',
+			[secondTextField]: target[secondTextField] ? target[secondTextField] : '',
 		});
 	};
 
-	componentDidMount() {
-		const { user } = this.props;
-
-		this.mapUserDetailsToState(user.currentUser);
-	}
-
 	handleOpen = () => {
-		this.mapUserDetailsToState(this.props.user.currentUser);
+		this.mapDetailsToState(this.props.target);
 		this.setState({
 			open: true,
 		});
@@ -53,17 +45,23 @@ class EditDetails extends Component {
 	};
 
 	handleSubmit = () => {
-		const { name, email } = this.props.user.currentUser;
-		const userDetails = {
-			name: this.state.name.trim().toLowerCase(),
-			email: this.state.email.trim().toLowerCase(),
+		const {
+			target,
+			details: { firstTextField, secondTextField },
+		} = this.props;
+		const details = {
+			id: target._id,
+			[firstTextField]: this.state[firstTextField].trim().toLowerCase(),
+			[secondTextField]: this.state[secondTextField].trim().toLowerCase(),
 		};
 
-		if (userDetails.name !== name || userDetails.email !== email) {
-			if (this.props.editUser(userDetails)) {
-				this.handleClose();
-			}
-		} else this.handleClose();
+		if (
+			details[firstTextField] !== target[firstTextField] ||
+			details[secondTextField] !== target[secondTextField]
+		) {
+			this.props.edit(details);
+			this.handleClose();
+		}
 	};
 
 	onChange = (event) => {
@@ -73,11 +71,22 @@ class EditDetails extends Component {
 	};
 
 	render() {
-		const { classes } = this.props;
+		const {
+			classes,
+			details: { firstTextField, secondTextField },
+		} = this.props;
+		const classname =
+			firstTextField === 'title' ? 'editButton editSeek' : 'editButton';
+
 		return (
 			<>
-				<Tooltip title="edit profile details" placement="top">
-					<IconButton className="editButton" onClick={this.handleOpen}>
+				<Tooltip
+					title={
+						firstTextField === 'title' ? 'edit seek' : 'edit profile details'
+					}
+					placement="top"
+				>
+					<IconButton className={classname} onClick={this.handleOpen}>
 						<EditIcon color="primary" fontSize="small" />
 					</IconButton>
 				</Tooltip>
@@ -91,21 +100,22 @@ class EditDetails extends Component {
 					<DialogContent>
 						<form>
 							<TextField
-								name="name"
+								name={firstTextField}
 								type="text"
-								label="name"
-								placeholder="user name"
+								label={firstTextField}
+								placeholder={firstTextField}
 								className={classes.textField}
-								value={this.state.name}
+								value={this.state[firstTextField]}
 								onChange={this.onChange}
 							/>
 							<TextField
-								name="email"
-								type="email"
-								label="email"
-								placeholder="user email"
+								name={secondTextField}
+								type={secondTextField === 'email' ? 'email' : 'text'}
+								label={secondTextField}
+								placeholder={secondTextField}
 								className={classes.textField}
-								value={this.state.email}
+								value={this.state[secondTextField]}
+								multiline={!(secondTextField === 'email')}
 								onChange={this.onChange}
 							/>
 						</form>
@@ -115,7 +125,11 @@ class EditDetails extends Component {
 						<Button onClick={this.handleClose} color="primary">
 							<span style={{ fontSize: 14 }}>Cancel</span>
 						</Button>
-						<Button onClick={this.handleSubmit} color="primary">
+						<Button
+							onClick={this.handleSubmit}
+							variant="contained"
+							color="primary"
+						>
 							<span style={{ fontSize: 14 }}>Save</span>
 						</Button>
 					</DialogActions>
@@ -125,15 +139,4 @@ class EditDetails extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	user: state.user,
-});
-
-const mapStateToDispatch = {
-	editUser,
-};
-
-export default connect(
-	mapStateToProps,
-	mapStateToDispatch
-)(withStyles(styles)(EditDetails));
+export default withStyles(styles)(EditDetails);
