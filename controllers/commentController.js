@@ -146,7 +146,8 @@ exports.upvote = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
-		return errorMessage(err, 500, res);
+		// return errorMessage(err, 500, res);
+		console.error(err);
 	}
 };
 

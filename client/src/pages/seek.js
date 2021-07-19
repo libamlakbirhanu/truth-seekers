@@ -37,11 +37,17 @@ const styles = (theme) => ({
 });
 
 export class seek extends Component {
-	state = {
-		body: '',
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			body: '',
+		};
+		this.myRef = React.createRef();
+	}
+
 	componentDidMount() {
 		this.props.getSeek(this.props.match.params.id);
+		window.scrollTo(0, this.myRef.current);
 	}
 	componentWillUnmount() {
 		this.props.clearSeek();
@@ -69,7 +75,14 @@ export class seek extends Component {
 
 		return !isSeekEmpty ? (
 			<div className={classes.container}>
-				<Seek seek={seek} commentCount={seek.commentCount} fullContent={true} />
+				<div ref={this.myRef}>
+					<Seek
+						seek={seek}
+						commentCount={seek.commentCount}
+						fullContent={true}
+					/>
+				</div>
+
 				{isAuthenticated && (
 					<>
 						<TextField
@@ -97,7 +110,7 @@ export class seek extends Component {
 									className={classes.progressLoader}
 								/>
 							)}
-							Submit
+							comment
 						</Button>
 					</>
 				)}

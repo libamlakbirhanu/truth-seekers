@@ -8,6 +8,8 @@ import {
 	DOWNVOTE_SEEK,
 	SET_NOTIFICATIONS,
 	MARK_NOTIFICATIONS_READ,
+	UPVOTE_COMMENT,
+	DOWNVOTE_COMMENT,
 } from '../types';
 
 const initialState = {
@@ -58,6 +60,23 @@ const reducer = (state = initialState, action) => {
 			state.currentUser.dislikedSeeks.unshift(action.payload.id);
 			state.currentUser.likedSeeks = state.currentUser.likedSeeks.filter(
 				(el) => el !== action.payload.id
+			);
+			return {
+				...state,
+			};
+		case UPVOTE_COMMENT:
+			state.currentUser.likedComments.unshift(action.payload._id);
+			state.currentUser.dislikedComments =
+				state.currentUser.dislikedComments.filter(
+					(el) => el !== action.payload._id
+				);
+			return {
+				...state,
+			};
+		case DOWNVOTE_COMMENT:
+			state.currentUser.dislikedComments.unshift(action.payload._id);
+			state.currentUser.likedComments = state.currentUser.likedComments.filter(
+				(el) => el !== action.payload._id
 			);
 			return {
 				...state,

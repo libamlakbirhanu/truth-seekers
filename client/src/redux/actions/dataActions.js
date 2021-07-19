@@ -12,6 +12,9 @@ import {
 	SET_SEEK,
 	POST_COMMENT,
 	DELETE_COMMENT,
+	UPVOTE_COMMENT,
+	DOWNVOTE_COMMENT,
+	EDIT_COMMENT,
 } from '../types';
 
 export const getSeeks = () => (dispatch) => {
@@ -142,4 +145,42 @@ export const deleteComment = (id) => (dispatch) => {
 			});
 		})
 		.catch((err) => console.error(err));
+};
+
+export const upvoteComment = (id) => (dispatch) => {
+	axios
+		.patch(`/comments/${id}/upvote`)
+		.then((res) => {
+			dispatch({
+				type: UPVOTE_COMMENT,
+				payload: res.data.result,
+			});
+		})
+		.catch((err) => console.error(err));
+};
+
+export const downvoteComment = (id) => (dispatch) => {
+	axios
+		.patch(`/comments/${id}/downvote`)
+		.then((res) => {
+			dispatch({
+				type: DOWNVOTE_COMMENT,
+				payload: res.data.result,
+			});
+		})
+		.catch((err) => console.error(err));
+};
+
+export const editComment = (commentDetails) => (dispatch) => {
+	axios
+		.patch(`/comments/${commentDetails.id}`, commentDetails)
+		.then((res) => {
+			dispatch({
+				type: EDIT_COMMENT,
+				payload: res.data.result,
+			});
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 };

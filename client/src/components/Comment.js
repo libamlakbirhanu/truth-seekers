@@ -17,7 +17,12 @@ import dayjs from 'dayjs';
 import { connect } from 'react-redux';
 
 import Delete from './Delete';
-import { deleteComment } from './../redux/actions/dataActions';
+import {
+	deleteComment,
+	upvoteComment,
+	downvoteComment,
+	editComment,
+} from './../redux/actions/dataActions';
 
 const styles = {
 	commentContainer: {
@@ -51,7 +56,7 @@ export class Comment extends Component {
 			this.props.user.currentUser &&
 			this.props.user.currentUser.likedComments.length > 0 &&
 			this.props.user.currentUser.likedComments.find(
-				(id) => id === this.props.comment.id
+				(id) => id === this.props.comment._id
 			)
 		)
 			return true;
@@ -62,7 +67,7 @@ export class Comment extends Component {
 			this.props.user.currentUser &&
 			this.props.user.currentUser.dislikedComments.length > 0 &&
 			this.props.user.currentUser.dislikedComments.find(
-				(id) => id === this.props.comment.id
+				(id) => id === this.props.comment._id
 			)
 		)
 			return true;
@@ -73,6 +78,8 @@ export class Comment extends Component {
 		const {
 			comment,
 			classes,
+			upvoteComment,
+			downvoteComment,
 			user: { isAuthenticated, currentUser },
 		} = this.props;
 
@@ -84,7 +91,7 @@ export class Comment extends Component {
 			</Tooltip>
 		) : !this.likedComment() ? (
 			<Tooltip title="upvote" placement="top">
-				<IconButton>
+				<IconButton onClick={() => upvoteComment(comment._id)}>
 					<ThumbUpOutlinedIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
@@ -104,7 +111,7 @@ export class Comment extends Component {
 			</Tooltip>
 		) : !this.dislikedComment() ? (
 			<Tooltip title="downvote" placement="top">
-				<IconButton>
+				<IconButton onClick={() => downvoteComment(comment._id)}>
 					<ThumbDownOutlinedIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
@@ -115,7 +122,6 @@ export class Comment extends Component {
 				</IconButton>
 			</Tooltip>
 		);
-
 		const deleteButton =
 			isAuthenticated && currentUser._id === comment.author._id ? (
 				<Delete
@@ -159,6 +165,9 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-export default connect(mapStateToProps, { deleteComment })(
-	withStyles(styles)(Comment)
-);
+export default connect(mapStateToProps, {
+	deleteComment,
+	upvoteComment,
+	downvoteComment,
+	editComment,
+})(withStyles(styles)(Comment));

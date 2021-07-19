@@ -10,6 +10,9 @@ import {
 	EDIT_SEEK,
 	POST_COMMENT,
 	DELETE_COMMENT,
+	UPVOTE_COMMENT,
+	DOWNVOTE_COMMENT,
+	EDIT_COMMENT,
 	UPLOAD_PHOTO,
 } from '../types';
 
@@ -116,6 +119,42 @@ const reducer = (state = initialState, action) => {
 				...state,
 				seek: { ...state.seek, commentCount: --state.seek.commentCount },
 			};
+		case UPVOTE_COMMENT:
+		case DOWNVOTE_COMMENT:
+			const commentIndex = state.seek.comments.findIndex(
+				(comment) => comment._id === action.payload._id
+			);
+			const tempComments = state.seek.comments;
+			const { upvotes, downvotes } = action.payload;
+
+			tempComments[commentIndex] = {
+				...tempComments[commentIndex],
+				upvotes,
+				downvotes,
+			};
+
+			return {
+				...state,
+				seek: { ...state.seek, comments: [...tempComments] },
+			};
+		case EDIT_COMMENT:
+			const targetedSeek = state.seeks.findIndex(
+				(seek) => seek._id === action.payload.seek
+			);
+			const commentInd = state.seek.comments.findIndex(
+				(comment) => comment._id === action.payload._id
+			);
+			const tempoComments = state.seek.comments;
+			const { body } = action.payload;
+
+			tempoComments[commentInd] = {
+				...tempoComments[commentInd],
+				body,
+			};
+
+			state.seeks[targetedSeek].comments[commentInd] = { ...action.payload };
+
+			return { ...state, seek: { ...state.seek, comments: [...tempComments] } };
 		default:
 			return state;
 	}

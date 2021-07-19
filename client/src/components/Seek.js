@@ -89,7 +89,8 @@ class Seek extends Component {
 		history.push(`/seek/${seek}`);
 		this.props.user.isAuthenticated &&
 			setTimeout(() => {
-				document.getElementById('commentBody').focus();
+				document.getElementById('commentBody') &&
+					document.getElementById('commentBody').focus();
 			}, 500);
 	};
 
