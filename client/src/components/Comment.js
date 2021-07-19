@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import { connect } from 'react-redux';
 
 import Delete from './Delete';
+import EditComment from './EditComment';
 import {
 	deleteComment,
 	upvoteComment,
@@ -28,12 +29,10 @@ const styles = {
 	commentContainer: {
 		display: 'flex',
 	},
-	innerContainer: {
-		marginBottom: 25,
-	},
 	card: {
 		maxWidth: '350px',
 		marginBottom: 5,
+		position: 'relative',
 	},
 	image: {
 		width: '50px',
@@ -47,6 +46,7 @@ const styles = {
 	},
 	actionButtons: {
 		paddingLeft: 10,
+		paddingBottom: 5,
 	},
 };
 
@@ -80,6 +80,7 @@ export class Comment extends Component {
 			classes,
 			upvoteComment,
 			downvoteComment,
+			editComment,
 			user: { isAuthenticated, currentUser },
 		} = this.props;
 
@@ -139,11 +140,29 @@ export class Comment extends Component {
 						className={classes.image}
 					/>
 				</div>
-				<div className={classes.innerContainer}>
+				<div>
 					<Card className={classes.card}>
-						<CardContent>
+						{isAuthenticated && (
+							<div style={{ position: 'absolute', right: 5, marginTop: 5 }}>
+								<EditComment
+									comment={comment}
+									userId={currentUser._id}
+									edit={editComment}
+								/>
+							</div>
+						)}
+						<CardContent
+							style={{
+								paddingRight:
+									isAuthenticated && currentUser._id === comment.author._id
+										? 50
+										: 5,
+								paddingBottom: 10,
+							}}
+						>
 							<Typography variant="body2">{comment.body}</Typography>
 						</CardContent>
+
 						<div className={classes.actionButtons}>
 							{upvoteButton}
 							<span className={classes.counts}>{comment.upvotes}</span>

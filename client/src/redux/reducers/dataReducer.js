@@ -154,7 +154,10 @@ const reducer = (state = initialState, action) => {
 
 			state.seeks[targetedSeek].comments[commentInd] = { ...action.payload };
 
-			return { ...state, seek: { ...state.seek, comments: [...tempComments] } };
+			return {
+				...state,
+				seek: { ...state.seek, comments: [...tempoComments] },
+			};
 		default:
 			return state;
 	}
