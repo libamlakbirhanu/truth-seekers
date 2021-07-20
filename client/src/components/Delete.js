@@ -11,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = {
 	dialogBox: {
-		width: '500px',
+		maxWidth: '500px',
 		margin: 'auto',
 	},
 };

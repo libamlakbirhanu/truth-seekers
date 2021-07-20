@@ -24,6 +24,9 @@ a span {
 input {
 	color: rgba(0, 0, 0, 0.7) !important;
 }
+button span {
+	font-size: 12px;
+}
 .MuiTypography-body1 {
 	font-size: 12px !important;
 }
@@ -31,6 +34,11 @@ input {
 .container {
 	margin: 80px auto 0 auto;
 	width: 75%;
+}
+
+.seekWidth {
+	width: 80%;
+	margin: auto;
 }
 
 .nav-container {
@@ -79,11 +87,72 @@ a {
 	margin-bottom: 1px !important;
 }
 
+.footerContainer {
+	padding: 25px 0px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin-bottom: 50px;
+	margin-top: 100px;
+	background-color: #800080 !important;
+	border-radius: 20px !important;
+	box-shadow: 5px 5px 10px !important;
+}
+
 @keyframes focused {
 	from {
 		background-color: rgba(0, 0, 0, 0.05);
 	}
 	to {
 		background-color: rgba(0, 0, 0, 0.2);
+	}
+}
+
+@media only screen and (max-width: 1020px) {
+	.container {
+		width: 80%;
+	}
+}
+
+@media only screen and (max-width: 800px) {
+	.container {
+		width: 85%;
+	}
+}
+
+@media only screen and (max-width: 765px) {
+	.footerContainer {
+		flex-wrap: wrap;
+		box-shadow: 0px 5px 10px !important;
+	}
+	#footerNews {
+		width: 100%;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	* {
+		font-size: 16px;
+	}
+	.container {
+		width: 90%;
+	}
+	.editSeek {
+		right: 0px;
+		top: 0px;
+	}
+	.seekWidth {
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	#warningIcon {
+		font-size: 36px !important;
+	}
+	#notFound {
+		font-size: 26px !important;
 	}
 }

@@ -9,18 +9,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import logo from './../assets/footer.png';
 
 const styles = {
-	cardContainer: {
-		padding: '25px 0',
-		display: 'flex',
-		flexWrap: 'wrap',
-		justifyContent: 'space-around',
-		alignItems: 'center',
-		marginBottom: 50,
-		marginTop: 100,
-		backgroundColor: '#800080',
-		borderRadius: 20,
-		boxShadow: '5px 5px 10px',
-	},
 	footerText: {
 		color: 'rgba(255,255,255,0.7)',
 		textAlign: 'center',
@@ -48,14 +36,14 @@ class Footer extends Component {
 		const { classes } = this.props;
 
 		return (
-			<Card className={classes.cardContainer}>
+			<Card className="footerContainer">
 				<CardMedia
 					image={logo}
 					title="LOGO"
 					className={classes.image}
 					id="footerLogo"
 				/>
-				<CardContent className={classes.content}>
+				<CardContent className={classes.content} id="footerNews">
 					<Typography variant="h4" className={classes.footerHeader}>
 						Newsletter
 					</Typography>

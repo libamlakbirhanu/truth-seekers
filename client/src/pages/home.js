@@ -28,7 +28,7 @@ class home extends Component {
 				<Grid item sm={8} xs={12}>
 					<div>{seekMarkup}</div>
 				</Grid>
-				<Grid item sm={3} xs={12}>
+				<Grid item sm={4} xs={12}>
 					<Profile
 						currentUser={user.currentUser}
 						isAuthenticated={user.isAuthenticated}

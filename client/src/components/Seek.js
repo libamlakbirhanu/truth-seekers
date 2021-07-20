@@ -207,7 +207,7 @@ class Seek extends Component {
 					<Typography variant="body2">
 						{fullContent ? (
 							seek.body
-						) : seek.body.length > 200 ? (
+						) : seek.body.length > 205 ? (
 							<>
 								{seek.body.substring(0, 200).trim()}...
 								<Link to={`/seek/${seek.id}`} title="expand seek">

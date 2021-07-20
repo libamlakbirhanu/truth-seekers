@@ -74,7 +74,7 @@ export class seek extends Component {
 		const isSeekEmpty = JSON.stringify(seek) === '{}' || !seek;
 
 		return !isSeekEmpty ? (
-			<div className={classes.container}>
+			<div className="seekWidth">
 				<div ref={this.myRef}>
 					<Seek
 						seek={seek}
@@ -117,7 +117,9 @@ export class seek extends Component {
 				{seek.comments.length > 0 ? (
 					<>
 						<div className={classes.comments}>
-							<Typography variant="h4">Comments</Typography>
+							<Typography variant="h4" style={{ color: 'rgba(0, 0, 0, 0.5)' }}>
+								Comments
+							</Typography>
 						</div>
 						{seek.comments.map((comment) => (
 							<Comment comment={comment} key={comment._id} />
@@ -125,13 +127,15 @@ export class seek extends Component {
 					</>
 				) : (
 					<div className={classes.comments}>
-						<Typography variant="h4">~No comments~</Typography>
+						<Typography variant="h4" style={{ color: 'rgba(0, 0, 0, 0.5)' }}>
+							~No comments~
+						</Typography>
 					</div>
 				)}
 			</div>
 		) : (
 			<>
-				<div className={classes.container}>
+				<div className="seekWidth">
 					<SkeletonSeek />
 				</div>
 			</>

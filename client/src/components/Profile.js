@@ -60,7 +60,7 @@ const styles = {
 	},
 	editIcon: {
 		position: 'absolute',
-		right: '15%',
+		left: '60%',
 		top: '75px',
 	},
 };
@@ -114,6 +114,7 @@ const Profile = (props) => {
 								<AddAPhotoIcon color="primary" fontSize="small" />
 							</IconButton>
 						</Tooltip>
+
 						<div className={classes.userContent}>
 							<Typography
 								component={Link}

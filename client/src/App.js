@@ -13,6 +13,7 @@ import seek from './pages/seek';
 import profile from './pages/profile';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import PageNotFound from './components/PageNotFound';
 import { authCheck } from './redux/actions/userActions';
 import { getSeeks } from './redux/actions/dataActions';
 import './App.css';
@@ -35,6 +36,7 @@ function App(props) {
 							<Route exact path="/signup" component={signup} />
 							<Route exact path="/seek/:id" component={seek} />
 							<Route exact path="/seeker/:id" component={profile} />
+							<Route component={PageNotFound} />
 						</Switch>
 						<Footer />
 					</div>
