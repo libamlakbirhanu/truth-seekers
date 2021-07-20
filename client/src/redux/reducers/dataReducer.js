@@ -41,11 +41,13 @@ const reducer = (state = initialState, action) => {
 				...state,
 			};
 		case SET_SEEKS:
-			return {
-				...state,
-				seeks: action.payload,
-				loading: false,
-			};
+			return action.payload !== state.seeks
+				? {
+						...state,
+						seeks: action.payload,
+						loading: false,
+				  }
+				: { ...state };
 		case SET_SEEK:
 			return {
 				...state,

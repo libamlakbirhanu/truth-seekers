@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Seek from '../components/Seek';
 import Profile from '../components/Profile';
 import SkeletonSeek from '../components/SkeletonSeek';
-import { getSeeks } from '../redux/actions/dataActions';
 
 class home extends Component {
 	render() {
@@ -47,4 +46,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { getSeeks })(home);
+export default connect(mapStateToProps)(home);

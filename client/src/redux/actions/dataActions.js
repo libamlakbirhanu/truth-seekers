@@ -21,12 +21,22 @@ export const getSeeks = () => (dispatch) => {
 	dispatch({
 		type: LOADING_DATA,
 	});
+
 	axios
 		.get('/seeks')
 		.then((res) => {
 			dispatch({ type: SET_SEEKS, payload: res.data.data.docs });
 		})
 		.catch((err) => console.error(err.response));
+
+	setInterval(() => {
+		axios
+			.get('/seeks')
+			.then((res) => {
+				dispatch({ type: SET_SEEKS, payload: res.data.data.docs });
+			})
+			.catch((err) => console.error(err.response));
+	}, 5000);
 };
 
 export const getSeek = (id) => (dispatch) => {

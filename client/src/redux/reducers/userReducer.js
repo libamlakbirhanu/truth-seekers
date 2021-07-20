@@ -82,13 +82,15 @@ const reducer = (state = initialState, action) => {
 				...state,
 			};
 		case SET_NOTIFICATIONS:
-			state.notifications = [...action.payload.notifications];
-			state.notifications.forEach((notification) => {
-				notification.readBy &&
-				notification.readBy.includes(state.currentUser._id)
-					? (notification.read = true)
-					: (notification.read = false);
-			});
+			if (state.notifications !== action.payload.notifications) {
+				state.notifications = [...action.payload.notifications];
+				state.notifications.forEach((notification) => {
+					notification.readBy &&
+					notification.readBy.includes(state.currentUser._id)
+						? (notification.read = true)
+						: (notification.read = false);
+				});
+			}
 
 			return {
 				...state,
