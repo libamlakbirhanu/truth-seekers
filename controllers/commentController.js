@@ -1,6 +1,6 @@
 const Comment = require('./../models/Comment');
 const Seek = require('./../models/Seek');
-const { errorMessage, customErrorMessage } = require('./../utils/ErrorMessage');
+const { errorMessage, customErrorMessage } = require('./../utils/errormessage');
 const docBelongsToCurrentUser = require('./../utils/ownerCheck');
 const createNotifications = require('./../utils/createNotifications');
 
