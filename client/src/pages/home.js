@@ -13,16 +13,17 @@ class home extends Component {
 			user,
 			data: { seeks, loading },
 		} = this.props;
-		const seekMarkup = !loading ? (
-			seeks.map((seek) => (
-				<Seek key={seek.id} seek={seek} commentCount={seek.commentCount} />
-			))
-		) : (
-			<>
-				<SkeletonSeek />
-				<SkeletonSeek />
-			</>
-		);
+		const seekMarkup =
+			!loading && seeks.length > 0 ? (
+				seeks.map((seek) => (
+					<Seek key={seek.id} seek={seek} commentCount={seek.commentCount} />
+				))
+			) : (
+				<>
+					<SkeletonSeek />
+					<SkeletonSeek />
+				</>
+			);
 		return (
 			<Grid container spacing={2}>
 				<Grid item sm={8} xs={12}>
