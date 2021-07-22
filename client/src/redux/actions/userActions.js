@@ -175,16 +175,18 @@ export const authCheck = () => (dispatch) => {
 	axios
 		.get('/api/seekers/authcheck')
 		.then((res) => {
-			dispatch({
-				type: LOADING,
-			});
-			dispatch({
-				type: USER_LOGGEDIN,
-			});
-			dispatch({
-				type: SET_USER,
-				user: res.data.user,
-			});
+			if (res.data.user) {
+				dispatch({
+					type: LOADING,
+				});
+				dispatch({
+					type: USER_LOGGEDIN,
+				});
+				dispatch({
+					type: SET_USER,
+					user: res.data.user,
+				});
+			}
 		})
-		.catch((err) => console.error(err.response));
+		.catch((err) => console.error('error: ', err.response));
 };
