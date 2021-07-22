@@ -151,6 +151,7 @@ exports.getSeeker = async (req, res, next) => {
 
 exports.notifications = async (req, res, next) => {
 	try {
+		if (!req.user) return;
 		const docs = await Notification.find({
 			sender: { $ne: req.user.id },
 			createdAt: { $gte: req.user.date },

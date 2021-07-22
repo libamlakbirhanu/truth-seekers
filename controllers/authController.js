@@ -149,7 +149,7 @@ exports.protect = async (req, res, next) => {
 				res
 			);
 
-		const decoded = jwt.verify(token, process.env.JWTSECRET);
+		const decoded = jwt.verify(token, process.env.jwtsecret);
 		const currentUser = await Seeker.findById(decoded.user.id);
 
 		if (!currentUser)
@@ -177,7 +177,7 @@ exports.isLoggedIn = async (req, res, next) => {
 
 		if (!token) return;
 
-		const decoded = jwt.verify(token, process.env.JWTSECRET);
+		const decoded = jwt.verify(token, process.env.jwtsecret);
 		const currentUser = await Seeker.findById(decoded.user.id);
 
 		if (currentUser && token)
