@@ -36,7 +36,7 @@ export const getSeeks = () => (dispatch) => {
 				dispatch({ type: SET_SEEKS, payload: res.data.data.docs });
 			})
 			.catch((err) => console.error(err.response));
-	}, 5000);
+	}, 10000);
 };
 
 export const getSeek = (id) => (dispatch) => {

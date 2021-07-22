@@ -161,7 +161,7 @@ export const setNotifications = () => (dispatch) => {
 				dispatch({ type: SET_NOTIFICATIONS, payload: res.data.data })
 			)
 			.catch((err) => console.error(err));
-	}, 5000);
+	}, 10000);
 };
 
 export const markNotificationsRead = () => (dispatch) => {
