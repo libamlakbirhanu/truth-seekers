@@ -22,7 +22,7 @@ export const userLogin = (userData, history) => (dispatch) => {
 		type: LOADING_UI,
 	});
 	axios
-		.post('/seekers/login', {
+		.post('/api/seekers/login', {
 			email: userData.email,
 			password: userData.password,
 		})
@@ -63,7 +63,7 @@ export const userSignup = (userData, history) => (dispatch) => {
 		type: LOADING_UI,
 	});
 	axios
-		.post('/seekers/signup', {
+		.post('/api/seekers/signup', {
 			email: userData.email,
 			name: userData.name,
 			password: userData.password,
@@ -100,7 +100,7 @@ export const userSignup = (userData, history) => (dispatch) => {
 
 export const userLogout = (history) => (dispatch) => {
 	axios
-		.get('/seekers/logout')
+		.get('/api/seekers/logout')
 		.then(() => {
 			dispatch({ type: USER_LOGGEDOUT });
 			dispatch({ type: REMOVE_USER });
@@ -110,7 +110,7 @@ export const userLogout = (history) => (dispatch) => {
 
 export const uploadImage = (formData) => (dispatch) => {
 	axios
-		.patch('/seekers/', formData)
+		.patch('/api/seekers/', formData)
 		.then((res) => {
 			dispatch({
 				type: UPLOAD_PHOTO,
@@ -131,7 +131,7 @@ export const editUser = (userDetails) => (dispatch) => {
 	});
 
 	axios
-		.patch('/seekers/', userDetails)
+		.patch('/api/seekers/', userDetails)
 		.then((res) => {
 			dispatch({
 				type: SET_USER,
@@ -148,7 +148,7 @@ export const editUser = (userDetails) => (dispatch) => {
 
 export const setNotifications = () => (dispatch) => {
 	axios
-		.get('/seekers/notifications')
+		.get('/api/seekers/notifications')
 		.then((res) =>
 			dispatch({ type: SET_NOTIFICATIONS, payload: res.data.data })
 		)
@@ -156,7 +156,7 @@ export const setNotifications = () => (dispatch) => {
 
 	setInterval(() => {
 		axios
-			.get('/seekers/notifications')
+			.get('/api/seekers/notifications')
 			.then((res) =>
 				dispatch({ type: SET_NOTIFICATIONS, payload: res.data.data })
 			)
@@ -168,12 +168,12 @@ export const markNotificationsRead = () => (dispatch) => {
 	dispatch({
 		type: MARK_NOTIFICATIONS_READ,
 	});
-	axios.post('/seekers/notifications').catch((err) => console.error(err));
+	axios.post('/api/seekers/notifications').catch((err) => console.error(err));
 };
 
 export const authCheck = () => (dispatch) => {
 	axios
-		.get('/seekers/authcheck')
+		.get('/api/seekers/authcheck')
 		.then((res) => {
 			dispatch({
 				type: LOADING,

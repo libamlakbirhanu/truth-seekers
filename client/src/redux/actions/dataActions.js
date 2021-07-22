@@ -31,7 +31,7 @@ export const getSeeks = () => (dispatch) => {
 
 	setInterval(() => {
 		axios
-			.get('/seeks')
+			.get('/api/seeks')
 			.then((res) => {
 				dispatch({ type: SET_SEEKS, payload: res.data.data.docs });
 			})
@@ -41,7 +41,7 @@ export const getSeeks = () => (dispatch) => {
 
 export const getSeek = (id) => (dispatch) => {
 	axios
-		.get(`/seeks/${id}`)
+		.get(`/api/seeks/${id}`)
 		.then((res) => {
 			dispatch({
 				type: SET_SEEK,
@@ -62,7 +62,7 @@ export const createSeek = (newSeek) => (dispatch) => {
 		type: LOADING_UI,
 	});
 	axios
-		.post('/seeks', newSeek)
+		.post('/api/seeks', newSeek)
 		.then((res) => {
 			dispatch({ type: POST_SEEK, payload: res.data.result });
 			dispatch({
@@ -88,7 +88,7 @@ export const editSeek = (seekDetails) => (dispatch) => {
 
 export const upvoteSeek = (id) => (dispatch) => {
 	axios
-		.patch(`/seeks/${id}/upvote`)
+		.patch(`/api/seeks/${id}/upvote`)
 		.then((res) => {
 			dispatch({
 				type: UPVOTE_SEEK,
@@ -100,7 +100,7 @@ export const upvoteSeek = (id) => (dispatch) => {
 
 export const downvoteSeek = (id) => (dispatch) => {
 	axios
-		.patch(`/seeks/${id}/downvote`)
+		.patch(`/api/seeks/${id}/downvote`)
 		.then((res) => {
 			dispatch({
 				type: DOWNVOTE_SEEK,
@@ -112,7 +112,7 @@ export const downvoteSeek = (id) => (dispatch) => {
 
 export const deleteSeek = (id) => (dispatch) => {
 	axios
-		.delete(`/seeks/${id}`)
+		.delete(`/api/seeks/${id}`)
 		.then((res) => {
 			dispatch({
 				type: DELETE_SEEK,
@@ -127,7 +127,7 @@ export const createComment = (commentData) => (dispatch) => {
 		type: LOADING_UI,
 	});
 	axios
-		.post('/comments', commentData)
+		.post('/api/comments', commentData)
 		.then((res) => {
 			dispatch({
 				type: POST_COMMENT,
@@ -147,7 +147,7 @@ export const createComment = (commentData) => (dispatch) => {
 
 export const deleteComment = (id) => (dispatch) => {
 	axios
-		.delete(`/comments/${id}`)
+		.delete(`/api/comments/${id}`)
 		.then((res) => {
 			dispatch({
 				type: DELETE_COMMENT,
@@ -159,7 +159,7 @@ export const deleteComment = (id) => (dispatch) => {
 
 export const upvoteComment = (id) => (dispatch) => {
 	axios
-		.patch(`/comments/${id}/upvote`)
+		.patch(`/api/comments/${id}/upvote`)
 		.then((res) => {
 			dispatch({
 				type: UPVOTE_COMMENT,
@@ -171,7 +171,7 @@ export const upvoteComment = (id) => (dispatch) => {
 
 export const downvoteComment = (id) => (dispatch) => {
 	axios
-		.patch(`/comments/${id}/downvote`)
+		.patch(`/api/comments/${id}/downvote`)
 		.then((res) => {
 			dispatch({
 				type: DOWNVOTE_COMMENT,
@@ -183,7 +183,7 @@ export const downvoteComment = (id) => (dispatch) => {
 
 export const editComment = (commentDetails) => (dispatch) => {
 	axios
-		.patch(`/comments/${commentDetails.id}`, commentDetails)
+		.patch(`/api/comments/${commentDetails.id}`, commentDetails)
 		.then((res) => {
 			dispatch({
 				type: EDIT_COMMENT,

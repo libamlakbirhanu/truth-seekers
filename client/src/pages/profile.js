@@ -48,7 +48,7 @@ class profile extends Component {
 	};
 
 	componentDidMount() {
-		axios.get(`/seekers/${this.props.match.params.id}`).then((res) => {
+		axios.get(`api/seekers/${this.props.match.params.id}`).then((res) => {
 			this.setState({
 				userLoading: false,
 				targetUser: res.data.result,
