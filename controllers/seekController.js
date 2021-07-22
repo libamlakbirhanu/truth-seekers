@@ -2,7 +2,7 @@ const Seek = require('./../models/Seek');
 const Comment = require('./../models/Comment');
 const Seeker = require('./../models/Seeker');
 const Notification = require('./../models/Notification');
-const { customErrorMessage, errorMessage } = require('./../utils/errorMessage');
+const { customErrorMessage, errorMessage } = require('./../utils/errormessage');
 const docBelongsToCurrentUser = require('./../utils/ownerCheck');
 const createNotifications = require('./../utils/createNotifications');
 
