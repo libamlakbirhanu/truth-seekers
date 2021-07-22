@@ -83,7 +83,7 @@ const Profile = (props) => {
 	const { classes, loading, editUser, currentUser, isAuthenticated } = props;
 
 	const imageUrl = isAuthenticated
-		? `http://localhost:5000/static/image/seekers/${currentUser.photo}`
+		? `https://seekers-of-the-truth.herokuapp.com/static/image/seekers/${currentUser.photo}`
 		: '';
 
 	const profileMarkup = (

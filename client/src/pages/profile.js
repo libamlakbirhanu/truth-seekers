@@ -85,7 +85,7 @@ class profile extends Component {
 						<Card className={classes.card}>
 							<CardMedia
 								className={classes.image}
-								image={`http://localhost:5000/static/image/seekers/${targetUser.photo}`}
+								image={`https://seekers-of-the-truth.herokuapp.com/static/image/seekers/${targetUser.photo}`}
 								key={targetUser.photo}
 							/>
 							<div className={classes.userContent}>

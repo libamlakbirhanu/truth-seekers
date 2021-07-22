@@ -43,5 +43,5 @@
 			"last 1 safari version"
 		]
 	},
-	"proxy": "http://localhost:5000/api"
+	"proxy": "https://seekers-of-the-truth.herokuapp.com/api"
 }

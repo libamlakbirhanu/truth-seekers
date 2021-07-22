@@ -4,7 +4,6 @@ const app = express();
 
 app.enable('trust proxy');
 
-app.use('/static', express.static('assets'));
 app.use(express.json({ extended: false, limit: '10kb' }));
 
 app.use((req, res, next) => {
@@ -23,5 +22,10 @@ app.use(cookieParser());
 app.use('/api/seeks', require('./routes/api/seeks'));
 app.use('/api/seekers', require('./routes/api/seekers'));
 app.use('/api/comments', require('./routes/api/comments'));
+
+app.use(express.static('client/build'));
+app.get('*', (req, res) => {
+	res.sendFile('./client/build/index.html');
+});
 
 module.exports = app;
