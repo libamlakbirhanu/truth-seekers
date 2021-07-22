@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import Tooltip from '@material-ui/core/tooltip';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
