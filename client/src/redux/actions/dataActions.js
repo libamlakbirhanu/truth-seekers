@@ -74,7 +74,7 @@ export const createSeek = (newSeek) => (dispatch) => {
 
 export const editSeek = (seekDetails) => (dispatch) => {
 	axios
-		.patch(`/seeks/${seekDetails.id}`, seekDetails)
+		.patch(`/api/seeks/${seekDetails.id}`, seekDetails)
 		.then((res) => {
 			dispatch({
 				type: EDIT_SEEK,
