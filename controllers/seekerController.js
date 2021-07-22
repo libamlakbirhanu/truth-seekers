@@ -1,6 +1,7 @@
 const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
+const path = require('path');
 
 const Seeker = require('./../models/Seeker');
 const Notification = require('./../models/Notification');
@@ -48,8 +49,9 @@ exports.resizePhoto = (req, res, next) => {
 		.resize(500, 500)
 		.toFormat('jpeg')
 		.jpeg({ quality: 90 })
-		.toFile(`assets/image/seekers/${req.file.filename}`)
-		.then(() => next());
+		.toFile(`client/build/static/assets/image/seekers/${req.file.filename}`)
+		.then(() => next())
+		.catch((err) => console.error(err));
 };
 
 exports.getMe = async (req, res, next) => {
@@ -90,12 +92,17 @@ exports.updateMe = async (req, res, next) => {
 
 		if (
 			req.user.photo !== 'default.jpg' &&
-			fs.existsSync(`assets/image/seekers/${req.user.photo}`) &&
+			fs.existsSync(
+				`client/build/static/assets/image/seekers/${req.user.photo}`
+			) &&
 			req.file
 		)
-			fs.unlink(`assets/image/seekers/${req.user.photo}`, (err) => {
-				if (err) console.error(err);
-			});
+			fs.unlink(
+				`client/build/static/assets/image/seekers/${req.user.photo}`,
+				(err) => {
+					if (err) console.error(err);
+				}
+			);
 
 		const doc = await Seeker.findByIdAndUpdate(userId, filteredBody, {
 			new: true,

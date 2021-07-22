@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 const app = express();
 
 app.enable('trust proxy');
@@ -25,7 +26,7 @@ app.use('/api/comments', require('./routes/api/comments'));
 
 app.use(express.static('client/build'));
 app.get('*', (req, res) => {
-	res.sendFile('./client/build/index.html');
+	res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 
 module.exports = app;

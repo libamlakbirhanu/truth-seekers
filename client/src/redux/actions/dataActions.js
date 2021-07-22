@@ -23,7 +23,7 @@ export const getSeeks = () => (dispatch) => {
 	});
 
 	axios
-		.get('/seeks')
+		.get('/api/seeks')
 		.then((res) => {
 			dispatch({ type: SET_SEEKS, payload: res.data.data.docs });
 		})

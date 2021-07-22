@@ -48,7 +48,7 @@ class profile extends Component {
 	};
 
 	componentDidMount() {
-		axios.get(`api/seekers/${this.props.match.params.id}`).then((res) => {
+		axios.get(`/api/seekers/${this.props.match.params.id}`).then((res) => {
 			this.setState({
 				userLoading: false,
 				targetUser: res.data.result,
@@ -85,7 +85,7 @@ class profile extends Component {
 						<Card className={classes.card}>
 							<CardMedia
 								className={classes.image}
-								image={`https://seekers-of-the-truth.herokuapp.com/static/image/seekers/${targetUser.photo}`}
+								image={`/static/assets/image/seekers/${targetUser.photo}`}
 								key={targetUser.photo}
 							/>
 							<div className={classes.userContent}>

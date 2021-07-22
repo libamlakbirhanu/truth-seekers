@@ -135,7 +135,7 @@ export class Comment extends Component {
 			<div className={classes.commentContainer}>
 				<div>
 					<img
-						src={`https://seekers-of-the-truth.herokuapp.com/static/image/seekers/${comment.author.photo}`}
+						src={`/static/assets/image/seekers/${comment.author.photo}`}
 						alt="seeker"
 						className={classes.image}
 					/>

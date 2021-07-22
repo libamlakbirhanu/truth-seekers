@@ -160,7 +160,7 @@ class Seek extends Component {
 				/>
 			) : null;
 
-		const imageUrl = `https://seekers-of-the-truth.herokuapp.com/static/image/seekers/${
+		const imageUrl = `/static/assets/image/seekers/${
 			currentUser && currentUser._id === seek.author._id
 				? currentUser.photo
 				: seek.author.photo
