@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const path = require('path');
 const app = express();
 
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 	next();
 });
 app.use(cookieParser());
+app.use(compression());
 
 // ROUTES
 app.use('/api/seeks', require('./routes/api/seeks'));
