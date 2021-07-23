@@ -28,6 +28,7 @@ import {
 const styles = {
 	commentContainer: {
 		display: 'flex',
+		marginBottom: '15px',
 	},
 	card: {
 		maxWidth: '350px',

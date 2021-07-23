@@ -80,7 +80,7 @@ class profile extends Component {
 				<Grid item sm={8} xs={12}>
 					<div>{seekMarkup}</div>
 				</Grid>
-				<Grid item sm={3} xs={12}>
+				<Grid item sm={4} xs={12}>
 					{!userLoading ? (
 						<Card className={classes.card}>
 							<CardMedia

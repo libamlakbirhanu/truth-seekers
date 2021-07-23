@@ -142,12 +142,7 @@ exports.protect = async (req, res, next) => {
 			token = req.headers.authorization.split(' ')[1];
 		else if (req.cookies.authToken) token = req.cookies.authToken;
 
-		if (!token)
-			return customErrorMessage(
-				'You are not logged in. Please log in to get access.',
-				300,
-				res
-			);
+		if (!token) return;
 
 		const decoded = jwt.verify(token, process.env.jwtsecret);
 		const currentUser = await Seeker.findById(decoded.user.id);
