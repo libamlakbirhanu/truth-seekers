@@ -3,6 +3,7 @@ const seekerController = require('./../../controllers/seekerController');
 const authController = require('./../../controllers/authController');
 
 router.get('/authcheck', authController.isLoggedIn);
+router.post('/verify/:token', authController.verifyUser);
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 router.get('/logout', authController.logout);
@@ -34,6 +35,6 @@ router.post(
 	authController.protect,
 	seekerController.markNotificationsRead
 );
-router.get('/:id', authController.protect, seekerController.getSeeker);
+router.get('/:id', seekerController.getSeeker);
 
 module.exports = router;

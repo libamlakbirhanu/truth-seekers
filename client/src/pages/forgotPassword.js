@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -7,27 +6,26 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { userLogin } from './../redux/actions/userActions';
+import { forgetPass } from './../redux/actions/userActions';
 import logo from '../assets/truthseekers.png';
 
 const styles = (theme) => ({
 	...theme.spreadIt,
 });
 
-class login extends Component {
+class forgotPassword extends Component {
 	constructor() {
 		super();
 
 		this.state = {
 			email: '',
-			password: '',
 		};
 	}
 	handleSubmit = async (event) => {
 		event.preventDefault();
 
-		const { email, password } = this.state;
-		this.props.userLogin({ email, password }, this.props.history);
+		const { email } = this.state;
+		this.props.forgetPass(email, this.props.history);
 	};
 
 	handleChange = (event) => {
@@ -46,7 +44,7 @@ class login extends Component {
 					{UI.error && (
 						<div className={classes.errorBox}>{UI.error.message}</div>
 					)}
-					<form onSubmit={this.handleSubmit} className={classes.form}>
+					<form className={classes.form} onSubmit={this.handleSubmit}>
 						<TextField
 							id="email"
 							name="email"
@@ -54,16 +52,6 @@ class login extends Component {
 							label="Email"
 							className={classes.textField}
 							value={this.state.email}
-							onChange={this.handleChange}
-							required
-						></TextField>
-						<TextField
-							id="password"
-							name="password"
-							type="password"
-							label="Password"
-							className={classes.textField}
-							value={this.state.password}
 							onChange={this.handleChange}
 							required
 						></TextField>
@@ -75,7 +63,7 @@ class login extends Component {
 							className={classes.button}
 							disabled={UI.loading && true}
 						>
-							login
+							Reset
 							{UI.loading && (
 								<CircularProgress
 									className={classes.progress}
@@ -83,12 +71,6 @@ class login extends Component {
 								></CircularProgress>
 							)}
 						</Button>
-						<small style={{ display: 'block', marginTop: 10 }}>
-							<Link to="/forgotpassword">forgot password?</Link>
-						</small>
-						<small style={{ display: 'block', marginTop: 10 }}>
-							You don't have an account? <Link to="/signup">Signup</Link>
-						</small>
 					</form>
 				</div>
 			</div>
@@ -96,7 +78,7 @@ class login extends Component {
 	}
 }
 
-login.propTypes = {
+forgotPassword.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
@@ -105,10 +87,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapStateToDispatch = {
-	userLogin,
+	forgetPass,
 };
 
 export default connect(
 	mapStateToProps,
 	mapStateToDispatch
-)(withStyles(styles)(login));
+)(withStyles(styles)(forgotPassword));

@@ -9,6 +9,9 @@ import themeUtil from './utils/theme';
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
+import forgotPassword from './pages/forgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import VerifyAccount from './pages/VerifyAccount';
 import seek from './pages/seek';
 import profile from './pages/profile';
 import Navbar from './components/Navbar';
@@ -36,6 +39,9 @@ function App(props) {
 							<Route exact path="/signup" component={signup} />
 							<Route exact path="/seek/:id" component={seek} />
 							<Route exact path="/seeker/:id" component={profile} />
+							<Route exact path="/forgotpassword" component={forgotPassword} />
+							<Route path="/resetpassword" component={ResetPassword} />
+							<Route path="/verifyaccount" component={VerifyAccount} />
 							<Route component={PageNotFound} />
 						</Switch>
 						<Footer />

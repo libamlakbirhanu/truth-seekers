@@ -7,6 +7,7 @@ import {
 	REMOVE_USER,
 	LOADING_UI,
 	SET_ERRORS,
+	SET_SUCCESS,
 	CLEAR_ERRORS,
 	LOADING,
 	UPLOAD_PHOTO,
@@ -55,6 +56,26 @@ export const userLogin = (userData, history) => (dispatch) => {
 		});
 };
 
+export const verifyAccount = (token, history) => (dispatch) => {
+	axios
+		.post(`/api/seekers/verify/${token}`)
+		.then((res) => {
+			console.log('made it here');
+			dispatch({
+				type: USER_LOGGEDIN,
+			});
+			dispatch({
+				type: SET_USER,
+				user: res.data.data,
+			});
+			history.push('/');
+		})
+		.catch((err) => {
+			setTimeout(() => history.push('/signup'), 1500);
+			history.push('/signup');
+		});
+};
+
 export const userSignup = (userData, history) => (dispatch) => {
 	dispatch({
 		type: CLEAR_ERRORS,
@@ -71,16 +92,9 @@ export const userSignup = (userData, history) => (dispatch) => {
 		})
 		.then((res) => {
 			dispatch({
-				type: USER_LOGGEDIN,
-			});
-			dispatch({
 				type: LOADING_UI,
 			});
-			dispatch({
-				type: SET_USER,
-				user: res.data.data,
-			});
-			history.push('/');
+			history.push('/verifyaccount');
 		})
 		.catch((err) => {
 			dispatch({
@@ -144,6 +158,120 @@ export const editUser = (userDetails) => (dispatch) => {
 				type: LOADING,
 			});
 		});
+};
+
+export const updatePassword = (passwords, history) => (dispatch) => {
+	dispatch({
+		type: CLEAR_ERRORS,
+	});
+	dispatch({
+		type: LOADING_UI,
+	});
+	axios
+		.patch('/api/seekers/update-password', passwords)
+		.then(() => {
+			dispatch({ type: USER_LOGGEDOUT });
+			dispatch({ type: REMOVE_USER });
+			dispatch({
+				type: SET_SUCCESS,
+				message: 'password updated successfully',
+			});
+			dispatch({
+				type: LOADING_UI,
+			});
+
+			setTimeout(() => history.push('/login'), 500);
+		})
+		.catch((err) => {
+			dispatch({
+				type: LOADING_UI,
+			});
+			dispatch({
+				type: SET_ERRORS,
+				error: err.response.data,
+			});
+			setTimeout(() => {
+				dispatch({
+					type: CLEAR_ERRORS,
+				});
+			}, 1500);
+		});
+};
+
+export const forgetPass = (email, history) => (dispatch) => {
+	dispatch({
+		type: LOADING_UI,
+	});
+
+	axios
+		.post('/api/seekers/forgot-password', { email })
+		.then((res) => {
+			dispatch({
+				type: LOADING_UI,
+			});
+			history.push('/resetpassword');
+		})
+		.catch((err) => {
+			dispatch({
+				type: LOADING_UI,
+			});
+			dispatch({
+				type: SET_ERRORS,
+				error: err.response.data,
+			});
+			setTimeout(() => {
+				dispatch({
+					type: CLEAR_ERRORS,
+				});
+			}, 2500);
+		});
+};
+
+export const resetPass = (token, newPass, history) => (dispatch) => {
+	dispatch({
+		type: LOADING_UI,
+	});
+	axios
+		.patch(`/api/seekers/reset-password/${token}`, newPass)
+		.then((res) => {
+			dispatch({
+				type: USER_LOGGEDIN,
+			});
+			dispatch({
+				type: LOADING_UI,
+			});
+			dispatch({
+				type: SET_USER,
+				user: res.data.data,
+			});
+			setTimeout(() => {
+				history.push('/');
+			}, 500);
+		})
+		.catch((err) => {
+			dispatch({
+				type: LOADING_UI,
+			});
+			dispatch({
+				type: SET_ERRORS,
+				error: err.response.data,
+			});
+			setTimeout(() => {
+				dispatch({
+					type: CLEAR_ERRORS,
+				});
+				history.push('/login');
+			}, 5000);
+		});
+};
+
+export const deactivate = (history) => (dispatch) => {
+	axios.delete(`/api/seekers/`).then(() => {
+		dispatch({ type: USER_LOGGEDOUT });
+		dispatch({ type: REMOVE_USER });
+
+		history.push('/');
+	});
 };
 
 export const setNotifications = () => (dispatch) => {

@@ -80,7 +80,12 @@ const handleImageEdit = () => {
 };
 
 const Profile = (props) => {
-	const { classes, loading, editUser, currentUser, isAuthenticated } = props;
+	const {
+		classes,
+		loading,
+		editUser,
+		user: { currentUser, isAuthenticated },
+	} = props;
 
 	const imageUrl = isAuthenticated
 		? `/static/assets/image/seekers/${currentUser.photo}`
@@ -182,6 +187,7 @@ const Profile = (props) => {
 const mapStateToProps = (state) => {
 	return {
 		loading: state.user.loading,
+		user: state.user,
 	};
 };
 

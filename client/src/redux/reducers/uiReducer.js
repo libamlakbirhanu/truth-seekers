@@ -1,8 +1,9 @@
-import { LOADING_UI, SET_ERRORS, CLEAR_ERRORS } from '../types';
+import { LOADING_UI, SET_ERRORS, CLEAR_ERRORS, SET_SUCCESS } from '../types';
 
 const initialState = {
 	loading: false,
 	error: null,
+	success: null,
 };
 
 const uiReducer = (state = initialState, action) => {
@@ -21,6 +22,11 @@ const uiReducer = (state = initialState, action) => {
 			return {
 				...state,
 				error: null,
+			};
+		case SET_SUCCESS:
+			return {
+				...state,
+				success: action.message,
 			};
 		default:
 			return state;

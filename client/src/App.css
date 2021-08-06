@@ -12,9 +12,19 @@ body {
 
 * {
 	font-size: 14px;
+	box-sizing: border-box;
 }
 
 p {
+	color: rgba(0, 0, 0, 0.7);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	color: rgba(0, 0, 0, 0.7);
 }
 
@@ -99,6 +109,50 @@ a {
 	box-shadow: 5px 5px 10px !important;
 }
 
+/* pagination */
+.pagination {
+	list-style: none;
+	display: flex;
+	justify-content: center;
+}
+.active {
+	border: 2px solid #800080 !important;
+	color: #800080 !important;
+}
+.listItem {
+	border: 1px solid rgba(0, 0, 0, 0.5);
+	padding: 5px 10px;
+	margin: 5px;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+}
+.listItem:hover {
+	border: 1px solid #800080;
+	color: #800080;
+	cursor: pointer;
+}
+.pageLink {
+	color: #800080;
+}
+.arrows {
+	padding: 15px 10px;
+	margin: 0 5px;
+	color: white;
+	background-color: #800080;
+	border: 1px solid transparent;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	transition: all 0.5s;
+}
+.arrows:hover {
+	background: transparent;
+	border: 1px solid #800080;
+	color: #800080;
+	cursor: pointer;
+}
+
 @keyframes focused {
 	from {
 		background-color: rgba(0, 0, 0, 0.05);
@@ -115,6 +169,9 @@ a {
 }
 
 @media only screen and (max-width: 800px) {
+	#noSeeks {
+		font-size: 42px;
+	}
 	.container {
 		width: 85%;
 	}
@@ -135,6 +192,12 @@ a {
 @media only screen and (max-width: 600px) {
 	* {
 		font-size: 16px;
+	}
+	#deactivate {
+		float: left !important;
+	}
+	#settingsTitle {
+		font-size: 36px;
 	}
 	.container {
 		width: 90%;

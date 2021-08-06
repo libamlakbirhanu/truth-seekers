@@ -39,11 +39,6 @@ const SeekerSchema = new mongoose.Schema({
 	},
 	passwordResetToken: String,
 	passwordResetExpires: Date,
-	active: {
-		type: Boolean,
-		default: true,
-		select: false,
-	},
 	likedSeeks: {
 		type: [mongoose.Schema.ObjectId],
 		ref: 'seek',
@@ -60,12 +55,13 @@ const SeekerSchema = new mongoose.Schema({
 		type: [mongoose.Schema.ObjectId],
 		ref: 'comment',
 	},
-});
-
-SeekerSchema.pre(/^find/, function (next) {
-	this.find({ active: { $ne: false } });
-
-	next();
+	newUserToken: {
+		type: String,
+	},
+	verified: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 SeekerSchema.pre('save', async function (next) {

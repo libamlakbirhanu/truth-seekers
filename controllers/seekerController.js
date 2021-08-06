@@ -123,7 +123,7 @@ exports.updateMe = async (req, res, next) => {
 
 exports.deleteMe = async (req, res, next) => {
 	try {
-		const doc = await Seeker.findByIdAndUpdate(req.user._id, { active: false });
+		const doc = await Seeker.findByIdAndDelete(req.user._id);
 
 		res.status(200).json({
 			status: 'success',

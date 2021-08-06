@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 module.exports = connectDB = async () => {
 	try {
 		await mongoose.connect(
-			process.env.mongoURI_remote,
+			process.env.mongoURI,
 			{
 				useCreateIndex: true,
 				useUnifiedTopology: true,

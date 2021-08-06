@@ -92,7 +92,14 @@ class Notifications extends Component {
 						aria-haspopup="true"
 						onClick={this.handleOpen}
 					>
-						<Badge badgeContent={unreadNotifications.length} color="secondary">
+						<Badge
+							badgeContent={
+								unreadNotifications.length <= 9
+									? unreadNotifications.length
+									: '9+'
+							}
+							color="secondary"
+						>
 							<NotificationsIcon />
 						</Badge>
 					</IconButton>

@@ -47,9 +47,9 @@ const themeUtil = {
 		},
 		errorBox: {
 			display: 'flex',
-			justifyContent: 'center',
+			textAlign: 'center',
 			alignItems: 'center',
-			backgroundColor: '#ff3333',
+			backgroundColor: '#c4000085',
 			marginTop: 20,
 			color: 'white',
 			padding: 10,

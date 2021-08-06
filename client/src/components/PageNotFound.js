@@ -1,5 +1,6 @@
 import React from 'react';
-import WarningIcon from '@material-ui/icons/Warning';
+
+import notFound from '../assets/notFound.png';
 
 export default function PageNotFound() {
 	return (
@@ -22,12 +23,19 @@ export default function PageNotFound() {
 			>
 				404
 			</p>
-			<div style={{ display: 'flex', alignItems: 'center' }}>
-				<WarningIcon
-					id="warningIcon"
-					color="primary"
-					style={{ fontSize: 72 }}
-				/>
+			<img
+				src={notFound}
+				alt="page not found"
+				style={{ width: 300, height: 300 }}
+			/>
+
+			<div
+				style={{
+					marginTop: 20,
+					width: '100%',
+					textAlign: 'center',
+				}}
+			>
 				<h1
 					id="notFound"
 					style={{

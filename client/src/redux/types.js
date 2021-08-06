@@ -12,6 +12,7 @@ export const LOADING_UI = 'LOADING_UI';
 export const LOADING_DATA = 'LOADING_DATA';
 export const SET_ERRORS = 'SET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+export const SET_SUCCESS = 'SET_SUCCESS';
 
 export const SET_SEEKS = 'SET_SEEKS';
 export const SET_SEEK = 'SET_SEEK';
@@ -26,3 +27,5 @@ export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const UPVOTE_COMMENT = 'UPVOTE_COMMENT';
 export const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
+export const FORGOT_PASSWORDS = 'FORGOT_PASSWORDS';
+export const RESET_PASSWORD = 'RESET_PASSWORD';
