@@ -13,7 +13,7 @@ const SeekSchema = new mongoose.Schema(
 		},
 		body: {
 			type: String,
-			required: [true, 'a comment can not be empty'],
+			required: [true, 'body can not be empty'],
 		},
 		createdAt: {
 			type: Date,

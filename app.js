@@ -1,6 +1,9 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 const path = require('path');
 const app = express();
 
@@ -18,6 +21,13 @@ app.use((req, res, next) => {
 
 	next();
 });
+app.use(
+	helmet({
+		contentSecurityPolicy: true,
+	})
+);
+app.use(mongoSanitize());
+app.use(xss());
 app.use(cookieParser());
 app.use(compression());
 

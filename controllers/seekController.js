@@ -55,8 +55,10 @@ exports.createSeek = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
-		console.error(err);
-		return errorMessage(err, 500, res);
+		res.status(400).json({
+			status: 'error',
+			error: err,
+		});
 	}
 };
 
@@ -85,8 +87,10 @@ exports.updateSeek = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
-		console.error(err);
-		return errorMessage(err, 500, res);
+		res.status(400).json({
+			status: 'error',
+			error: err,
+		});
 	}
 };
 
