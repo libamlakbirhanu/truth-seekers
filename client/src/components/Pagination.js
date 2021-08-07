@@ -27,13 +27,10 @@ function Pagination({ postsPerPage, seeks, paginate, prev, next }) {
 	};
 
 	if (totalSeeks !== seeks.length) {
-		console.log('fuck you');
 		setCurrentPage(1);
 		paginate(1);
 		setTotalSeeks(seeks.length);
 	}
-	console.log('total posts:', seeks.length);
-	console.log('total seeks:', totalSeeks);
 
 	return (
 		<nav>

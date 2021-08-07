@@ -48,10 +48,13 @@ export class Deactivate extends Component {
 				<Button
 					type="submit"
 					variant="contained"
-					color="primary"
 					onClick={this.handleOpen}
 					className={classes.button}
-					style={{ float: 'right', marginTop: '10px' }}
+					style={{
+						float: 'right',
+						marginTop: '10px',
+						backgroundColor: '#c4000085',
+					}}
 					id="deactivate"
 				>
 					Deactivate account

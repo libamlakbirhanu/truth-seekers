@@ -134,12 +134,19 @@ export class Comment extends Component {
 
 		return (
 			<div className={classes.commentContainer}>
-				<div>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+					}}
+				>
 					<img
 						src={`/static/assets/image/seekers/${comment.author.photo}`}
 						alt="seeker"
 						className={classes.image}
 					/>
+					<Typography variant="body1">{currentUser.name}</Typography>
 				</div>
 				<div>
 					<Card className={classes.card}>

@@ -138,6 +138,7 @@ exports.deleteMe = async (req, res, next) => {
 exports.getSeeker = async (req, res, next) => {
 	try {
 		const doc = await Seeker.findById(req.params.id);
+
 		res.status(200).json({
 			status: 'success',
 			result: doc,

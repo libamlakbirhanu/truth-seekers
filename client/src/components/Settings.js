@@ -85,7 +85,8 @@ const Settings = ({ classes, UI, updatePassword, history }) => {
 					<Button
 						type="submit"
 						variant="contained"
-						style={{ color: 'white', backgroundColor: '#c4000085' }}
+						color="primary"
+						style={{ color: 'white' }}
 						className={classes.button}
 						disabled={UI.loading && true}
 					>

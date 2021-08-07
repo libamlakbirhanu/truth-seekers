@@ -84,14 +84,14 @@ class profile extends Component {
 
 	componentDidMount() {
 		axios
-			.get(`/seekers/${this.props.match.params.id}`)
+			.get(`/api/seekers/${this.props.match.params.id}`)
 			.then((res) => {
 				this.setState({
 					userLoading: false,
 					targetUser: res.data.result,
 				});
 			})
-			.catch((err) => console.error(err));
+			.catch((err) => console.error(err.response));
 	}
 
 	handleSeekTabClick = () => {
@@ -118,30 +118,26 @@ class profile extends Component {
 			!loading &&
 			seeks.filter((seek) => seek.author._id === this.props.match.params.id);
 		const profileMarkup = !userLoading ? (
-			targetUser ? (
-				<Card className={classes.card}>
-					<CardMedia
-						className={classes.image}
-						image={`/static/assets/image/seekers/${targetUser.photo}`}
-						key={targetUser.photo}
-					/>
-					<div className={classes.userContent}>
-						<Typography>{targetUser.name}</Typography>
-					</div>
-					<div className={classes.userContent}>
-						<EmailIcon color="primary" fontSize="small" />
-						<div className={classes.sizedBox}></div>
-						<span>{targetUser.email}</span>
-					</div>
-					<div className={classes.userContent}>
-						<CalendarToday color="primary" fontSize="small" />
-						<div className={classes.sizedBox}></div>
-						<span>{`Joined ${dayjs(targetUser.date).format('MMM YYYY')}`}</span>
-					</div>
-				</Card>
-			) : (
-				this.props.history.push('/')
-			)
+			<Card className={classes.card}>
+				<CardMedia
+					className={classes.image}
+					image={`/static/assets/image/seekers/${targetUser.photo}`}
+					key={targetUser.photo}
+				/>
+				<div className={classes.userContent}>
+					<Typography>{targetUser.name}</Typography>
+				</div>
+				<div className={classes.userContent}>
+					<EmailIcon color="primary" fontSize="small" />
+					<div className={classes.sizedBox}></div>
+					<span>{targetUser.email}</span>
+				</div>
+				<div className={classes.userContent}>
+					<CalendarToday color="primary" fontSize="small" />
+					<div className={classes.sizedBox}></div>
+					<span>{`Joined ${dayjs(targetUser.date).format('MMM YYYY')}`}</span>
+				</div>
+			</Card>
 		) : (
 			<SkeletonUser />
 		);

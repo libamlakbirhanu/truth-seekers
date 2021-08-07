@@ -60,7 +60,6 @@ export const verifyAccount = (token, history) => (dispatch) => {
 	axios
 		.post(`/api/seekers/verify/${token}`)
 		.then((res) => {
-			console.log('made it here');
 			dispatch({
 				type: USER_LOGGEDIN,
 			});

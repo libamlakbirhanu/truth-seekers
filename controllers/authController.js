@@ -132,7 +132,7 @@ exports.signup = async (req, res, next) => {
 		const newUser = new Seeker({
 			...req.body,
 		});
-		const token = createToken(newUser.id);
+		const token = createToken(newUser._id);
 		newUser.newUserToken = token;
 
 		await newUser.save();

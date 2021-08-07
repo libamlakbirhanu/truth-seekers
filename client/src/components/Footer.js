@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 
 import logo from './../assets/footer.png';
+import developer from './../assets/libe.jpg';
 
 const styles = {
 	footerText: {
@@ -25,6 +26,11 @@ const styles = {
 		borderRadius: 10,
 		paddingTop: 20,
 		boxShadow: '5px 5px 15px',
+	},
+	devImage: {
+		width: 150,
+		height: 150,
+		borderRadius: '50%',
 	},
 	content: {
 		width: '300px',
@@ -45,19 +51,19 @@ class Footer extends Component {
 				/>
 				<CardContent className={classes.content} id="footerNews">
 					<Typography variant="h4" className={classes.footerHeader}>
-						Newsletter
+						Truth seekers
 					</Typography>
 					<br />
 					<Typography variant="body1" className={classes.footerText}>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, dolor sit
-						amet, consectetur.
+						For every one that asks receives; and he that seeks finds; and to
+						him that knocks it shall be opened.
 					</Typography>
 				</CardContent>
-				<CardContent>
-					<Typography variant="h4" className={classes.footerHeader}>
-						Footer
-					</Typography>
-				</CardContent>
+				<CardMedia
+					image={developer}
+					title="DEVELOPER"
+					className={classes.devImage}
+				/>
 			</Card>
 		);
 	}
