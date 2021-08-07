@@ -37,13 +37,8 @@ class PostSeek extends Component {
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (!nextProps.loading) {
-			this.setState({
-				title: '',
-				body: '',
-			});
+		if (!nextProps.loading && !nextProps.errors.title && !nextProps.errors.body)
 			this.handleClose();
-		}
 	}
 
 	handleOpen = () => {
@@ -75,7 +70,7 @@ class PostSeek extends Component {
 	};
 
 	render() {
-		const { classes } = this.props;
+		const { classes, errors } = this.props;
 		return (
 			<>
 				<Tooltip
@@ -101,6 +96,8 @@ class PostSeek extends Component {
 								type="text"
 								label="title"
 								placeholder="title"
+								helperText={errors && errors.title ? errors.title : ''}
+								error={errors && errors.title ? true : false}
 								className={classes.textField}
 								value={this.state.title}
 								onChange={this.onChange}
@@ -110,6 +107,8 @@ class PostSeek extends Component {
 								type="text"
 								label="body"
 								placeholder="post body"
+								helperText={errors.body}
+								error={errors.body ? true : false}
 								multiline
 								rows={3}
 								className={classes.textField}
@@ -148,9 +147,10 @@ class PostSeek extends Component {
 const mapStateToProps = (state) => {
 	return {
 		loading: state.UI.loading,
+		errors: state.data.errors,
 	};
 };
 
-export default connect(mapStateToProps, { createSeek })(
-	withStyles(styles)(PostSeek)
-);
+export default connect(mapStateToProps, {
+	createSeek,
+})(withStyles(styles)(PostSeek));

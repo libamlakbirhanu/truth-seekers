@@ -14,12 +14,18 @@ import {
 	DOWNVOTE_COMMENT,
 	EDIT_COMMENT,
 	UPLOAD_PHOTO,
+	SET_MULTIPLE_ERRORS,
+	CLEAR_MULTIPLE_ERRORS,
 } from '../types';
 
 const initialState = {
 	seeks: [],
 	seek: {},
 	loading: false,
+	errors: {
+		title: null,
+		body: null,
+	},
 };
 
 const reducer = (state = initialState, action) => {
@@ -82,6 +88,10 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				seeks: [action.payload, ...state.seeks],
+				errors: {
+					title: null,
+					body: null,
+				},
 			};
 		case EDIT_SEEK:
 			const targetSeek = state.seeks.findIndex(
@@ -159,6 +169,19 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				seek: { ...state.seek, comments: [...tempoComments] },
+			};
+		case SET_MULTIPLE_ERRORS:
+			return {
+				...state,
+				errors: action.errors,
+			};
+		case CLEAR_MULTIPLE_ERRORS:
+			return {
+				...state,
+				errors: {
+					title: null,
+					body: null,
+				},
 			};
 		default:
 			return state;

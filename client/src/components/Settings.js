@@ -19,9 +19,10 @@ const styles = (theme) => ({
 		display: 'flex',
 		textAlign: 'center',
 		alignItems: 'center',
-		backgroundColor: 'rgba(0,255,0,.5)',
+		backgroundColor: 'transparent',
+		border: '1px solid rgba(0,255,0,.5)',
 		marginTop: 20,
-		color: 'white',
+		color: 'rgba(0,255,0,.5)',
 		padding: 10,
 		borderRadius: 10,
 		fontSize: 14,
@@ -84,7 +85,7 @@ const Settings = ({ classes, UI, updatePassword, history }) => {
 					<Button
 						type="submit"
 						variant="contained"
-						color="primary"
+						style={{ color: 'white', backgroundColor: '#c4000085' }}
 						className={classes.button}
 						disabled={UI.loading && true}
 					>

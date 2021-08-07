@@ -15,6 +15,8 @@ import {
 	UPVOTE_COMMENT,
 	DOWNVOTE_COMMENT,
 	EDIT_COMMENT,
+	SET_MULTIPLE_ERRORS,
+	CLEAR_MULTIPLE_ERRORS,
 } from '../types';
 
 export const getSeeks = () => (dispatch) => {
@@ -61,6 +63,9 @@ export const createSeek = (newSeek) => (dispatch) => {
 	dispatch({
 		type: LOADING_UI,
 	});
+	dispatch({
+		type: CLEAR_MULTIPLE_ERRORS,
+	});
 	axios
 		.post('/api/seeks', newSeek)
 		.then((res) => {
@@ -69,10 +74,31 @@ export const createSeek = (newSeek) => (dispatch) => {
 				type: LOADING_UI,
 			});
 		})
-		.catch((err) => console.error(err));
+		.catch((err) => {
+			const title =
+				err.response.data.error.errors.title &&
+				err.response.data.error.errors.title.message;
+			const body =
+				err.response.data.error.errors.body &&
+				err.response.data.error.errors.body.message;
+
+			dispatch({
+				type: SET_MULTIPLE_ERRORS,
+				errors: { title: title && title, body: body && body },
+			});
+			dispatch({
+				type: LOADING_UI,
+			});
+		});
 };
 
 export const editSeek = (seekDetails) => (dispatch) => {
+	dispatch({
+		type: LOADING_UI,
+	});
+	dispatch({
+		type: CLEAR_MULTIPLE_ERRORS,
+	});
 	axios
 		.patch(`/api/seeks/${seekDetails.id}`, seekDetails)
 		.then((res) => {
@@ -80,9 +106,25 @@ export const editSeek = (seekDetails) => (dispatch) => {
 				type: EDIT_SEEK,
 				payload: res.data.result,
 			});
+			dispatch({
+				type: LOADING_UI,
+			});
 		})
 		.catch((err) => {
-			console.error(err);
+			const title =
+				err.response.data.error.errors.title &&
+				err.response.data.error.errors.title.message;
+			const body =
+				err.response.data.error.errors.body &&
+				err.response.data.error.errors.body.message;
+
+			dispatch({
+				type: SET_MULTIPLE_ERRORS,
+				errors: { title: title && title, body: body && body },
+			});
+			dispatch({
+				type: LOADING_UI,
+			});
 		});
 };
 
