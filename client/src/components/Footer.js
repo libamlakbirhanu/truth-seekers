@@ -11,12 +11,12 @@ import developer from './../assets/libe.jpg';
 
 const styles = {
 	footerText: {
-		color: 'rgba(255,255,255,0.7)',
+		color: 'rgba(255,255,255,0.5)',
 		textAlign: 'center',
 		fontSize: 12,
 	},
 	footerHeader: {
-		color: 'rgba(255,255,255,0.8)',
+		color: 'rgba(255,255,255,0.7)',
 		textAlign: 'center',
 		fontWeight: 'bold',
 	},
@@ -28,8 +28,8 @@ const styles = {
 		boxShadow: '5px 5px 15px',
 	},
 	devImage: {
-		width: 150,
-		height: 150,
+		width: 100,
+		height: 100,
 		borderRadius: '50%',
 	},
 	content: {
@@ -59,11 +59,22 @@ class Footer extends Component {
 						him that knocks it shall be opened.
 					</Typography>
 				</CardContent>
-				<CardMedia
-					image={developer}
-					title="DEVELOPER"
-					className={classes.devImage}
-				/>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+					}}
+				>
+					<Typography variant="h4" className={classes.footerHeader}>
+						Developed by
+					</Typography>
+					<CardMedia
+						image={developer}
+						title="DEVELOPER"
+						className={classes.devImage}
+						style={{ textAlign: 'center', margin: 'auto' }}
+					/>
+				</div>
 			</Card>
 		);
 	}
