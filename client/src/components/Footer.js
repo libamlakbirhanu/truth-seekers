@@ -28,9 +28,10 @@ const styles = {
 		boxShadow: '5px 5px 15px',
 	},
 	devImage: {
-		width: 100,
-		height: 100,
+		width: 75,
+		height: 75,
 		borderRadius: '50%',
+		margin: '5px 0',
 	},
 	content: {
 		width: '300px',
@@ -74,6 +75,13 @@ class Footer extends Component {
 						className={classes.devImage}
 						style={{ textAlign: 'center', margin: 'auto' }}
 					/>
+					<Typography
+						variant="h4"
+						className={classes.footerHeader}
+						style={{ textAlign: 'center' }}
+					>
+						Libamlak Birhanu
+					</Typography>
 				</div>
 			</Card>
 		);
