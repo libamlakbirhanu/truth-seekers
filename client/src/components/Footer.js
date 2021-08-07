@@ -20,6 +20,10 @@ const styles = {
 		textAlign: 'center',
 		fontWeight: 'bold',
 	},
+	footerDeveloper: {
+		color: 'rgba(255,255,255,0.7)',
+		textAlign: 'center',
+	},
 	image: {
 		width: 100,
 		height: 100,
@@ -28,8 +32,8 @@ const styles = {
 		boxShadow: '5px 5px 15px',
 	},
 	devImage: {
-		width: 75,
-		height: 75,
+		width: 50,
+		height: 50,
 		borderRadius: '50%',
 		margin: '5px 0',
 	},
@@ -66,7 +70,7 @@ class Footer extends Component {
 						flexDirection: 'column',
 					}}
 				>
-					<Typography variant="h4" className={classes.footerHeader}>
+					<Typography variant="h5" className={classes.footerDeveloper}>
 						Developed by
 					</Typography>
 					<CardMedia
@@ -76,8 +80,8 @@ class Footer extends Component {
 						style={{ textAlign: 'center', margin: 'auto' }}
 					/>
 					<Typography
-						variant="h4"
-						className={classes.footerHeader}
+						variant="h5"
+						className={classes.footerDeveloper}
 						style={{ textAlign: 'center' }}
 					>
 						Libamlak Birhanu
