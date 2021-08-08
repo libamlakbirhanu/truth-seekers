@@ -150,7 +150,7 @@ export class Comment extends Component {
 						variant="body1"
 						style={{ marginTop: 5, textAlign: 'center' }}
 					>
-						{currentUser.name}
+						{comment.author.name}
 					</Typography>
 				</div>
 				<div>
