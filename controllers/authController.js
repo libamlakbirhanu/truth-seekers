@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
+// const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
 
@@ -42,30 +42,31 @@ const sendToken = (user, statusCode, req, res) => {
 	});
 };
 
-const sendMail = (email, subject, message, emailHtml, res) => {
-	const OAuth2 = google.auth.OAuth2;
-	const oauth2Client = new OAuth2(
-		process.env.CLIENT_ID,
-		process.env.CLIENT_SECRET,
-		process.env.REDIRECT_URI
-	);
-	oauth2Client.setCredentials({
-		refresh_token: process.env.REFRESH_TOKEN,
-	});
-	const accessToken = oauth2Client.getAccessToken();
+const sendMail = async (email, subject, message, emailHtml, res) => {
+	// const oauth2Client = new google.auth.OAuth2(
+	// 	process.env.CLIENT_ID,
+	// 	process.env.CLIENT_SECRET,
+	// 	process.env.REDIRECT_URI
+	// );
+	// oauth2Client.setCredentials({
+	// 	refresh_token: process.env.REFRESH_TOKEN,
+	// });
+
+	// const accessToken = await oauth2Client.getAccessToken();
 	let transporter = nodemailer.createTransport({
 		service: 'gmail',
 		auth: {
-			type: 'OAuth2',
-			user: GMAIL_USER,
-			clientId: process.env.CLIENT_ID,
-			clientSecret: process.env.CLIENT_SECRET,
-			refreshToken: process.env.REFRESH_TOKEN,
-			accessToken: accessToken,
+			// type: 'OAuth2',
+			user: process.env.GMAIL_USER,
+			pass: process.env.GMAIL_PASSWORD,
+			// clientId: process.env.CLIENT_ID,
+			// clientSecret: process.env.CLIENT_SECRET,
+			// refreshToken: process.env.REFRESH_TOKEN,
+			// accessToken: accessToken,
 		},
-		tls: {
-			rejectUnauthorized: false,
-		},
+		// tls: {
+		// 	rejectUnauthorized: false,
+		// },
 	});
 
 	let mailOptions = {

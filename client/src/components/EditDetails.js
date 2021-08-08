@@ -152,6 +152,10 @@ class EditDetails extends Component {
 								multiline={!(secondTextField === 'email')}
 								onChange={this.onChange}
 								disabled={secondTextField === 'email'}
+								title={
+									secondTextField === 'email' &&
+									'you are not allowed to change the email'
+								}
 							/>
 						</form>
 					</DialogContent>

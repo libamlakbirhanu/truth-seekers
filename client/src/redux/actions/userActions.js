@@ -173,13 +173,14 @@ export const updatePassword = (passwords, history) => (dispatch) => {
 			dispatch({ type: REMOVE_USER });
 			dispatch({
 				type: SET_SUCCESS,
-				message: 'password updated successfully',
+				message:
+					'password updated successfully, you will be redirected to the login page',
 			});
 			dispatch({
 				type: LOADING_UI,
 			});
 
-			setTimeout(() => history.push('/login'), 500);
+			setTimeout(() => history.push('/login'), 1500);
 		})
 		.catch((err) => {
 			dispatch({

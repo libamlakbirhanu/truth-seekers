@@ -146,7 +146,12 @@ export class Comment extends Component {
 						alt="seeker"
 						className={classes.image}
 					/>
-					<Typography variant="body1">{currentUser.name}</Typography>
+					<Typography
+						variant="body1"
+						style={{ marginTop: 5, textAlign: 'center' }}
+					>
+						{currentUser.name}
+					</Typography>
 				</div>
 				<div>
 					<Card className={classes.card}>
