@@ -124,6 +124,7 @@ const Profile = (props) => {
 							<Typography
 								component={Link}
 								to={`/seeker/${currentUser._id}`}
+								style={{ fontSize: 13 }}
 							>{`@${currentUser.name}`}</Typography>
 						</div>
 						<div className={classes.userContent}>

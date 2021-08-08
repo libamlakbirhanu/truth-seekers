@@ -4,7 +4,7 @@ exports.errorMessage = (err, statusCode, res) => {
 		: 'something went wrong';
 
 	if (message.indexOf(',') !== -1) message = message.split(',')[0].trim();
-	if (message.indexOf('dup')) message = 'email is already taken';
+	if (message.indexOf('dup') !== -1) message = 'email is already taken';
 
 	return res.status(statusCode).json({
 		status: 'error',
