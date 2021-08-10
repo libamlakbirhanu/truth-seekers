@@ -42,7 +42,7 @@ const sendToken = (user, statusCode, req, res) => {
 	});
 };
 
-const sendMail = async (email, subject, message, emailHtml, res) => {
+const sendMail = async (email, subject, message, emailHtml, res, model) => {
 	// const oauth2Client = new google.auth.OAuth2(
 	// 	process.env.CLIENT_ID,
 	// 	process.env.CLIENT_SECRET,
@@ -77,7 +77,7 @@ const sendMail = async (email, subject, message, emailHtml, res) => {
 		html: emailHtml,
 	};
 
-	transporter.sendMail(mailOptions, function (error, info) {
+	transporter.sendMail(mailOptions, async function (error, info) {
 		if (error) {
 			return customErrorMessage(
 				'something went wrong. please try again',
@@ -85,6 +85,8 @@ const sendMail = async (email, subject, message, emailHtml, res) => {
 				res
 			);
 		} else {
+			if (model.validate) await model.model.save({ validateBeforeSave: true });
+			else await model.save();
 			return res
 				.status(200)
 				.json({ status: 'success', message: 'Email sent successfully' });
@@ -92,7 +94,7 @@ const sendMail = async (email, subject, message, emailHtml, res) => {
 	});
 };
 
-const structureAndSendEmail = (token, email, file, subject, res) => {
+const structureAndSendEmail = (token, email, file, subject, res, model) => {
 	const ogEmailText = fs
 		.readFileSync(path.join(__dirname, 'emailTemplate', file))
 		.toString();
@@ -126,7 +128,7 @@ const structureAndSendEmail = (token, email, file, subject, res) => {
 				}
 			);
 
-			return sendMail(email, subject, emailText, emailHtml, res);
+			return sendMail(email, subject, emailText, emailHtml, res, model);
 		}
 	);
 };
@@ -154,14 +156,15 @@ exports.signup = async (req, res, next) => {
 		const token = createToken(newUser._id);
 		newUser.newUserToken = token;
 
-		await newUser.save();
+		// await newUser.save();
 
 		structureAndSendEmail(
 			token,
 			newUser.email,
 			'verify.html',
 			'Email verification',
-			res
+			res,
+			{ model: newUser, validate: false }
 		);
 	} catch (err) {
 		return errorMessage(err, 400, res);
@@ -202,14 +205,15 @@ exports.forgotPassword = async (req, res, next) => {
 	if (!seeker) return customErrorMessage('Email does not exist', 404, res);
 
 	const resetToken = seeker.createPasswordResetToken();
-	await seeker.save({ validateBeforeSave: false });
+	// await seeker.save({ validateBeforeSave: false });
 
 	structureAndSendEmail(
 		resetToken,
 		email,
 		'email.html',
 		'Password reset confirmation',
-		res
+		res,
+		{ model: seekers, validate: true }
 	);
 };
 
