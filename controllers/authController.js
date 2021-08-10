@@ -42,7 +42,7 @@ const sendToken = (user, statusCode, req, res) => {
 	});
 };
 
-const sendMail = async (email, subject, message, emailHtml, res, model) => {
+const sendMail = async (email, subject, message, emailHtml, res, cb) => {
 	// const oauth2Client = new google.auth.OAuth2(
 	// 	process.env.CLIENT_ID,
 	// 	process.env.CLIENT_SECRET,
@@ -77,7 +77,7 @@ const sendMail = async (email, subject, message, emailHtml, res, model) => {
 		html: emailHtml,
 	};
 
-	transporter.sendMail(mailOptions, async function (error, info) {
+	transporter.sendMail(mailOptions, function (error, info) {
 		if (error) {
 			return customErrorMessage(
 				'something went wrong. please try again',
@@ -85,8 +85,7 @@ const sendMail = async (email, subject, message, emailHtml, res, model) => {
 				res
 			);
 		} else {
-			if (model.validate) await model.model.save({ validateBeforeSave: true });
-			else await model.save();
+			cb();
 			return res
 				.status(200)
 				.json({ status: 'success', message: 'Email sent successfully' });
@@ -94,7 +93,7 @@ const sendMail = async (email, subject, message, emailHtml, res, model) => {
 	});
 };
 
-const structureAndSendEmail = (token, email, file, subject, res, model) => {
+const structureAndSendEmail = (token, email, file, subject, res, cb) => {
 	const ogEmailText = fs
 		.readFileSync(path.join(__dirname, 'emailTemplate', file))
 		.toString();
@@ -128,7 +127,7 @@ const structureAndSendEmail = (token, email, file, subject, res, model) => {
 				}
 			);
 
-			return sendMail(email, subject, emailText, emailHtml, res, model);
+			return sendMail(email, subject, emailText, emailHtml, res, cb);
 		}
 	);
 };
@@ -136,10 +135,13 @@ const structureAndSendEmail = (token, email, file, subject, res, model) => {
 exports.verifyUser = async (req, res) => {
 	try {
 		const decoded = jwt.verify(req.params.token, process.env.jwtsecret);
-		const newUser = await Seeker.findByIdAndUpdate(decoded.user.id, {
-			verified: true,
-			newUserToken: undefined,
-		});
+		const newUser = await Seeker.findOneAndUpdate(
+			{ email: decoded.user.id },
+			{
+				verified: true,
+				newUserToken: undefined,
+			}
+		);
 
 		if (newUser) return sendToken(newUser, 201, req, res);
 		return customErrorMessage('something went wong please try again', 500, res);
@@ -153,10 +155,8 @@ exports.signup = async (req, res, next) => {
 		const newUser = new Seeker({
 			...req.body,
 		});
-		const token = createToken(newUser._id);
+		const token = createToken(newUser.email);
 		newUser.newUserToken = token;
-
-		// await newUser.save();
 
 		structureAndSendEmail(
 			token,
@@ -164,7 +164,9 @@ exports.signup = async (req, res, next) => {
 			'verify.html',
 			'Email verification',
 			res,
-			{ model: newUser, validate: false }
+			async () => {
+				await newUser.save();
+			}
 		);
 	} catch (err) {
 		return errorMessage(err, 400, res);
@@ -205,7 +207,6 @@ exports.forgotPassword = async (req, res, next) => {
 	if (!seeker) return customErrorMessage('Email does not exist', 404, res);
 
 	const resetToken = seeker.createPasswordResetToken();
-	// await seeker.save({ validateBeforeSave: false });
 
 	structureAndSendEmail(
 		resetToken,
@@ -213,7 +214,9 @@ exports.forgotPassword = async (req, res, next) => {
 		'email.html',
 		'Password reset confirmation',
 		res,
-		{ model: seekers, validate: true }
+		async () => {
+			await seeker.save({ validateBeforeSave: false });
+		}
 	);
 };
 
@@ -314,6 +317,7 @@ exports.isLoggedIn = async (req, res, next) => {
 				status: 'success',
 				user: currentUser,
 			});
+		else return customErrorMessage('no user found', 300, res);
 	} catch (err) {
 		return customErrorMessage(err.message, 500, res);
 	}
