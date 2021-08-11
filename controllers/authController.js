@@ -158,16 +158,23 @@ exports.signup = async (req, res, next) => {
 		const token = createToken(newUser.email);
 		newUser.newUserToken = token;
 
-		structureAndSendEmail(
-			token,
-			newUser.email,
-			'verify.html',
-			'Email verification',
-			res,
-			async () => {
-				await newUser.save();
-			}
-		);
+		const user = await Seeker.findOne({ email: req.body.email });
+
+		if (user) return customErrorMessage('Email already exists', 400, res);
+		else if (req.body.password !== req.body.confirmPassword)
+			return customErrorMessage("passwords don't match", 400, res);
+		else {
+			structureAndSendEmail(
+				token,
+				newUser.email,
+				'verify.html',
+				'Email verification',
+				res,
+				async () => {
+					await newUser.save();
+				}
+			);
+		}
 	} catch (err) {
 		return errorMessage(err, 400, res);
 	}
