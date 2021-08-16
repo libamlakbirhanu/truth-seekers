@@ -324,7 +324,7 @@ exports.isLoggedIn = async (req, res, next) => {
 				status: 'success',
 				user: currentUser,
 			});
-		else return customErrorMessage('no user found', 300, res);
+		else next();
 	} catch (err) {
 		return customErrorMessage(err.message, 500, res);
 	}
