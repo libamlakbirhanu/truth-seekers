@@ -38,7 +38,7 @@ export class Deactivate extends Component {
 		this.setState({
 			open: false,
 		});
-		this.props.deactivate();
+		this.props.deactivate(this.props.history);
 	};
 
 	render() {

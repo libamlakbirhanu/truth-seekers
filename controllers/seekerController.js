@@ -124,6 +124,12 @@ exports.updateMe = async (req, res, next) => {
 exports.deleteMe = async (req, res, next) => {
 	try {
 		const doc = await Seeker.findByIdAndDelete(req.user._id);
+    const cookieOptions = {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    };
+
+    res.cookie('authToken', '', cookieOptions);
 
 		res.status(200).json({
 			status: 'success',
