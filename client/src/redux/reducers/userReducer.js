@@ -31,13 +31,14 @@ const reducer = (state = initialState, action) => {
 		case USER_LOGGEDIN:
 			return {
 				...state,
-				isAuthenticated: true,
+				isAuthenticated: !(action.user.rank === 'admin'),
 			};
 		case SET_USER:
 			return {
 				...state,
 				currentUser: { ...state.currentUser, ...action.user },
 				loading: false,
+				admin: action.user.rank === 'admin',
 			};
 		case REMOVE_USER:
 			return {

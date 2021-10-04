@@ -15,7 +15,7 @@ import {
 	MARK_NOTIFICATIONS_READ,
 } from '../types';
 
-export const userLogin = (userData, history) => (dispatch) => {
+export const userLogin = (userData, history, admin) => (dispatch) => {
 	dispatch({
 		type: CLEAR_ERRORS,
 	});
@@ -23,13 +23,14 @@ export const userLogin = (userData, history) => (dispatch) => {
 		type: LOADING_UI,
 	});
 	axios
-		.post('/api/seekers/login', {
+		.post(admin ? '/api/admins/login' : '/api/seekers/login', {
 			email: userData.email,
 			password: userData.password,
 		})
 		.then((res) => {
 			dispatch({
 				type: USER_LOGGEDIN,
+				user: res.data.data,
 			});
 			dispatch({
 				type: LOADING_UI,
@@ -38,9 +39,10 @@ export const userLogin = (userData, history) => (dispatch) => {
 				type: SET_USER,
 				user: res.data.data,
 			});
-			history.push('/');
+			!admin && history.push('/');
 		})
 		.catch((err) => {
+			console.log(err);
 			dispatch({
 				type: LOADING_UI,
 			});
@@ -299,7 +301,7 @@ export const markNotificationsRead = () => (dispatch) => {
 	axios.post('/api/seekers/notifications').catch((err) => console.error(err));
 };
 
-export const authCheck = () => (dispatch) => {
+export const authCheck = (admin) => (dispatch) => {
 	axios
 		.get('/api/seekers/authcheck')
 		.then((res) => {
@@ -316,5 +318,20 @@ export const authCheck = () => (dispatch) => {
 				});
 			}
 		})
-		.catch((err) => {});
+		.catch((err) => {
+			axios
+				.get('/api/admins/authcheck')
+				.then((res) => {
+					if (res.data.user) {
+						dispatch({
+							type: USER_LOGGEDIN,
+						});
+						dispatch({
+							type: SET_USER,
+							user: res.data.user,
+						});
+					}
+				})
+				.catch((err) => {});
+		});
 };

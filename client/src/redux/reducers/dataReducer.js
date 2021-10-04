@@ -88,6 +88,7 @@ const reducer = (state = initialState, action) => {
 
 			return {
 				...state,
+				edited: true,
 			};
 		case DELETE_SEEK:
 			const tempSeeks = [...state.seeks];
@@ -124,13 +125,11 @@ const reducer = (state = initialState, action) => {
 				(seek) => seek.id === action.payload.seek
 			);
 			state.seeks[seekIndex].commentCount++;
-
 			const expertComment = [];
 			const payloadCopyHolder = [
 				action.payload,
 				...state.seeks[seekIndex].comments,
 			];
-			console.log(payloadCopyHolder);
 
 			payloadCopyHolder.forEach((comment, index) => {
 				if (comment.author.rank === 'expert') {
@@ -144,7 +143,6 @@ const reducer = (state = initialState, action) => {
 			];
 			state.seek.commentCount++;
 			state.seek.comments = [...expertComment, ...payloadCopyHolder];
-			console.log([...expertComment, ...payloadCopyHolder]);
 			return {
 				...state,
 			};

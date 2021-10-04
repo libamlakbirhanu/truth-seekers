@@ -52,7 +52,6 @@ exports.verifyUser = async (req, res, next) => {
 			{
 				email: decoded.user.id,
 				verified: true,
-				adminToken: undefined,
 				potentialEmail: undefined,
 			},
 			{
@@ -66,4 +65,3 @@ exports.verifyUser = async (req, res, next) => {
 		return customErrorMessage('invalid key', 400, res);
 	}
 };
-

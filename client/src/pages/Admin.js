@@ -35,7 +35,9 @@ const styles = {
 };
 
 const Admin = ({ classes, user }) => {
-	const [active, setActive] = useState('notifications');
+	const [active, setActive] = useState(
+		user.currentUser.defaultCredentials ? 'change password' : 'notifications'
+	);
 	const [tabBarText, setTabBarText] = useState(true);
 
 	useEffect(() => {
@@ -76,7 +78,7 @@ const Admin = ({ classes, user }) => {
 
 	tabView();
 
-	return user.currentUser && user.isAuthenticated && user.admin ? (
+	return user.currentUser && user.admin ? (
 		<div className={classes.adminPanel}>
 			<div className="sidebar">
 				<div

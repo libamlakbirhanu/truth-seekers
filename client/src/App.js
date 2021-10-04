@@ -32,8 +32,12 @@ function App(props) {
 		<MuiThemeProvider theme={theme}>
 			<div className="App">
 				<Router>
-					{!window.location.pathname.endsWith('admin') ? <Navbar /> : null}
-					<div className={!props.admin ? `container` : ''}>
+					{!window.location.pathname.includes('admin') ? <Navbar /> : null}
+					<div
+						className={
+							!window.location.pathname.includes('admin') ? `container` : ''
+						}
+					>
 						<Switch>
 							<Route exact path="/" component={home} />
 							<Route exact path="/login" component={login} />
@@ -46,7 +50,7 @@ function App(props) {
 							<Route path="/verifyaccount" component={VerifyAccount} />
 							<Route component={PageNotFound} />
 						</Switch>
-						{!window.location.pathname.endsWith('admin') && <Footer />}
+						{!window.location.pathname.includes('admin') && <Footer />}
 					</div>
 				</Router>
 			</div>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -27,7 +26,7 @@ class AdminLogin extends Component {
 		event.preventDefault();
 
 		const { email, password } = this.state;
-		this.props.userLogin({ email, password }, this.props.history);
+		this.props.userLogin({ email, password }, this.props.history, true);
 	};
 
 	handleChange = (event) => {
@@ -82,14 +81,6 @@ class AdminLogin extends Component {
 								></CircularProgress>
 							)}
 						</Button>
-						<small style={{ display: 'block', marginTop: 10 }}>
-							<Link to="/forgotpassword">forgot password?</Link>
-						</small>
-						{!this.props.admin && (
-							<small style={{ display: 'block', marginTop: 10 }}>
-								You don't have an account? <Link to="/signup">Signup</Link>
-							</small>
-						)}
 					</form>
 				</div>
 			</div>

@@ -51,9 +51,6 @@ const AdminSchema = new mongoose.Schema({
 	},
 	passwordResetToken: String,
 	passwordResetExpires: Date,
-	adminToken: {
-		type: String,
-	},
 	verified: {
 		type: Boolean,
 		default: false,
