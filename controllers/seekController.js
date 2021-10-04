@@ -155,6 +155,7 @@ exports.upvote = async (req, res, next) => {
 
 		const sender =
 			req.user.id === seek.author.id ? 'his/her' : `${seek.author.name}'s`;
+
 		await seeker.save();
 		const doc = await seek.save();
 

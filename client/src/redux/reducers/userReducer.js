@@ -15,6 +15,7 @@ import {
 const initialState = {
 	isAuthenticated: false,
 	currentUser: {},
+	admin: false,
 	notifications: [],
 	loading: false,
 };

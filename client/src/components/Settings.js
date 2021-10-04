@@ -28,7 +28,7 @@ const styles = (theme) => ({
 	},
 });
 
-const Settings = ({ classes, UI, updatePassword, history }) => {
+const Settings = ({ classes, UI, updatePassword, history, admin }) => {
 	const [oldPassword, setOldPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
@@ -46,7 +46,12 @@ const Settings = ({ classes, UI, updatePassword, history }) => {
 						{UI.error ? UI.error.message : UI.success}
 					</div>
 				)}
-				<Typography variant="h3" color="primary" id="settingsTitle">
+				<Typography
+					variant="h4"
+					color="primary"
+					id="settingsTitle"
+					style={{ fontWeight: 'bold' }}
+				>
 					Update password
 				</Typography>
 				<form onSubmit={handleSubmit} className={classes.form}>
@@ -99,7 +104,7 @@ const Settings = ({ classes, UI, updatePassword, history }) => {
 					</Button>
 				</form>
 			</div>
-			<Deactivate />
+			{!admin && <Deactivate />}
 		</div>
 	);
 };
@@ -107,6 +112,7 @@ const Settings = ({ classes, UI, updatePassword, history }) => {
 const mapStateToProps = (state) => {
 	return {
 		UI: state.UI,
+		admin: state.user.admin,
 	};
 };
 

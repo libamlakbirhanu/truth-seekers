@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { createSeek } from './../redux/actions/dataActions';
+import { createSeek, clearErrors } from './../redux/actions/dataActions';
 
 const styles = (theme) => ({
 	...theme.spreadIt,
@@ -153,4 +153,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
 	createSeek,
+	clearErrors,
 })(withStyles(styles)(PostSeek));

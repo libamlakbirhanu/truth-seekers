@@ -27,7 +27,7 @@ CommentSchema.pre('find', function (next) {
 	this.sort('-createdAt');
 	this.populate({
 		path: 'author',
-		select: 'name photo',
+		select: 'name photo rank',
 	});
 
 	next();

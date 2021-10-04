@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-// const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
 
@@ -19,14 +18,14 @@ const createToken = (id) => {
 		user: { id },
 	};
 	return jwt.sign(payload, process.env.jwtsecret, {
-		expiresIn: 90 * 24 * 60 * 60,
+		expiresIn: 1 * 24 * 60 * 60,
 	});
 };
 
 const sendToken = (user, statusCode, req, res) => {
 	const token = createToken(user.id);
 	const cookieOptions = {
-		expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+		expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
 		httpOnly: true,
 		secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
 	};
@@ -43,30 +42,12 @@ const sendToken = (user, statusCode, req, res) => {
 };
 
 const sendMail = async (email, subject, message, emailHtml, res, cb) => {
-	// const oauth2Client = new google.auth.OAuth2(
-	// 	process.env.CLIENT_ID,
-	// 	process.env.CLIENT_SECRET,
-	// 	process.env.REDIRECT_URI
-	// );
-	// oauth2Client.setCredentials({
-	// 	refresh_token: process.env.REFRESH_TOKEN,
-	// });
-
-	// const accessToken = await oauth2Client.getAccessToken();
 	let transporter = nodemailer.createTransport({
 		service: 'gmail',
 		auth: {
-			// type: 'OAuth2',
 			user: process.env.GMAIL_USER,
 			pass: process.env.GMAIL_PASSWORD,
-			// clientId: process.env.CLIENT_ID,
-			// clientSecret: process.env.CLIENT_SECRET,
-			// refreshToken: process.env.REFRESH_TOKEN,
-			// accessToken: accessToken,
 		},
-		// tls: {
-		// 	rejectUnauthorized: false,
-		// },
 	});
 
 	let mailOptions = {
@@ -98,7 +79,6 @@ const structureAndSendEmail = (token, email, file, subject, res, cb) => {
 		.readFileSync(path.join(__dirname, 'emailTemplate', file))
 		.toString();
 	const emailText = ogEmailText.replace('resetToken', token);
-
 	fs.writeFile(
 		path.join(__dirname, 'emailTemplate', file),
 		emailText,
@@ -109,11 +89,9 @@ const structureAndSendEmail = (token, email, file, subject, res, cb) => {
 					500,
 					res
 				);
-
 			const emailHtml = fs.readFileSync(
 				path.join(__dirname, 'emailTemplate', file)
 			);
-
 			fs.writeFile(
 				path.join(__dirname, 'emailTemplate', file),
 				ogEmailText,
@@ -126,13 +104,12 @@ const structureAndSendEmail = (token, email, file, subject, res, cb) => {
 						);
 				}
 			);
-
 			return sendMail(email, subject, emailText, emailHtml, res, cb);
 		}
 	);
 };
 
-exports.verifyUser = async (req, res) => {
+const verifyUser = async (req, res, next) => {
 	try {
 		const decoded = jwt.verify(req.params.token, process.env.jwtsecret);
 		const newUser = await Seeker.findOneAndUpdate(
@@ -150,7 +127,7 @@ exports.verifyUser = async (req, res) => {
 	}
 };
 
-exports.signup = async (req, res, next) => {
+const signup = async (req, res, next) => {
 	try {
 		const newUser = new Seeker({
 			...req.body,
@@ -180,9 +157,9 @@ exports.signup = async (req, res, next) => {
 	}
 };
 
-exports.login = async (req, res, next) => {
+const login = async (req, res, model, verify) => {
 	const { email, password } = req.body;
-	const user = await Seeker.findOne({ email }).select('+password');
+	const user = await model.findOne({ email }).select('+password');
 
 	if (isEmpty(email) || isEmpty(password))
 		return customErrorMessage('fields can not be empty', 400, res);
@@ -190,13 +167,13 @@ exports.login = async (req, res, next) => {
 	if (!user || !(await bcrypt.compare(password, user.password)))
 		return customErrorMessage('incorrect credentials', 400, res);
 
-	if (!user.verified)
+	if (verify && !user.verified)
 		return customErrorMessage('account needs to be verified first', 400, res);
 
 	sendToken(user, 200, req, res);
 };
 
-exports.logout = (req, res, next) => {
+const logout = (req, res, next) => {
 	const cookieOptions = {
 		expires: new Date(Date.now()),
 		httpOnly: true,
@@ -207,13 +184,13 @@ exports.logout = (req, res, next) => {
 	res.status(200).json({ status: 'success' });
 };
 
-exports.forgotPassword = async (req, res, next) => {
+const forgotPassword = async (req, res, next, model) => {
 	const { email } = req.body;
-	const seeker = await Seeker.findOne({ email });
+	const user = await model.findOne({ email });
 
-	if (!seeker) return customErrorMessage('Email does not exist', 404, res);
+	if (!user) return customErrorMessage('Email does not exist', 404, res);
 
-	const resetToken = seeker.createPasswordResetToken();
+	const resetToken = user.createPasswordResetToken();
 
 	structureAndSendEmail(
 		resetToken,
@@ -222,60 +199,68 @@ exports.forgotPassword = async (req, res, next) => {
 		'Password reset confirmation',
 		res,
 		async () => {
-			await seeker.save({ validateBeforeSave: false });
+			await user.save({ validateBeforeSave: false });
 		}
 	);
 };
 
-exports.resetPassword = async (req, res, next) => {
+const resetPassword = async (req, res, next, model) => {
 	const hashedToken = crypto
 		.createHash('sha256')
 		.update(req.params.token)
 		.digest('hex');
-	const seeker = await Seeker.findOne({
+	const user = await model.findOne({
 		passwordResetToken: hashedToken,
 		passwordResetExpires: { $gt: Date.now() },
 	});
 
-	if (!seeker)
+	if (!user)
 		return customErrorMessage(
-			'Seeker not found or the reset token has expired. please try forgetting your password again',
+			'user not found or the reset token has expired. please try forgetting your password again',
 			404,
 			res
 		);
 
 	try {
-		seeker.password = req.body.password;
-		seeker.confirmPassword = req.body.confirmPassword;
-		seeker.passwordResetToken = undefined;
-		seeker.passwordResetExpires = undefined;
-		await seeker.save();
+		user.password = req.body.password;
+		user.confirmPassword = req.body.confirmPassword;
+		user.passwordResetToken = undefined;
+		user.passwordResetExpires = undefined;
+		await user.save();
 	} catch (err) {
 		return errorMessage(err, 300, res);
 	}
 
-	sendToken(seeker, 200, req, res);
+	sendToken(user, 200, req, res);
 };
 
-exports.updatePassword = async (req, res, next) => {
+const updatePassword = async (req, res, next, model, admin) => {
 	try {
-		const seeker = await Seeker.findById(req.user.id).select('+password');
+		const user = await model.findById(req.user.id).select('+password');
 		const { oldPassword, newPassword, confirmPassword } = req.body;
 
-		if (!(await bcrypt.compare(oldPassword, seeker.password)))
+		if (!oldPassword || oldPassword.trim() === '')
+			return customErrorMessage(
+				'You have to provide your current password to proceed with the current operation',
+				401,
+				res
+			);
+
+		if (!(await bcrypt.compare(oldPassword, user.password)))
 			return customErrorMessage('incorrect credentials', 401, res);
 
-		seeker.password = newPassword;
-		seeker.confirmPassword = confirmPassword;
-		await seeker.save();
+		user.password = newPassword;
+		user.confirmPassword = confirmPassword;
+		if (admin) user.potentialEmail = undefined;
+		await user.save();
 
-		sendToken(seeker, 200, req, res);
+		sendToken(user, 200, req, res);
 	} catch (err) {
 		return errorMessage(err, 400, res);
 	}
 };
 
-exports.protect = async (req, res, next) => {
+const protect = async (req, res, next, model) => {
 	try {
 		let token;
 
@@ -289,13 +274,11 @@ exports.protect = async (req, res, next) => {
 		if (!token) return;
 
 		const decoded = jwt.verify(token, process.env.jwtsecret);
-		const currentUser = await Seeker.findById(decoded.user.id);
+		const currentUser = await model.findById(decoded.user.id);
 
 		if (!currentUser)
-			return customErrorMessage('Seeker does not exist anymore.', 401, res);
-
+			return customErrorMessage('User does not exist anymore.', 401, res);
 		req.user = currentUser;
-		// res.locals.user = currentUser;
 
 		next();
 	} catch (err) {
@@ -303,7 +286,7 @@ exports.protect = async (req, res, next) => {
 	}
 };
 
-exports.isLoggedIn = async (req, res, next) => {
+const isLoggedIn = async (req, res, next, model) => {
 	try {
 		let token;
 
@@ -314,10 +297,19 @@ exports.isLoggedIn = async (req, res, next) => {
 			token = req.headers.authorization.split(' ')[1];
 		else if (req.cookies.authToken) token = req.cookies.authToken;
 
-		if (!token) return;
+		if (!token)
+			return customErrorMessage(
+				'You need to login in order to proceed with the current operation',
+				403,
+				res
+			);
 
 		const decoded = jwt.verify(token, process.env.jwtsecret);
-		const currentUser = await Seeker.findById(decoded.user.id);
+		const currentUser = await model.findById(decoded.user.id);
+
+		if (!currentUser) {
+			return customErrorMessage('user does not exist', 404, res);
+		}
 
 		if (currentUser && token)
 			return res.status(200).json({
@@ -328,4 +320,20 @@ exports.isLoggedIn = async (req, res, next) => {
 	} catch (err) {
 		return customErrorMessage(err.message, 500, res);
 	}
+};
+
+module.exports = {
+	isEmpty,
+	createToken,
+	sendToken,
+	structureAndSendEmail,
+	verifyUser,
+	signup,
+	login,
+	logout,
+	forgotPassword,
+	resetPassword,
+	updatePassword,
+	protect,
+	isLoggedIn,
 };

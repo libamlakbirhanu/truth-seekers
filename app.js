@@ -24,6 +24,7 @@ app.use(compression());
 
 // ROUTES
 app.use('/api/seeks', require('./routes/api/seeks'));
+app.use('/api/admins', require('./routes/api/admins'));
 app.use('/api/seekers', require('./routes/api/seekers'));
 app.use('/api/comments', require('./routes/api/comments'));
 

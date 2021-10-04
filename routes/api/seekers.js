@@ -1,38 +1,59 @@
 const router = require('express').Router();
+const Seeker = require('../../models/Seeker');
 const seekerController = require('./../../controllers/seekerController');
 const authController = require('./../../controllers/authController');
 
-router.get('/authcheck', authController.isLoggedIn);
+router.get('/authcheck', (req, res, next) =>
+	authController.isLoggedIn(req, res, next, Seeker)
+);
 router.post('/verify/:token', authController.verifyUser);
 router.post('/signup', authController.signup);
-router.post('/login', authController.login);
+router.post('/login', (req, res) =>
+	authController.login(req, res, Seeker, true)
+);
 router.get('/logout', authController.logout);
-router.post('/forgot-password', authController.forgotPassword);
-router.patch('/reset-password/:token', authController.resetPassword);
+router.post('/forgot-password', (req, res, next) =>
+	authController.forgotPassword(req, res, next, Seeker)
+);
+router.patch('/reset-password/:token', (req, res, next) =>
+	authController.resetPassword(req, res, next, Seeker)
+);
 router.patch(
 	'/update-password',
-	authController.protect,
-	authController.updatePassword
+	(req, res, next) => authController.protect(req, res, next, Seeker),
+	(req, res, next) => authController.updatePassword(req, res, next, Seeker)
 );
 
 router.patch(
 	'/',
-	authController.protect,
+	(req, res, next) => authController.protect(req, res, next, Seeker),
 	seekerController.uploadPhoto,
 	seekerController.resizePhoto,
 	seekerController.updateMe
 );
-router.delete('/', authController.protect, seekerController.deleteMe);
-router.get('/', authController.protect, seekerController.getSeekers);
-router.get('/_me', authController.protect, seekerController.getMe);
+router.delete(
+	'/',
+	(req, res, next) => authController.protect(req, res, next, Seeker),
+	seekerController.deleteMe
+);
+router.get(
+	'/',
+	(req, res, next) => authController.protect(req, res, next, Seeker),
+	seekerController.getSeekers
+);
+router.get(
+	'/_me',
+	(req, res, next) => authController.protect(req, res, next, Seeker),
+	seekerController.getMe
+);
 router.get(
 	'/notifications',
-	authController.protect,
+	(req, res, next) => authController.protect(req, res, next, Seeker),
 	seekerController.notifications
 );
 router.post(
 	'/notifications',
-	authController.protect,
+	(req, res, next) => authController.protect(req, res, next, Seeker),
 	seekerController.markNotificationsRead
 );
 router.get('/:id', seekerController.getSeeker);

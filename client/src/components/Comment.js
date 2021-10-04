@@ -39,7 +39,6 @@ const styles = {
 		width: '50px',
 		height: '50px',
 		borderRadius: '50%',
-		marginRight: 10,
 	},
 	counts: {
 		marginRight: 10,
@@ -139,6 +138,7 @@ export class Comment extends Component {
 						display: 'flex',
 						flexDirection: 'column',
 						alignItems: 'center',
+						marginRight: 10,
 					}}
 				>
 					<img
@@ -149,6 +149,8 @@ export class Comment extends Component {
 					<Typography
 						variant="body1"
 						style={{ marginTop: 5, textAlign: 'center' }}
+						component={Link}
+						to={`/seeker/${comment.author._id}`}
 					>
 						{comment.author.name}
 					</Typography>

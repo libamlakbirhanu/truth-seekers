@@ -33,7 +33,7 @@ function Pagination({ postsPerPage, seeks, paginate, prev, next }) {
 	}
 
 	return (
-		<nav>
+		<nav style={{ margin: 'auto' }}>
 			<ul className="pagination">
 				{currentPage !== 1 && (
 					<button className="arrows" onClick={handlePrev}>

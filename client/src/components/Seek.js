@@ -37,6 +37,9 @@ const styles = {
 		flexWrap: 'wrap',
 		position: 'relative',
 	},
+	expert: {
+		backgroundColor: 'rgba(220, 178, 250, 0.5)',
+	},
 	title: {
 		marginBottom: 10,
 		fontWeight: 'bold',
@@ -92,6 +95,21 @@ class Seek extends Component {
 				document.getElementById('commentBody') &&
 					document.getElementById('commentBody').focus();
 			}, 500);
+	};
+
+	highlightedText = (text, target) => {
+		const seekBody = text
+			.toLowerCase()
+			.split(new RegExp(`(${target.toLowerCase()})`, 'gi'));
+
+		const highlighted = (
+			<>
+				{seekBody.map((part, index) =>
+					part === target ? <mark key={index}>{part}</mark> : part
+				)}
+			</>
+		);
+		return highlighted;
 	};
 
 	render() {
@@ -155,6 +173,7 @@ class Seek extends Component {
 			isAuthenticated && currentUser._id === seek.author._id ? (
 				<EditDetails
 					target={seek}
+					clear={this.props.clear}
 					details={{ firstTextField: 'title', secondTextField: 'body' }}
 					edit={editSeek}
 				/>
@@ -166,8 +185,13 @@ class Seek extends Component {
 				: seek.author.photo
 		}`;
 
+		const cardClass =
+			seek.author.rank === 'expert'
+				? `${classes.card} ${classes.expert}`
+				: classes.card;
+
 		return (
-			<Card className={classes.card}>
+			<Card className={cardClass}>
 				<Link to={{ pathname: imageUrl }} target="_blank">
 					<CardMedia
 						image={imageUrl}
@@ -202,11 +226,20 @@ class Seek extends Component {
 
 				<CardContent className={classes.content}>
 					<Typography variant="h5" className={classes.title}>
-						{seek.title}
+						{this.props.highlight
+							? this.highlightedText(seek.title, this.props.highlight)
+							: `${seek.title[0].toUpperCase()}${seek.title.slice(
+									1,
+									seek.title.length
+							  )}`}
 					</Typography>
 					<Typography variant="body2">
-						{fullContent ? (
-							seek.body
+						{fullContent || this.props.highlight ? (
+							this.props.highlight ? (
+								this.highlightedText(seek.body, this.props.highlight)
+							) : (
+								seek.body
+							)
 						) : seek.body.length > 205 ? (
 							<>
 								{seek.body.substring(0, 200).trim()}...

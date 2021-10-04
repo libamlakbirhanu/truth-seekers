@@ -18,6 +18,7 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Tooltip from '@material-ui/core/Tooltip';
+import StarIcon from '@material-ui/icons/Star';
 
 import { editUser } from './../redux/actions/userActions';
 
@@ -40,6 +41,10 @@ const styles = {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	rank: {
+		fontSize: '20px !important',
+		color: '#800080',
 	},
 	bottomActions: {
 		display: 'flex',
@@ -126,6 +131,12 @@ const Profile = (props) => {
 								to={`/seeker/${currentUser._id}`}
 								style={{ fontSize: 13 }}
 							>{`@${currentUser.name}`}</Typography>
+						</div>
+						<div className={classes.userContent}>
+							<Typography className={classes.rank}>
+								{currentUser.rank}
+							</Typography>{' '}
+							<StarIcon style={{ color: 'yellow' }} />
 						</div>
 						<div className={classes.userContent}>
 							<EmailIcon color="primary" fontSize="small" />

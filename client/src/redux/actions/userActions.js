@@ -289,7 +289,7 @@ export const setNotifications = () => (dispatch) => {
 				dispatch({ type: SET_NOTIFICATIONS, payload: res.data.data })
 			)
 			.catch((err) => console.error(err));
-	}, 10000);
+	}, 5000);
 };
 
 export const markNotificationsRead = () => (dispatch) => {
@@ -316,5 +316,5 @@ export const authCheck = () => (dispatch) => {
 				});
 			}
 		})
-		.catch((err) => console.error('error: ', err.response));
+		.catch((err) => {});
 };

@@ -9,6 +9,7 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import EmailIcon from '@material-ui/icons/Email';
 import CalendarToday from '@material-ui/icons/CalendarToday';
+import StarIcon from '@material-ui/icons/Star';
 
 import Seek from '../components/Seek';
 import SkeletonSeek from '../components/SkeletonSeek';
@@ -38,6 +39,10 @@ const styles = {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	rank: {
+		fontSize: '20px !important',
+		color: '#800080',
 	},
 	sizedBox: {
 		width: 10,
@@ -126,6 +131,10 @@ class profile extends Component {
 				/>
 				<div className={classes.userContent}>
 					<Typography>{targetUser.name}</Typography>
+				</div>
+				<div className={classes.userContent}>
+					<Typography className={classes.rank}>{targetUser.rank}</Typography>{' '}
+					<StarIcon style={{ color: 'yellow' }} />
 				</div>
 				<div className={classes.userContent}>
 					<EmailIcon color="primary" fontSize="small" />

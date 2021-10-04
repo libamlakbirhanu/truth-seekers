@@ -42,14 +42,14 @@ exports.uploadPhoto = upload.single('photo');
 
 exports.resizePhoto = (req, res, next) => {
 	if (!req.file) return next();
-
+	console.log(req.file.fieldname);
 	req.file.filename = `${req.file.fieldname}-${req.user.id}-${Date.now()}.jpeg`;
 
 	sharp(req.file.buffer)
 		.resize(500, 500)
 		.toFormat('jpeg')
 		.jpeg({ quality: 90 })
-		.toFile(`client/build/static/assets/image/seekers/${req.file.filename}`)
+		.toFile(`images/${req.file.filename}`)
 		.then(() => next())
 		.catch((err) => console.error(err));
 };
@@ -121,15 +121,48 @@ exports.updateMe = async (req, res, next) => {
 	}
 };
 
+exports.testUpload = async (req, res, next) => {
+	try {
+		const userId = req.user._id;
+		const filteredBody = filterObj(req.body, 'name', 'email');
+
+		if (req.file) filteredBody.photo = req.file.filename;
+
+		if (
+			req.user.photo !== 'default.jpg' &&
+			fs.existsSync(`images/${req.user.photo}`) &&
+			req.file
+		)
+			fs.unlink(`images/${req.user.photo}`, (err) => {
+				if (err) console.error(err);
+			});
+
+		const doc = await Seeker.findByIdAndUpdate(userId, filteredBody, {
+			new: true,
+			runValidators: true,
+		});
+
+		if (!doc)
+			return customErrorMessage('there is no user with the given Id', 404, res);
+
+		res.status(200).json({
+			status: 'success',
+			result: doc,
+		});
+	} catch (err) {
+		return errorMessage(err, 400, res);
+	}
+};
+
 exports.deleteMe = async (req, res, next) => {
 	try {
 		const doc = await Seeker.findByIdAndDelete(req.user._id);
-    const cookieOptions = {
-      expires: new Date(Date.now()),
-      httpOnly: true,
-    };
+		const cookieOptions = {
+			expires: new Date(Date.now()),
+			httpOnly: true,
+		};
 
-    res.cookie('authToken', '', cookieOptions);
+		res.cookie('authToken', '', cookieOptions);
 
 		res.status(200).json({
 			status: 'success',

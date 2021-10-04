@@ -8,6 +8,7 @@ import {
 	CLEAR_SEEK,
 	POST_SEEK,
 	EDIT_SEEK,
+	SET_EDITED_TO_FALSE,
 	POST_COMMENT,
 	DELETE_COMMENT,
 	UPVOTE_COMMENT,
@@ -22,6 +23,7 @@ const initialState = {
 	seeks: [],
 	seek: {},
 	loading: false,
+	edited: false,
 	errors: {
 		title: null,
 		body: null,
@@ -47,7 +49,7 @@ const reducer = (state = initialState, action) => {
 				...state,
 			};
 		case SET_SEEKS:
-			return action.payload !== state.seeks
+			return action.payload.length !== state.seeks.length
 				? {
 						...state,
 						seeks: action.payload,
@@ -55,6 +57,18 @@ const reducer = (state = initialState, action) => {
 				  }
 				: { ...state };
 		case SET_SEEK:
+			const expertComments = [];
+			const payloadHolder = [...action.payload.comments];
+
+			payloadHolder.forEach((comment, index) => {
+				if (comment.author.rank === 'expert') {
+					payloadHolder.splice(index, 1);
+					expertComments.push(comment);
+				}
+			});
+
+			action.payload.comments = [...expertComments, ...payloadHolder];
+
 			return {
 				...state,
 				seek: action.payload,
@@ -83,6 +97,7 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				seeks: [...tempSeeks],
+				edited: true,
 			};
 		case POST_SEEK:
 			return {
@@ -101,18 +116,35 @@ const reducer = (state = initialState, action) => {
 			state.seek =
 				JSON.stringify(state.seek) !== '{}' ? { ...action.payload } : {};
 
-			return { ...state };
+			return { ...state, edited: true };
+		case SET_EDITED_TO_FALSE:
+			return { ...state, edited: false };
 		case POST_COMMENT:
 			const seekIndex = state.seeks.findIndex(
 				(seek) => seek.id === action.payload.seek
 			);
 			state.seeks[seekIndex].commentCount++;
-			state.seeks[seekIndex].comments = state.seeks[seekIndex].comments.concat(
-				action.payload
-			);
-			state.seek.commentCount++;
-			state.seek.comments = [action.payload, ...state.seek.comments];
 
+			const expertComment = [];
+			const payloadCopyHolder = [
+				action.payload,
+				...state.seeks[seekIndex].comments,
+			];
+			console.log(payloadCopyHolder);
+
+			payloadCopyHolder.forEach((comment, index) => {
+				if (comment.author.rank === 'expert') {
+					payloadCopyHolder.splice(index, 1);
+					expertComment.push(comment);
+				}
+			});
+			state.seeks[seekIndex].comments = [
+				...expertComment,
+				...payloadCopyHolder,
+			];
+			state.seek.commentCount++;
+			state.seek.comments = [...expertComment, ...payloadCopyHolder];
+			console.log([...expertComment, ...payloadCopyHolder]);
 			return {
 				...state,
 			};
@@ -179,6 +211,7 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				errors: {
+					...state['errors'],
 					title: null,
 					body: null,
 				},

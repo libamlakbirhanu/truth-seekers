@@ -24,6 +24,7 @@ export const DELETE_SEEK = 'DELETE_SEEK';
 export const CLEAR_SEEK = 'CLEAR_SEEK';
 export const POST_SEEK = 'POST_SEEK';
 export const EDIT_SEEK = 'EDIT_SEEK';
+export const SET_EDITED_TO_FALSE = 'SET_EDITED_TO_FALSE';
 export const POST_COMMENT = 'POST_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const UPVOTE_COMMENT = 'UPVOTE_COMMENT';

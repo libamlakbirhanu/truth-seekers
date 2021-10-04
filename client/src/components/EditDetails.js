@@ -16,6 +16,9 @@ import { connect } from 'react-redux';
 
 const styles = (theme) => ({
 	...theme.spreadIt,
+	progressLoader: {
+		position: 'absolute',
+	},
 });
 
 class EditDetails extends Component {
@@ -84,6 +87,7 @@ class EditDetails extends Component {
 			details[secondTextField] !== target[secondTextField]
 		) {
 			this.props.edit(details);
+			this.props.clear();
 		}
 	};
 
@@ -153,8 +157,9 @@ class EditDetails extends Component {
 								onChange={this.onChange}
 								disabled={secondTextField === 'email'}
 								title={
-									secondTextField === 'email' &&
-									'you are not allowed to change the email'
+									secondTextField === 'email'
+										? 'you are not allowed to change the email'
+										: undefined
 								}
 							/>
 						</form>
@@ -169,6 +174,7 @@ class EditDetails extends Component {
 							variant="contained"
 							disabled={this.props.loading}
 							color="primary"
+							style={{ position: 'relative' }}
 						>
 							{this.props.loading && (
 								<CircularProgress

@@ -9,6 +9,7 @@ import {
 	CLEAR_SEEK,
 	POST_SEEK,
 	EDIT_SEEK,
+	SET_EDITED_TO_FALSE,
 	SET_SEEK,
 	POST_COMMENT,
 	DELETE_COMMENT,
@@ -18,6 +19,7 @@ import {
 	SET_MULTIPLE_ERRORS,
 	CLEAR_MULTIPLE_ERRORS,
 } from '../types';
+import swearWords from '../../assets/profanity';
 
 export const getSeeks = () => (dispatch) => {
 	dispatch({
@@ -38,7 +40,7 @@ export const getSeeks = () => (dispatch) => {
 				dispatch({ type: SET_SEEKS, payload: res.data.data.docs });
 			})
 			.catch((err) => console.error(err.response));
-	}, 10000);
+	}, 5000);
 };
 
 export const getSeek = (id) => (dispatch) => {
@@ -59,6 +61,12 @@ export const clearSeek = () => (dispatch) => {
 	});
 };
 
+export const clearErrors = () => (dispatch) => {
+	dispatch({
+		type: CLEAR_MULTIPLE_ERRORS,
+	});
+};
+
 export const createSeek = (newSeek) => (dispatch) => {
 	dispatch({
 		type: LOADING_UI,
@@ -66,30 +74,61 @@ export const createSeek = (newSeek) => (dispatch) => {
 	dispatch({
 		type: CLEAR_MULTIPLE_ERRORS,
 	});
-	axios
-		.post('/api/seeks', newSeek)
-		.then((res) => {
-			dispatch({ type: POST_SEEK, payload: res.data.result });
-			dispatch({
-				type: LOADING_UI,
-			});
-		})
-		.catch((err) => {
-			const title =
-				err.response.data.error.errors.title &&
-				err.response.data.error.errors.title.message;
-			const body =
-				err.response.data.error.errors.body &&
-				err.response.data.error.errors.body.message;
 
-			dispatch({
-				type: SET_MULTIPLE_ERRORS,
-				errors: { title: title && title, body: body && body },
-			});
-			dispatch({
-				type: LOADING_UI,
-			});
+	let foundSwearsInBody = false;
+	let foundSwearsInTitle = false;
+
+	for (const word of newSeek.body.split(' ')) {
+		if (swearWords.includes(word.toLowerCase())) {
+			foundSwearsInBody = true;
+			break;
+		}
+	}
+
+	for (const word of newSeek.title.split(' ')) {
+		if (swearWords.includes(word.toLowerCase())) {
+			foundSwearsInTitle = true;
+			break;
+		}
+	}
+
+	if (foundSwearsInBody || foundSwearsInTitle) {
+		dispatch({
+			type: SET_MULTIPLE_ERRORS,
+			errors: {
+				title: foundSwearsInTitle && 'profanity is not allowed',
+				body: foundSwearsInBody && 'profanity is not allowed',
+			},
 		});
+		dispatch({
+			type: LOADING_UI,
+		});
+	} else {
+		axios
+			.post('/api/seeks', newSeek)
+			.then((res) => {
+				dispatch({ type: POST_SEEK, payload: res.data.result });
+				dispatch({
+					type: LOADING_UI,
+				});
+			})
+			.catch((err) => {
+				const title =
+					err.response.data.error.errors.title &&
+					err.response.data.error.errors.title.message;
+				const body =
+					err.response.data.error.errors.body &&
+					err.response.data.error.errors.body.message;
+
+				dispatch({
+					type: SET_MULTIPLE_ERRORS,
+					errors: { title: title && title, body: body && body },
+				});
+				dispatch({
+					type: LOADING_UI,
+				});
+			});
+	}
 };
 
 export const editSeek = (seekDetails) => (dispatch) => {
@@ -126,6 +165,12 @@ export const editSeek = (seekDetails) => (dispatch) => {
 				type: LOADING_UI,
 			});
 		});
+};
+
+export const setEditedToFalse = () => (dispatch) => {
+	dispatch({
+		type: SET_EDITED_TO_FALSE,
+	});
 };
 
 export const upvoteSeek = (id) => (dispatch) => {

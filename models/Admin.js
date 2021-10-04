@@ -3,10 +3,11 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const SeekerSchema = new mongoose.Schema({
+const AdminSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		required: [true, 'name can not be empty'],
+		required: [true, 'user name can not be empty'],
+		default: 'admin',
 	},
 	email: {
 		type: String,
@@ -14,11 +15,17 @@ const SeekerSchema = new mongoose.Schema({
 		unique: [true, 'email is already taken'],
 		lowercase: true,
 		validate: [validator.isEmail, 'email is not valid'],
+		default: 'admin@gmail.com',
+	},
+	potentialEmail: {
+		type: String,
+		required: false,
+		lowercase: true,
+		validate: [validator.isEmail, 'email is not valid'],
 	},
 	rank: {
 		type: String,
-		enum: ['user', 'apprentice', 'shaman', 'expert'],
-		default: 'user',
+		default: 'admin',
 	},
 	password: {
 		type: String,
@@ -44,50 +51,28 @@ const SeekerSchema = new mongoose.Schema({
 	},
 	passwordResetToken: String,
 	passwordResetExpires: Date,
-	likedSeeks: {
-		type: [mongoose.Schema.ObjectId],
-		ref: 'seek',
-	},
-	dislikedSeeks: {
-		type: [mongoose.Schema.ObjectId],
-		ref: 'seek',
-	},
-	points: {
-		type: Number,
-		default: 0,
-	},
-	likedComments: {
-		type: [mongoose.Schema.ObjectId],
-		ref: 'comment',
-	},
-	dislikedComments: {
-		type: [mongoose.Schema.ObjectId],
-		ref: 'comment',
-	},
-	newUserToken: {
+	adminToken: {
 		type: String,
 	},
 	verified: {
 		type: Boolean,
 		default: false,
 	},
-	rank: {
-		type: String,
-		default: 'apprentice',
+	defaultCredentials: {
+		type: Boolean,
+		default: true,
 	},
 });
 
-SeekerSchema.pre('save', async function (next) {
-	if (this.password) {
-		const salt = await bcrypt.genSalt(12);
-		this.password = await bcrypt.hash(this.password, salt);
+AdminSchema.pre('save', async function (next) {
+	const salt = await bcrypt.genSalt(12);
+	this.password = await bcrypt.hash(this.password, salt);
 
-		this.confirmPassword = undefined;
-		next();
-	}
+	this.confirmPassword = undefined;
+	next();
 });
 
-SeekerSchema.methods.createPasswordResetToken = function () {
+AdminSchema.methods.createPasswordResetToken = function () {
 	const resetToken = crypto.randomBytes(32).toString('hex');
 
 	this.passwordResetToken = crypto
@@ -99,4 +84,4 @@ SeekerSchema.methods.createPasswordResetToken = function () {
 	return resetToken;
 };
 
-module.exports = Seeker = mongoose.model('seeker', SeekerSchema);
+module.exports = Admin = mongoose.model('admin', AdminSchema);

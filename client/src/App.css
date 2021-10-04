@@ -28,6 +28,10 @@ h6 {
 	color: rgba(0, 0, 0, 0.7);
 }
 
+.ais-SearchBox {
+	margin: 1em 0;
+}
+
 a span {
 	color: #e2e2e2;
 }
@@ -153,6 +157,29 @@ a {
 	cursor: pointer;
 }
 
+.sidebar {
+	/* height: 100vh; */
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 250px;
+	background-color: #4b0082;
+}
+
+.tabs {
+	margin-left: 250px;
+	flex-grow: 1;
+	width: auto;
+}
+
+.tab {
+	max-width: 600px;
+	margin: auto;
+	padding: 0 20px;
+	padding-top: 40px;
+}
+
 @keyframes focused {
 	from {
 		background-color: rgba(0, 0, 0, 0.05);
@@ -175,6 +202,15 @@ a {
 	.container {
 		width: 85%;
 	}
+	.sidebar {
+		width: 60px;
+	}
+	.tabs {
+		margin-left: 60px;
+	}
+	.tab {
+		padding-top: 20px;
+	}
 }
 
 @media only screen and (max-width: 765px) {
@@ -195,9 +231,6 @@ a {
 	}
 	#deactivate {
 		float: left !important;
-	}
-	#settingsTitle {
-		font-size: 36px;
 	}
 	.container {
 		width: 90%;

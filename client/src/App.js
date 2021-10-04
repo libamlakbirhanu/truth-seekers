@@ -14,6 +14,7 @@ import ResetPassword from './pages/ResetPassword';
 import VerifyAccount from './pages/VerifyAccount';
 import seek from './pages/seek';
 import profile from './pages/profile';
+import Admin from './pages/Admin';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PageNotFound from './components/PageNotFound';
@@ -31,20 +32,21 @@ function App(props) {
 		<MuiThemeProvider theme={theme}>
 			<div className="App">
 				<Router>
-					<Navbar />
-					<div className="container">
+					{!window.location.pathname.endsWith('admin') ? <Navbar /> : null}
+					<div className={!props.admin ? `container` : ''}>
 						<Switch>
 							<Route exact path="/" component={home} />
 							<Route exact path="/login" component={login} />
 							<Route exact path="/signup" component={signup} />
 							<Route exact path="/seek/:id" component={seek} />
 							<Route exact path="/seeker/:id" component={profile} />
+							<Route exact path="/admin" component={Admin} />
 							<Route exact path="/forgotpassword" component={forgotPassword} />
 							<Route path="/resetpassword" component={ResetPassword} />
 							<Route path="/verifyaccount" component={VerifyAccount} />
 							<Route component={PageNotFound} />
 						</Switch>
-						<Footer />
+						{!window.location.pathname.endsWith('admin') && <Footer />}
 					</div>
 				</Router>
 			</div>
@@ -52,4 +54,10 @@ function App(props) {
 	);
 }
 
-export default connect(null, { authCheck, getSeeks })(App);
+const mapStateToProps = (state) => {
+	return {
+		admin: state.user.admin,
+	};
+};
+
+export default connect(mapStateToProps, { authCheck, getSeeks })(App);

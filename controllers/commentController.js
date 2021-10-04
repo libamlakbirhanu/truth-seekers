@@ -21,6 +21,7 @@ exports.createComment = async (req, res, next) => {
 		const doc = await comment.save();
 		const sender =
 			req.user.id === seek.author.id ? 'his/her' : `${seek.author.name}'s`;
+
 		await seek.save();
 
 		await createNotifications(
@@ -34,6 +35,7 @@ exports.createComment = async (req, res, next) => {
 			result: doc,
 		});
 	} catch (err) {
+		console.log(err);
 		return errorMessage(err, 400, res);
 	}
 };
