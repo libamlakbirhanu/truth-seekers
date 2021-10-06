@@ -49,13 +49,11 @@ const reducer = (state = initialState, action) => {
 				...state,
 			};
 		case SET_SEEKS:
-			return action.payload.length !== state.seeks.length
-				? {
-						...state,
-						seeks: action.payload,
-						loading: false,
-				  }
-				: { ...state };
+			return {
+				...state,
+				seeks: action.payload,
+				loading: false,
+			};
 		case SET_SEEK:
 			const expertComments = [];
 			const payloadHolder = [...action.payload.comments];

@@ -64,6 +64,7 @@ export const verifyAccount = (token, history) => (dispatch) => {
 		.then((res) => {
 			dispatch({
 				type: USER_LOGGEDIN,
+				user: res.data.data,
 			});
 			dispatch({
 				type: SET_USER,
@@ -238,6 +239,7 @@ export const resetPass = (token, newPass, history) => (dispatch) => {
 		.then((res) => {
 			dispatch({
 				type: USER_LOGGEDIN,
+				user: res.data.data,
 			});
 			dispatch({
 				type: LOADING_UI,
@@ -311,6 +313,7 @@ export const authCheck = (admin) => (dispatch) => {
 				});
 				dispatch({
 					type: USER_LOGGEDIN,
+					user: res.data.user,
 				});
 				dispatch({
 					type: SET_USER,
@@ -325,6 +328,7 @@ export const authCheck = (admin) => (dispatch) => {
 					if (res.data.user) {
 						dispatch({
 							type: USER_LOGGEDIN,
+							user: res.data.user,
 						});
 						dispatch({
 							type: SET_USER,

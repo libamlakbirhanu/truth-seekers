@@ -14,6 +14,7 @@ import Notifications from '../components/admin/AdminNotifications';
 import Flagged from '../components/admin/Flagged';
 import Promote from '../components/admin/Promote';
 import ChangePassword from '../components/admin/ChangePassword';
+import ChangeEmail from '../components/admin/ChangeEmail';
 
 const styles = {
 	adminPanel: {
@@ -35,14 +36,15 @@ const styles = {
 };
 
 const Admin = ({ classes, user }) => {
-	const [active, setActive] = useState(
-		user.currentUser.defaultCredentials ? 'change password' : 'notifications'
-	);
+	const [active, setActive] = useState('notifications');
 	const [tabBarText, setTabBarText] = useState(true);
 
 	useEffect(() => {
 		if (window.innerWidth <= 800) setTabBarText(false);
-	}, []);
+		user.currentUser.defaultCredentials
+			? setActive('change password')
+			: setActive('notifications');
+	}, [user.currentUser.defaultCredentials]);
 
 	const toggleTabBarTexts = () => {
 		if (window.innerWidth <= 800) setTabBarText(false);
@@ -79,51 +81,57 @@ const Admin = ({ classes, user }) => {
 	tabView();
 
 	return user.currentUser && user.admin ? (
-		<div className={classes.adminPanel}>
-			<div className="sidebar">
-				<div
-					className={`${classes.sidebarItem} ${
-						active === 'notifications' && classes.active
-					}`}
-					onClick={() => handleClick('notifications')}
-				>
-					<Badge color="secondary">
-						<NotificationsIcon color="primary" fontSize="large" />
-					</Badge>
-					{tabBarText && <p className={classes.sidebarText}>Notifications</p>}
+		!user.currentUser.verified ? (
+			<ChangeEmail />
+		) : (
+			<div className={classes.adminPanel}>
+				<div className="sidebar">
+					<div
+						className={`${classes.sidebarItem} ${
+							active === 'notifications' && classes.active
+						}`}
+						onClick={() => handleClick('notifications')}
+					>
+						<Badge color="secondary">
+							<NotificationsIcon color="primary" fontSize="large" />
+						</Badge>
+						{tabBarText && <p className={classes.sidebarText}>Notifications</p>}
+					</div>
+					<div
+						className={`${classes.sidebarItem} ${
+							active === 'promote' && classes.active
+						}`}
+						onClick={() => handleClick('promote')}
+					>
+						<StarHalfIcon color="primary" fontSize="large" />
+						{tabBarText && <p className={classes.sidebarText}>Promote</p>}
+					</div>
+					<div
+						className={`${classes.sidebarItem} ${
+							active === 'flagged' && classes.active
+						}`}
+						onClick={() => handleClick('flagged')}
+					>
+						<FlagIcon color="primary" fontSize="large" />
+						{tabBarText && <p className={classes.sidebarText}>Flagged</p>}
+					</div>
+					<div
+						className={`${classes.sidebarItem} ${
+							active === 'change password' && classes.active
+						}`}
+						onClick={() => handleClick('change password')}
+					>
+						<KeyboardIcon color="primary" fontSize="large" />
+						{tabBarText && (
+							<p className={classes.sidebarText}>Change Password</p>
+						)}
+					</div>
 				</div>
-				<div
-					className={`${classes.sidebarItem} ${
-						active === 'promote' && classes.active
-					}`}
-					onClick={() => handleClick('promote')}
-				>
-					<StarHalfIcon color="primary" fontSize="large" />
-					{tabBarText && <p className={classes.sidebarText}>Promote</p>}
-				</div>
-				<div
-					className={`${classes.sidebarItem} ${
-						active === 'flagged' && classes.active
-					}`}
-					onClick={() => handleClick('flagged')}
-				>
-					<FlagIcon color="primary" fontSize="large" />
-					{tabBarText && <p className={classes.sidebarText}>Flagged</p>}
-				</div>
-				<div
-					className={`${classes.sidebarItem} ${
-						active === 'change password' && classes.active
-					}`}
-					onClick={() => handleClick('change password')}
-				>
-					<KeyboardIcon color="primary" fontSize="large" />
-					{tabBarText && <p className={classes.sidebarText}>Change Password</p>}
+				<div className="tabs">
+					<div className="tab">{tab}</div>
 				</div>
 			</div>
-			<div className="tabs">
-				<div className="tab">{tab}</div>
-			</div>
-		</div>
+		)
 	) : (
 		<AdminLogin admin />
 	);

@@ -71,10 +71,6 @@ const SeekerSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
-	rank: {
-		type: String,
-		default: 'apprentice',
-	},
 });
 
 SeekerSchema.pre('save', async function (next) {
