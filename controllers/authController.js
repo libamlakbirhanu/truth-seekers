@@ -74,11 +74,16 @@ const sendMail = async (email, subject, message, emailHtml, res, cb) => {
 	});
 };
 
-const structureAndSendEmail = (token, email, file, subject, res, cb) => {
+const structureAndSendEmail = (token, email, file, subject, res, cb, admin) => {
 	const ogEmailText = fs
 		.readFileSync(path.join(__dirname, 'emailTemplate', file))
 		.toString();
 	const emailText = ogEmailText.replace('resetToken', token);
+
+	if (admin) {
+		emailText = ogEmailText.replace('verifyaccount', 'admin/verifyaccount');
+	}
+
 	fs.writeFile(
 		path.join(__dirname, 'emailTemplate', file),
 		emailText,

@@ -48,6 +48,7 @@ function App(props) {
 							<Route exact path="/forgotpassword" component={forgotPassword} />
 							<Route path="/resetpassword" component={ResetPassword} />
 							<Route path="/verifyaccount" component={VerifyAccount} />
+							<Route path="/admin/verifyaccount" component={VerifyAccount} />
 							<Route component={PageNotFound} />
 						</Switch>
 						{!window.location.pathname.includes('admin') && <Footer />}

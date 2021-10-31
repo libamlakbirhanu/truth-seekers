@@ -6,7 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { forgetPass } from '../../redux/actions/userActions';
+import { changeEmail } from '../../redux/actions/userActions';
 import logo from '../../assets/truthseekers.png';
 
 const styles = (theme) => ({
@@ -25,7 +25,7 @@ class ChangeEmail extends Component {
 		event.preventDefault();
 
 		const { email } = this.state;
-		this.props.forgetPass(email, this.props.history);
+		this.props.changeEmail(email, this.props.history);
 	};
 
 	handleChange = (event) => {
@@ -35,7 +35,7 @@ class ChangeEmail extends Component {
 	};
 
 	render() {
-		const { classes, UI } = this.props;
+		const { classes, UI, email } = this.props;
 
 		return (
 			<div className={classes.center}>
@@ -52,6 +52,7 @@ class ChangeEmail extends Component {
 							label="Email"
 							className={classes.textField}
 							value={this.state.email}
+							placeholder={email}
 							onChange={this.handleChange}
 							required
 						></TextField>
@@ -63,7 +64,7 @@ class ChangeEmail extends Component {
 							className={classes.button}
 							disabled={UI.loading && true}
 						>
-							Change Email
+							Change Default Email
 							{UI.loading && (
 								<CircularProgress
 									className={classes.progress}
@@ -83,11 +84,11 @@ ChangeEmail.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-	return { UI: state.UI };
+	return { UI: state.UI, email: state.user.currentUser.email };
 };
 
 const mapStateToDispatch = {
-	forgetPass,
+	changeEmail,
 };
 
 export default connect(

@@ -31,7 +31,12 @@ function VerifyAccount({ resetPass, classes, UI, history, verifyAccount }) {
 		token = splittedPathname[splittedPathname.length - 1];
 	}
 
-	!noToken && verifyAccount(token, history);
+	!noToken &&
+		verifyAccount(
+			token,
+			history,
+			window.location.pathname.contains('admin') && true
+		);
 
 	return (
 		<div

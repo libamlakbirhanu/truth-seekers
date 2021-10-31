@@ -34,9 +34,10 @@ exports.changeEmail = async (req, res, next) => {
 				async () => {
 					await Admin.findOneAndUpdate(
 						{ email: req.user.email },
-						{ adminToken: token, potentialEmail: req.body.email }
+						{ potentialEmail: req.body.email }
 					);
-				}
+				},
+				true
 			);
 		}
 	} catch (err) {

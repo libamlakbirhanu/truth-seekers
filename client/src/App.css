@@ -120,39 +120,35 @@ a {
 	justify-content: center;
 }
 .active {
-	border: 2px solid #800080 !important;
 	color: #800080 !important;
 }
 .listItem {
-	border: 1px solid rgba(0, 0, 0, 0.5);
-	padding: 5px 10px;
+	font-weight: bold;
 	margin: 5px;
-	border-radius: 15px;
+	border: none;
 	display: flex;
 	align-items: center;
 }
-.listItem:hover {
-	border: 1px solid #800080;
-	color: #800080;
+.pageLink {
+	color: rgba(0, 0, 0, 0.5);
+}
+.pageLink:hover {
+	color: #800080 !important;
 	cursor: pointer;
 }
-.pageLink {
-	color: #800080;
-}
+
 .arrows {
-	padding: 15px 10px;
+	/* padding: 15px 10px; */
 	margin: 0 5px;
-	color: white;
-	background-color: #800080;
-	border: 1px solid transparent;
-	border-radius: 15px;
+	color: rgba(0, 0, 0, 0.5);
+	background: transparent;
+	border: none;
+	font-weight: bold;
 	display: flex;
 	align-items: center;
 	transition: all 0.5s;
 }
 .arrows:hover {
-	background: transparent;
-	border: 1px solid #800080;
 	color: #800080;
 	cursor: pointer;
 }
@@ -214,6 +210,9 @@ a {
 }
 
 @media only screen and (max-width: 765px) {
+	.container {
+		width: 90%;
+	}
 	.footerContainer {
 		flex-wrap: wrap;
 		box-shadow: 0px 5px 10px !important;
@@ -232,9 +231,7 @@ a {
 	#deactivate {
 		float: left !important;
 	}
-	.container {
-		width: 90%;
-	}
+
 	.editSeek {
 		right: 0px;
 		top: 0px;

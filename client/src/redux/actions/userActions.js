@@ -58,9 +58,11 @@ export const userLogin = (userData, history, admin) => (dispatch) => {
 		});
 };
 
-export const verifyAccount = (token, history) => (dispatch) => {
+export const verifyAccount = (token, history, admin) => (dispatch) => {
 	axios
-		.post(`/api/seekers/verify/${token}`)
+		.post(
+			admin ? `/api/admins/verify/${token}` : `/api/seekers/verify/${token}`
+		)
 		.then((res) => {
 			dispatch({
 				type: USER_LOGGEDIN,
@@ -70,7 +72,7 @@ export const verifyAccount = (token, history) => (dispatch) => {
 				type: SET_USER,
 				user: res.data.data,
 			});
-			history.push('/');
+			admin ? history.push('/admin') : history.push('/');
 		})
 		.catch((err) => {
 			setTimeout(() => history.push('/signup'), 1500);
@@ -198,6 +200,35 @@ export const updatePassword = (passwords, history) => (dispatch) => {
 					type: CLEAR_ERRORS,
 				});
 			}, 1500);
+		});
+};
+
+export const changeEmail = (email, history) => (dispatch) => {
+	dispatch({
+		type: LOADING_UI,
+	});
+
+	axios
+		.post('/api/admins/change-email', { email })
+		.then((res) => {
+			dispatch({
+				type: LOADING_UI,
+			});
+			history.push('/admin/verifyaccount');
+		})
+		.catch((err) => {
+			dispatch({
+				type: LOADING_UI,
+			});
+			dispatch({
+				type: SET_ERRORS,
+				error: err.response.data,
+			});
+			setTimeout(() => {
+				dispatch({
+					type: CLEAR_ERRORS,
+				});
+			}, 2500);
 		});
 };
 

@@ -43,10 +43,12 @@ function Pagination({ postsPerPage, seeks, paginate, prev, next }) {
 				{pageNumbers.map((number) => (
 					<li
 						key={number}
-						className={`listItem ${number === currentPage && 'active'}`}
+						className="listItem"
 						onClick={() => handleClick(number)}
 					>
-						<span className="pageLink">{number}</span>
+						<span className={`pageLink ${number === currentPage && 'active'}`}>
+							{number}
+						</span>
 					</li>
 				))}
 				{currentPage !== pageNumbers.length && (
