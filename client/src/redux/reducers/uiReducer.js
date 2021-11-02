@@ -1,4 +1,10 @@
-import { LOADING_UI, SET_ERRORS, CLEAR_ERRORS, SET_SUCCESS } from '../types';
+import {
+	LOADING_UI,
+	SET_ERRORS,
+	CLEAR_ERRORS,
+	SET_SUCCESS,
+	CLEAR_SUCCESS,
+} from '../types';
 
 const initialState = {
 	loading: false,
@@ -27,6 +33,11 @@ const uiReducer = (state = initialState, action) => {
 			return {
 				...state,
 				success: action.message,
+			};
+		case CLEAR_SUCCESS:
+			return {
+				...state,
+				success: null,
 			};
 		default:
 			return state;

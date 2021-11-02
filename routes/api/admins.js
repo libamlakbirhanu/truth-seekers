@@ -21,12 +21,12 @@ router.post('/login', (req, res) =>
 	authController.login(req, res, Admin, false)
 );
 router.get('/logout', authController.logout);
-router.post('/forgot-password', (req, res, next) =>
-	authController.forgotPassword(req, res, next, Admin)
-);
-router.patch('/reset-password/:token', (req, res, next) =>
-	authController.resetPassword(req, res, next, Admin)
-);
+// router.post('/forgot-password', (req, res, next) =>
+// 	authController.forgotPassword(req, res, next, Admin)
+// );
+// router.patch('/reset-password/:token', (req, res, next) =>
+// 	authController.resetPassword(req, res, next, Admin)
+// );
 router.patch(
 	'/update-password',
 	(req, res, next) => authController.protect(req, res, next, Admin),

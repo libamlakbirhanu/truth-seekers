@@ -21,6 +21,7 @@ const styles = (theme) => ({
 		alignItems: 'center',
 		backgroundColor: 'rgba(0,255,0,.5)',
 		marginTop: 20,
+		marginBottom: 20,
 		color: 'white',
 		padding: 10,
 		borderRadius: 10,
@@ -35,7 +36,11 @@ const Settings = ({ classes, UI, updatePassword, history, admin }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		updatePassword({ oldPassword, newPassword, confirmPassword }, history);
+		updatePassword(
+			{ oldPassword, newPassword, confirmPassword },
+			history,
+			true
+		);
 	};
 
 	return (

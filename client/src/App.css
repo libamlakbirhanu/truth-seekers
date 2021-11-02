@@ -161,6 +161,9 @@ a {
 	bottom: 0;
 	width: 250px;
 	background-color: #4b0082;
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .tabs {

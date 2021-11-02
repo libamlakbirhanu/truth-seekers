@@ -8,6 +8,7 @@ import {
 	LOADING_UI,
 	SET_ERRORS,
 	SET_SUCCESS,
+	CLEAR_SUCCESS,
 	CLEAR_ERRORS,
 	LOADING,
 	UPLOAD_PHOTO,
@@ -164,7 +165,7 @@ export const editUser = (userDetails) => (dispatch) => {
 		});
 };
 
-export const updatePassword = (passwords, history) => (dispatch) => {
+export const updatePassword = (passwords, history, admin) => (dispatch) => {
 	dispatch({
 		type: CLEAR_ERRORS,
 	});
@@ -172,10 +173,12 @@ export const updatePassword = (passwords, history) => (dispatch) => {
 		type: LOADING_UI,
 	});
 	axios
-		.patch('/api/seekers/update-password', passwords)
+		.patch(
+			admin ? '/api/admins/update-password' : '/api/seekers/update-password',
+			passwords
+		)
 		.then(() => {
-			dispatch({ type: USER_LOGGEDOUT });
-			dispatch({ type: REMOVE_USER });
+			!admin && dispatch({ type: USER_LOGGEDOUT });
 			dispatch({
 				type: SET_SUCCESS,
 				message:
@@ -184,8 +187,12 @@ export const updatePassword = (passwords, history) => (dispatch) => {
 			dispatch({
 				type: LOADING_UI,
 			});
-
-			setTimeout(() => history.push('/login'), 1500);
+			setTimeout(() => {
+				dispatch({ type: REMOVE_USER });
+				dispatch({
+					type: CLEAR_SUCCESS,
+				});
+			}, 1500);
 		})
 		.catch((err) => {
 			dispatch({
@@ -209,12 +216,12 @@ export const changeEmail = (email, history) => (dispatch) => {
 	});
 
 	axios
-		.post('/api/admins/change-email', { email })
+		.patch('/api/admins/change-email', { email })
 		.then((res) => {
 			dispatch({
 				type: LOADING_UI,
 			});
-			history.push('/admin/verifyaccount');
+			history.push('/admin');
 		})
 		.catch((err) => {
 			dispatch({

@@ -41,10 +41,10 @@ const Admin = ({ classes, user }) => {
 
 	useEffect(() => {
 		if (window.innerWidth <= 800) setTabBarText(false);
-		user.currentUser.defaultCredentials
+		user.currentUser && user.currentUser.defaultCredentials
 			? setActive('change password')
 			: setActive('notifications');
-	}, [user.currentUser.defaultCredentials]);
+	}, [user]);
 
 	const toggleTabBarTexts = () => {
 		if (window.innerWidth <= 800) setTabBarText(false);

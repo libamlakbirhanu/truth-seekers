@@ -15,6 +15,7 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const SET_MULTIPLE_ERRORS = 'SET_ERRORS';
 export const CLEAR_MULTIPLE_ERRORS = 'CLEAR_ERRORS';
 export const SET_SUCCESS = 'SET_SUCCESS';
+export const CLEAR_SUCCESS = 'CLEAR_SUCCESS';
 
 export const SET_SEEKS = 'SET_SEEKS';
 export const SET_SEEK = 'SET_SEEK';
