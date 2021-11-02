@@ -2,6 +2,14 @@
 
 A completely responsive social media forum app for churches where users can post any question they have, related to religion, and get answers from other users all over the country.
 
+# technologies used in this project
+
+Nodejs/ExpressJs, Reactjs, Mongodb, MaterialUi, Redux/React-redux
+
+# demo
+
+https://seekers-of-the-truth.herokuapp.com
+
 # screenshots
 
 ![Screenshot (221)](https://user-images.githubusercontent.com/60085915/139922384-3b1d12ed-f21b-4050-8f0b-7c4d933a1047.png)
