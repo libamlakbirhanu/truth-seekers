@@ -14,6 +14,7 @@ import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import FlagIcon from '@material-ui/icons/Flag';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
@@ -169,6 +170,15 @@ class Seek extends Component {
 				<Delete onclick={() => this.props.deleteSeek(seek.id)} target="seek" />
 			) : null;
 
+		const reportButton =
+			currentUser._id !== seek.author._id ? (
+				<Tooltip title="report" placement="top">
+					<IconButton>
+						<FlagIcon style={{ color: 'red' }} fontSize="small" />
+					</IconButton>
+				</Tooltip>
+			) : null;
+
 		const editButton =
 			isAuthenticated && currentUser._id === seek.author._id ? (
 				<EditDetails
@@ -273,6 +283,7 @@ class Seek extends Component {
 					</Tooltip>
 					<span className={classes.counts}>{this.props.commentCount}</span>
 					{deleteButton}
+					{reportButton}
 				</div>
 			</Card>
 		);

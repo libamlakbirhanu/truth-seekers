@@ -9,6 +9,7 @@ import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import FlagIcon from '@material-ui/icons/Flag';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -131,6 +132,15 @@ export class Comment extends Component {
 				/>
 			) : null;
 
+		const reportButton =
+			currentUser._id !== comment.author._id ? (
+				<Tooltip title="report" placement="top">
+					<IconButton>
+						<FlagIcon style={{ color: 'red' }} fontSize="small" />
+					</IconButton>
+				</Tooltip>
+			) : null;
+
 		return (
 			<div className={classes.commentContainer}>
 				<div
@@ -184,6 +194,7 @@ export class Comment extends Component {
 							{downvoteButton}
 							<span className={classes.counts}>{comment.downvotes}</span>
 							{deleteButton}
+							{reportButton}
 						</div>
 					</Card>
 					<span className="weakColor">
