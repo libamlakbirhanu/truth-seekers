@@ -31,12 +31,6 @@ const styles = {
 		paddingTop: 20,
 		boxShadow: '5px 5px 15px',
 	},
-	devImage: {
-		width: 50,
-		height: 50,
-		borderRadius: '50%',
-		margin: '5px 0',
-	},
 	content: {
 		width: '300px',
 	},
@@ -76,7 +70,7 @@ class Footer extends Component {
 					<CardMedia
 						image={developer}
 						title="DEVELOPER"
-						className={classes.devImage}
+						className="devImage overlay"
 						style={{ textAlign: 'center', margin: 'auto' }}
 					/>
 					<Typography

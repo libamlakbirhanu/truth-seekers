@@ -252,11 +252,11 @@ const updatePassword = async (req, res, next, model, admin) => {
 			);
 
 		if (!(await bcrypt.compare(oldPassword, user.password)))
-			return customErrorMessage('incorrect credentials', 401, res);
+			return customErrorMessage('incorrect credentials', 400, res);
 
 		user.password = newPassword;
 		user.confirmPassword = confirmPassword;
-		if (admin) user.potentialEmail = undefined;
+		if (admin) user.defaultCredentials = false;
 		await user.save();
 
 		sendToken(user, 200, req, res);

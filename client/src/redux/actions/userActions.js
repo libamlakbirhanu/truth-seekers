@@ -221,7 +221,7 @@ export const changeEmail = (email, history) => (dispatch) => {
 			dispatch({
 				type: LOADING_UI,
 			});
-			history.push('/admin');
+			history.push('/admin/verifyaccount');
 		})
 		.catch((err) => {
 			dispatch({
