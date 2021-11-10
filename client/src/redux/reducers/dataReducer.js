@@ -173,6 +173,34 @@ const reducer = (state = initialState, action) => {
 				downvotes,
 			};
 
+			if (action.type === DOWNVOTE_COMMENT) {
+				state.seek.author.points--;
+				tempComments[commentIndex].author.points--;
+				if (tempComments[commentIndex].author.points < 50 - 10) {
+					state.seek.author.rank = 'user';
+					tempComments[commentIndex].author.rank = 'user';
+				} else if (tempComments[commentIndex].author.points < 150 - 10) {
+					state.seek.author.rank = 'apprentice';
+					tempComments[commentIndex].author.rank = 'apprentice';
+				} else if (tempComments[commentIndex].author.points < 500 - 10) {
+					state.seek.author.rank = 'shaman';
+					tempComments[commentIndex].author.rank = 'shaman';
+				}
+			} else {
+				state.seek.author.points++;
+				tempComments[commentIndex].author.points++;
+				if (tempComments[commentIndex].author.points >= 500) {
+					state.seek.author.rank = 'expert';
+					tempComments[commentIndex].author.rank = 'expert';
+				} else if (tempComments[commentIndex].author.points >= 150) {
+					state.seek.author.rank = 'shaman';
+					tempComments[commentIndex].author.rank = 'shaman';
+				} else if (tempComments[commentIndex].author.points >= 50) {
+					state.seek.author.rank = 'apprentice';
+					tempComments[commentIndex].author.rank = 'apprentice';
+				}
+			}
+
 			return {
 				...state,
 				seek: { ...state.seek, comments: [...tempComments] },
@@ -204,14 +232,16 @@ const reducer = (state = initialState, action) => {
 				errors: action.errors,
 			};
 		case CLEAR_MULTIPLE_ERRORS:
-			return {
-				...state,
-				errors: {
-					...state['errors'],
-					title: null,
-					body: null,
-				},
-			};
+			return !state.errors.title && !state.errors.body
+				? state
+				: {
+						...state,
+						errors: {
+							...state['errors'],
+							title: null,
+							body: null,
+						},
+				  };
 		default:
 			return state;
 	}

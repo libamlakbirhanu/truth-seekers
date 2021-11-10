@@ -12,9 +12,31 @@ import {
 	DOWNVOTE_COMMENT,
 } from '../types';
 
+const promote = (state) => {
+	state.currentUser.points++;
+	if (state.currentUser.points >= 500) {
+		state.currentUser.rank = 'expert';
+	} else if (state.currentUser.points >= 150) {
+		state.currentUser.rank = 'shaman';
+	} else if (state.currentUser.points >= 50) {
+		state.currentUser.rank = 'apprentice';
+	}
+};
+
+const demote = (state) => {
+	state.currentUser.points--;
+	if (state.currentUser.points < 50 - 10) {
+		state.currentUser.rank = 'user';
+	} else if (state.currentUser.points < 150 - 10) {
+		state.currentUser.rank = 'apprentice';
+	} else if (state.currentUser.points < 500 - 10) {
+		state.currentUser.rank = 'shaman';
+	}
+};
+
 const initialState = {
 	isAuthenticated: false,
-	currentUser: {},
+	currentUser: null,
 	admin: false,
 	notifications: [],
 	loading: false,
@@ -55,6 +77,12 @@ const reducer = (state = initialState, action) => {
 			state.currentUser.dislikedSeeks = state.currentUser.dislikedSeeks.filter(
 				(el) => el !== action.payload.id
 			);
+			const seekFromPayload = { ...action.payload };
+
+			if (seekFromPayload.author._id === state.currentUser._id) {
+				promote(state);
+			}
+
 			return {
 				...state,
 			};
@@ -63,6 +91,12 @@ const reducer = (state = initialState, action) => {
 			state.currentUser.likedSeeks = state.currentUser.likedSeeks.filter(
 				(el) => el !== action.payload.id
 			);
+			const seekFromPayload2 = { ...action.payload };
+
+			if (seekFromPayload2.author._id === state.currentUser._id) {
+				demote(state);
+			}
+
 			return {
 				...state,
 			};
@@ -72,6 +106,12 @@ const reducer = (state = initialState, action) => {
 				state.currentUser.dislikedComments.filter(
 					(el) => el !== action.payload._id
 				);
+			const commentFromPayload = { ...action.payload };
+
+			if (commentFromPayload.author === state.currentUser._id) {
+				promote(state);
+			}
+
 			return {
 				...state,
 			};
@@ -80,6 +120,12 @@ const reducer = (state = initialState, action) => {
 			state.currentUser.likedComments = state.currentUser.likedComments.filter(
 				(el) => el !== action.payload._id
 			);
+			const commentFromPayload2 = { ...action.payload };
+
+			if (commentFromPayload2.author === state.currentUser._id) {
+				demote(state);
+			}
+
 			return {
 				...state,
 			};
