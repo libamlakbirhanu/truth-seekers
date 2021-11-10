@@ -52,7 +52,12 @@ const SeekerSchema = new mongoose.Schema({
 		type: [mongoose.Schema.ObjectId],
 		ref: 'seek',
 	},
+	strike: {
+		type: Number,
+		default: 0,
+	},
 	points: {
+		// upvotes - downvotes
 		type: Number,
 		default: 0,
 	},

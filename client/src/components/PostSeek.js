@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
 import { connect } from 'react-redux';
-import { createSeek, clearErrors } from './../redux/actions/dataActions';
+import { createSeek } from './../redux/actions/dataActions';
 
 const styles = (theme) => ({
 	...theme.spreadIt,
@@ -37,12 +37,16 @@ class PostSeek extends Component {
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (!nextProps.loading && !nextProps.errors.title && !nextProps.errors.body)
+		if (
+			!nextProps.loading &&
+			nextProps.errors &&
+			!nextProps.errors.title &&
+			!nextProps.errors.body
+		)
 			this.handleClose();
 	}
 
 	handleOpen = () => {
-		this.props.clearErrors();
 		this.setState({
 			open: true,
 		});
@@ -108,8 +112,8 @@ class PostSeek extends Component {
 								type="text"
 								label="body"
 								placeholder="post body"
-								helperText={errors.body}
-								error={errors.body ? true : false}
+								helperText={errors && errors.body ? errors.body : ''}
+								error={errors && errors.body ? true : false}
 								multiline
 								rows={3}
 								className={classes.textField}
@@ -154,5 +158,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
 	createSeek,
-	clearErrors,
 })(withStyles(styles)(PostSeek));
