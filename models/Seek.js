@@ -47,7 +47,7 @@ SeekSchema.post('save', function (req, res, next) {
 SeekSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'author',
-		select: 'name email photo rank',
+		select: 'name email photo rank points',
 	});
 
 	next();
