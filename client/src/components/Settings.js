@@ -39,7 +39,7 @@ const Settings = ({ classes, UI, updatePassword, history, admin }) => {
 		updatePassword(
 			{ oldPassword, newPassword, confirmPassword },
 			history,
-			true
+			admin ? true : false
 		);
 	};
 
