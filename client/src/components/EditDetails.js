@@ -87,7 +87,7 @@ class EditDetails extends Component {
 			details[secondTextField] !== target[secondTextField]
 		) {
 			this.props.edit(details);
-			this.props.clear();
+			!Object.keys(target).includes('name') && this.props.clear();
 		}
 	};
 
