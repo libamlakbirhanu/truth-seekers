@@ -7,9 +7,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
+import StarIcon from '@material-ui/icons/Star';
 import EmailIcon from '@material-ui/icons/Email';
 import CalendarToday from '@material-ui/icons/CalendarToday';
-import StarIcon from '@material-ui/icons/Star';
 
 import Seek from '../components/Seek';
 import SkeletonSeek from '../components/SkeletonSeek';
@@ -111,6 +111,52 @@ class profile extends Component {
 			settings: true,
 		});
 	};
+	promote = () => {
+		const { targetUser } = this.state;
+		targetUser.points++;
+		if (targetUser.points >= 500) {
+			targetUser.rank = 'expert';
+			this.setState({
+				...this.state,
+				targetUser: { ...targetUser },
+			});
+		} else if (targetUser.points >= 150) {
+			targetUser.rank = 'shaman';
+			this.setState({
+				...this.state,
+				targetUser: { ...targetUser },
+			});
+		} else if (targetUser.points >= 50) {
+			targetUser.rank = 'apprentice';
+			this.setState({
+				...this.state,
+				targetUser: { ...targetUser },
+			});
+		}
+	};
+	demote = () => {
+		const { targetUser } = this.state;
+		targetUser.points--;
+		if (targetUser.points < 50 - 10) {
+			targetUser.rank = 'user';
+			this.setState({
+				...this.state,
+				targetUser: { ...targetUser },
+			});
+		} else if (targetUser.points < 150 - 10) {
+			targetUser.rank = 'apprentice';
+			this.setState({
+				...this.state,
+				targetUser: { ...targetUser },
+			});
+		} else if (targetUser.points < 500 - 10) {
+			targetUser.rank = 'shaman';
+			this.setState({
+				...this.state,
+				targetUser: { ...targetUser },
+			});
+		}
+	};
 
 	render() {
 		const {
@@ -126,15 +172,25 @@ class profile extends Component {
 			<Card className={classes.card}>
 				<CardMedia
 					className={classes.image}
-					image={`/static/assets/image/seekers/${targetUser.photo}`}
+					image={`http://localhost:5000/static/image/seekers/${targetUser.photo}`}
 					key={targetUser.photo}
 				/>
 				<div className={classes.userContent}>
 					<Typography>{targetUser.name}</Typography>
 				</div>
 				<div className={classes.userContent}>
-					<Typography className={classes.rank}>{targetUser.rank}</Typography>{' '}
-					<StarIcon style={{ color: 'yellow' }} />
+					<Typography className={classes.rank}>
+						{targetUser.rank}
+						{targetUser.rank === 'expert' && (
+							<StarIcon
+								style={{
+									color: 'yellow',
+									marginLeft: 10,
+									transform: 'translateY(15%)',
+								}}
+							/>
+						)}
+					</Typography>
 				</div>
 				<div className={classes.userContent}>
 					<EmailIcon color="primary" fontSize="small" />
@@ -154,7 +210,13 @@ class profile extends Component {
 			seeks
 				.filter((seek) => seek.author._id === this.props.match.params.id)
 				.map((seek) => (
-					<Seek key={seek.id} seek={seek} commentCount={seek.commentCount} />
+					<Seek
+						key={seek.id}
+						seek={seek}
+						commentCount={seek.commentCount}
+						promote={this.promote}
+						demote={this.demote}
+					/>
 				))
 		) : (
 			<>

@@ -17,8 +17,8 @@ import IconButton from '@material-ui/core/IconButton';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Tooltip from '@material-ui/core/Tooltip';
 import StarIcon from '@material-ui/icons/Star';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { editUser } from './../redux/actions/userActions';
 
@@ -36,7 +36,7 @@ const styles = {
 	},
 	userContent: {
 		padding: '0px',
-		marginBottom: 10,
+		marginBottom: 5,
 		textAlign: 'center',
 		display: 'flex',
 		justifyContent: 'center',
@@ -92,9 +92,10 @@ const Profile = (props) => {
 		user: { currentUser, isAuthenticated },
 	} = props;
 
-	const imageUrl = isAuthenticated
-		? `/static/assets/image/seekers/${currentUser.photo}`
-		: '';
+	const imageUrl =
+		isAuthenticated && currentUser
+			? `http://localhost:5000/static/image/seekers/${currentUser.photo}`
+			: '';
 
 	const profileMarkup = (
 		<Card className={classes.card}>
@@ -103,7 +104,7 @@ const Profile = (props) => {
 					<>
 						<Link to={{ pathname: imageUrl }} target="_blank">
 							<CardMedia
-								className={classes.image}
+								className={`overlay ${classes.image}`}
 								image={imageUrl}
 								key={currentUser.photo}
 							/>
@@ -135,8 +136,16 @@ const Profile = (props) => {
 						<div className={classes.userContent}>
 							<Typography className={classes.rank}>
 								{currentUser.rank}
-							</Typography>{' '}
-							<StarIcon style={{ color: 'yellow' }} />
+								{currentUser.rank === 'expert' && (
+									<StarIcon
+										style={{
+											color: 'yellow',
+											marginLeft: 10,
+											transform: 'translateY(15%)',
+										}}
+									/>
+								)}
+							</Typography>
 						</div>
 						<div className={classes.userContent}>
 							<EmailIcon color="primary" fontSize="small" />

@@ -18,6 +18,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
+import StarIcon from '@material-ui/icons/Star';
 
 import { connect } from 'react-redux';
 import {
@@ -37,9 +38,6 @@ const styles = {
 		display: 'flex',
 		flexWrap: 'wrap',
 		position: 'relative',
-	},
-	expert: {
-		backgroundColor: 'rgba(220, 178, 250, 0.5)',
 	},
 	title: {
 		marginBottom: 10,
@@ -121,6 +119,8 @@ class Seek extends Component {
 			fullContent,
 			upvoteSeek,
 			downvoteSeek,
+			promote,
+			demote,
 			editSeek,
 			user: { isAuthenticated, currentUser },
 		} = this.props;
@@ -133,7 +133,12 @@ class Seek extends Component {
 			</Tooltip>
 		) : !this.likedSeek() ? (
 			<Tooltip title="upvote" placement="top">
-				<IconButton onClick={() => upvoteSeek(seek.id)}>
+				<IconButton
+					onClick={() => {
+						promote();
+						upvoteSeek(seek.id);
+					}}
+				>
 					<ThumbUpOutlinedIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
@@ -153,7 +158,12 @@ class Seek extends Component {
 			</Tooltip>
 		) : !this.dislikedSeek() ? (
 			<Tooltip title="downvote" placement="top">
-				<IconButton onClick={() => downvoteSeek(seek.id)}>
+				<IconButton
+					onClick={() => {
+						demote();
+						downvoteSeek(seek.id);
+					}}
+				>
 					<ThumbDownOutlinedIcon color="primary" fontSize="small" />
 				</IconButton>
 			</Tooltip>
@@ -166,12 +176,12 @@ class Seek extends Component {
 		);
 
 		const deleteButton =
-			isAuthenticated && currentUser._id === seek.author._id ? (
+			isAuthenticated && currentUser && currentUser._id === seek.author._id ? (
 				<Delete onclick={() => this.props.deleteSeek(seek.id)} target="seek" />
 			) : null;
 
 		const reportButton =
-			currentUser._id !== seek.author._id ? (
+			currentUser && currentUser._id !== seek.author._id ? (
 				<Tooltip title="report" placement="top">
 					<IconButton>
 						<FlagIcon style={{ color: 'red' }} fontSize="small" />
@@ -180,7 +190,7 @@ class Seek extends Component {
 			) : null;
 
 		const editButton =
-			isAuthenticated && currentUser._id === seek.author._id ? (
+			isAuthenticated && currentUser && currentUser._id === seek.author._id ? (
 				<EditDetails
 					target={seek}
 					clear={this.props.clear}
@@ -189,25 +199,20 @@ class Seek extends Component {
 				/>
 			) : null;
 
-		const imageUrl = `/static/assets/image/seekers/${
+		const imageUrl = `http://localhost:5000/static/image/seekers/${
 			currentUser && currentUser._id === seek.author._id
 				? currentUser.photo
 				: seek.author.photo
 		}`;
 
-		const cardClass =
-			seek.author.rank === 'expert'
-				? `${classes.card} ${classes.expert}`
-				: classes.card;
-
 		return (
-			<Card className={cardClass}>
+			<Card className={classes.card}>
 				<Link to={{ pathname: imageUrl }} target="_blank">
 					<CardMedia
 						image={imageUrl}
 						key={currentUser && currentUser.photo}
 						title="profile image"
-						className={classes.image}
+						className={`overlay ${classes.image}`}
 					/>
 				</Link>
 
@@ -218,15 +223,19 @@ class Seek extends Component {
 						component={Link}
 						to={`/seeker/${seek.author._id}`}
 					>
-						{currentUser && currentUser._id === seek.author._id
-							? `${currentUser.name[0].toUpperCase()}${currentUser.name.slice(
-									1,
-									currentUser.name.length
-							  )}`
-							: `${seek.author.name[0].toUpperCase()}${seek.author.name.slice(
-									1,
-									seek.author.name.length
-							  )}`}
+						{`${seek.author.name[0].toUpperCase()}${seek.author.name.slice(
+							1,
+							seek.author.name.length
+						)}`}
+						{seek.author.rank === 'expert' && (
+							<StarIcon
+								style={{
+									color: 'yellow',
+									marginLeft: 10,
+									transform: 'translateY(15%)',
+								}}
+							/>
+						)}
 					</Typography>
 					<Typography variant="body2" color="textSecondary">
 						{dayjs(seek.createdAt).fromNow()}

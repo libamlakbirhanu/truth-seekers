@@ -11,6 +11,7 @@ import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import FlagIcon from '@material-ui/icons/Flag';
 import Tooltip from '@material-ui/core/Tooltip';
+import StarIcon from '@material-ui/icons/Star';
 import IconButton from '@material-ui/core/IconButton';
 
 import dayjs from 'dayjs';
@@ -125,7 +126,9 @@ export class Comment extends Component {
 			</Tooltip>
 		);
 		const deleteButton =
-			isAuthenticated && currentUser._id === comment.author._id ? (
+			isAuthenticated &&
+			currentUser &&
+			currentUser._id === comment.author._id ? (
 				<Delete
 					onclick={() => this.props.deleteComment(comment._id)}
 					target="comment"
@@ -133,7 +136,7 @@ export class Comment extends Component {
 			) : null;
 
 		const reportButton =
-			currentUser._id !== comment.author._id ? (
+			currentUser && currentUser._id !== comment.author._id ? (
 				<Tooltip title="report" placement="top">
 					<IconButton>
 						<FlagIcon style={{ color: 'red' }} fontSize="small" />
@@ -152,17 +155,17 @@ export class Comment extends Component {
 					}}
 				>
 					<img
-						src={`/static/assets/image/seekers/${comment.author.photo}`}
+						src={`http://localhost:5000/static/image/seekers/${comment.author.photo}`}
 						alt="seeker"
 						className={classes.image}
 					/>
 					<Typography
 						variant="body1"
-						style={{ marginTop: 5, textAlign: 'center' }}
+						style={{ marginTop: 5, textAlign: 'center', fontWeight: 'bold' }}
 						component={Link}
 						to={`/seeker/${comment.author._id}`}
 					>
-						{comment.author.name}
+						{comment.author.name.toUpperCase()}
 					</Typography>
 				</div>
 				<div>
@@ -201,6 +204,15 @@ export class Comment extends Component {
 						{dayjs(comment.createdAt).format('h:mm a, MMMM DD')}
 					</span>
 				</div>
+				{comment.author.rank === 'expert' && (
+					<StarIcon
+						style={{
+							color: 'yellow',
+							marginLeft: 10,
+							transform: 'translateY(15%)',
+						}}
+					/>
+				)}
 			</div>
 		);
 	}
