@@ -117,6 +117,7 @@ exports.upvote = async (req, res, next) => {
 	try {
 		const comment = await Comment.findById(req.params.id);
 		const seeker = await Seeker.findById(req.user.id);
+		const author = await Seeker.findById(comment.author._id);
 
 		const liked = seeker.likedComments.find((item) => item == req.params.id);
 		const disliked = seeker.dislikedComments.find(
@@ -138,9 +139,21 @@ exports.upvote = async (req, res, next) => {
 			);
 		}
 
+		// if (author.points < 500 - 1) {
+		author.points++;
+		if (author.points >= 500) {
+			author.rank = 'expert';
+		} else if (author.points >= 150) {
+			author.rank = 'shaman';
+		} else if (author.points >= 50) {
+			author.rank = 'apprentice';
+		}
+		// }
+
 		comment.upvotes = comment.incrementUpvotes();
 		seeker.likedComments = seeker.likedComments.concat([req.params.id]);
 
+		await author.save();
 		await seeker.save();
 		const doc = await comment.save();
 		res.status(200).json({
@@ -157,6 +170,7 @@ exports.downvote = async (req, res, next) => {
 	try {
 		const comment = await Comment.findById(req.params.id);
 		const seeker = await Seeker.findById(req.user.id);
+		const author = await Seeker.findById(comment.author._id);
 
 		const disliked = seeker.dislikedComments.find(
 			(item) => item == req.params.id
@@ -178,9 +192,19 @@ exports.downvote = async (req, res, next) => {
 			);
 		}
 
+		author.points--;
+		if (author.points < 50 - 10) {
+			author.rank = 'user';
+		} else if (author.points < 150 - 10) {
+			author.rank = 'apprentice';
+		} else if (author.points < 500 - 10) {
+			author.rank = 'shaman';
+		}
+
 		comment.downvotes = comment.incrementDownvotes();
 		seeker.dislikedComments = seeker.dislikedComments.concat([req.params.id]);
 
+		await author.save();
 		await seeker.save();
 		const doc = await comment.save();
 		res.status(200).json({

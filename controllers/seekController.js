@@ -133,6 +133,7 @@ exports.upvote = async (req, res, next) => {
 	try {
 		const seek = await Seek.findById(req.params.id);
 		const seeker = await Seeker.findById(req.user.id);
+		const author = await Seeker.findById(seek.author.id);
 
 		if (!seek) return customErrorMessage('seek does not exist', 404, res);
 
@@ -150,12 +151,24 @@ exports.upvote = async (req, res, next) => {
 			);
 		}
 
+		// if (author.points < 500 - 1) {
+		author.points++;
+		if (author.points >= 500) {
+			author.rank = 'expert';
+		} else if (author.points >= 150) {
+			author.rank = 'shaman';
+		} else if (author.points >= 50) {
+			author.rank = 'apprentice';
+		}
+		// }
+
 		seek.upvotes = seek.incrementUpvotes();
 		seeker.likedSeeks = seeker.likedSeeks.concat([req.params.id]);
 
 		const sender =
 			req.user.id === seek.author.id ? 'his/her' : `${seek.author.name}'s`;
 
+		await author.save();
 		await seeker.save();
 		const doc = await seek.save();
 
@@ -178,6 +191,7 @@ exports.downvote = async (req, res, next) => {
 	try {
 		const seek = await Seek.findById(req.params.id);
 		const seeker = await Seeker.findById(req.user.id);
+		const author = await Seeker.findById(seek.author._id);
 
 		if (!seek) return customErrorMessage('seek does not exist', 404, res);
 
@@ -196,11 +210,22 @@ exports.downvote = async (req, res, next) => {
 			seeker.likedSeeks.splice(seeker.likedSeeks.indexOf(req.params.id), 1);
 		}
 
+		author.points--;
+		if (author.points < 50 - 10) {
+			author.rank = 'user';
+		} else if (author.points < 150 - 10) {
+			author.rank = 'apprentice';
+		} else if (author.points < 500 - 10) {
+			author.rank = 'shaman';
+		}
+
 		seek.downvotes = seek.incrementDownvotes();
 		seeker.dislikedSeeks = seeker.dislikedSeeks.concat([req.params.id]);
 
 		const sender =
 			req.user.id === seek.author.id ? 'his/her' : `${seek.author.name}'s`;
+
+		await author.save();
 		await seeker.save();
 		const doc = await seek.save();
 
