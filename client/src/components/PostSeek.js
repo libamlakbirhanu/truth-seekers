@@ -42,6 +42,7 @@ class PostSeek extends Component {
 	}
 
 	handleOpen = () => {
+		this.props.clearErrors();
 		this.setState({
 			open: true,
 		});
