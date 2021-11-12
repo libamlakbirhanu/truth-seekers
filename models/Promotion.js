@@ -8,7 +8,7 @@ const PromotionSchema = new mongoose.Schema({
 	},
 	message: {
 		type: String,
-		default: 'waiting for admin approval for promotion to rank EXPERT',
+		default: 'waiting for admin approval to be promoted to EXPERT rank',
 	},
 	createdAt: {
 		type: Date,
