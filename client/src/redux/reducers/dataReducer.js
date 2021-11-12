@@ -172,31 +172,39 @@ const reducer = (state = initialState, action) => {
 				upvotes,
 				downvotes,
 			};
+			const isOwnComment =
+				tempComments[commentIndex].author === state.seek.author;
 
 			if (action.type === DOWNVOTE_COMMENT) {
-				state.seek.author.points--;
+				isOwnComment && state.seek.author.points--;
 				tempComments[commentIndex].author.points--;
-				if (tempComments[commentIndex].author.points < 50 - 10) {
-					state.seek.author.rank = 'user';
+				if (
+					(tempComments[commentIndex].author.rank =
+						'apprentice' && tempComments[commentIndex].author.points < 50 - 10)
+				) {
+					if (isOwnComment) state.seek.author.rank = 'user';
 					tempComments[commentIndex].author.rank = 'user';
-				} else if (tempComments[commentIndex].author.points < 150 - 10) {
-					state.seek.author.rank = 'apprentice';
+				} else if (
+					(tempComments[commentIndex].author.rank =
+						'shaman' && tempComments[commentIndex].author.points < 150 - 10)
+				) {
+					if (isOwnComment) state.seek.author.rank = 'apprentice';
 					tempComments[commentIndex].author.rank = 'apprentice';
-				} else if (tempComments[commentIndex].author.points < 500 - 10) {
-					state.seek.author.rank = 'shaman';
+				} else if (
+					(tempComments[commentIndex].author.rank =
+						'expert' && tempComments[commentIndex].author.points < 500 - 10)
+				) {
+					if (isOwnComment) state.seek.author.rank = 'shaman';
 					tempComments[commentIndex].author.rank = 'shaman';
 				}
 			} else {
 				state.seek.author.points++;
 				tempComments[commentIndex].author.points++;
-				if (tempComments[commentIndex].author.points >= 500) {
-					state.seek.author.rank = 'expert';
-					tempComments[commentIndex].author.rank = 'expert';
-				} else if (tempComments[commentIndex].author.points >= 150) {
-					state.seek.author.rank = 'shaman';
+				if (tempComments[commentIndex].author.points >= 150) {
+					if (isOwnComment) state.seek.author.rank = 'shaman';
 					tempComments[commentIndex].author.rank = 'shaman';
 				} else if (tempComments[commentIndex].author.points >= 50) {
-					state.seek.author.rank = 'apprentice';
+					if (isOwnComment) state.seek.author.rank = 'apprentice';
 					tempComments[commentIndex].author.rank = 'apprentice';
 				}
 			}
@@ -232,7 +240,7 @@ const reducer = (state = initialState, action) => {
 				errors: action.errors,
 			};
 		case CLEAR_MULTIPLE_ERRORS:
-			return !state.errors.title && !state.errors.body
+			return state.errors && !state.errors.title && !state.errors.body
 				? state
 				: {
 						...state,

@@ -1,6 +1,8 @@
 const Seek = require('./../models/Seek');
 const Comment = require('./../models/Comment');
 const Seeker = require('./../models/Seeker');
+const Report = require('./../models/Report');
+const Promotion = require('./../models/Promotion');
 const Notification = require('./../models/Notification');
 const { customErrorMessage, errorMessage } = require('./../utils/errormessage');
 const docBelongsToCurrentUser = require('./../utils/ownerCheck');
@@ -129,11 +131,43 @@ exports.deleteSeek = async (req, res, next) => {
 	}
 };
 
+exports.createReport = async (req, res, next, model) => {
+	try {
+		const { targetDoc, targetSeeker, reason, reporterId } = req.body;
+		const doc = await model.findById(targetDoc);
+		const reporter = await Report.findOne({ reporters: reporterId });
+
+		if (!reporter) {
+			const report = await Report.create({
+				reporters: [req.body.reporterId],
+				targetSeeker,
+				targetDoc: doc,
+				reason,
+			});
+
+			res.status(200).json({
+				status: 'success',
+				doc: {
+					report,
+				},
+			});
+		} else {
+			res.status(400).json({
+				status: 'error',
+				message: 'you have already reported this document',
+			});
+		}
+	} catch (err) {
+		return errorMessage(err, 500, res);
+	}
+};
+
 exports.upvote = async (req, res, next) => {
 	try {
 		const seek = await Seek.findById(req.params.id);
 		const seeker = await Seeker.findById(req.user.id);
 		const author = await Seeker.findById(seek.author.id);
+		const request = await Promotion.findOne({ targetSeeker: author._id });
 
 		if (!seek) return customErrorMessage('seek does not exist', 404, res);
 
@@ -151,16 +185,14 @@ exports.upvote = async (req, res, next) => {
 			);
 		}
 
-		// if (author.points < 500 - 1) {
 		author.points++;
-		if (author.points >= 500) {
-			author.rank = 'expert';
-		} else if (author.points >= 150) {
-			author.rank = 'shaman';
-		} else if (author.points >= 50) {
-			author.rank = 'apprentice';
-		}
-		// }
+		if (author.points < 500) {
+			if (author.points >= 150) {
+				author.rank = 'shaman';
+			} else if (author.points >= 50) {
+				author.rank = 'apprentice';
+			}
+		} else if (!request) await Promotion.create({ targetSeeker: author._id });
 
 		seek.upvotes = seek.incrementUpvotes();
 		seeker.likedSeeks = seeker.likedSeeks.concat([req.params.id]);
@@ -211,11 +243,11 @@ exports.downvote = async (req, res, next) => {
 		}
 
 		author.points--;
-		if (author.points < 50 - 10) {
+		if (author.rank === 'apprentice' && author.points < 50 - 10) {
 			author.rank = 'user';
-		} else if (author.points < 150 - 10) {
+		} else if (author.rank === 'shaman' && author.points < 150 - 10) {
 			author.rank = 'apprentice';
-		} else if (author.points < 500 - 10) {
+		} else if (author.rank === 'expert' && author.points < 500 - 10) {
 			author.rank = 'shaman';
 		}
 

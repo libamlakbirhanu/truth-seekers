@@ -1,5 +1,6 @@
 const Comment = require('./../models/Comment');
 const Seek = require('./../models/Seek');
+const Promotion = require('./../models/Promotion');
 const { errorMessage, customErrorMessage } = require('./../utils/errormessage');
 const docBelongsToCurrentUser = require('./../utils/ownerCheck');
 const createNotifications = require('./../utils/createNotifications');
@@ -118,6 +119,7 @@ exports.upvote = async (req, res, next) => {
 		const comment = await Comment.findById(req.params.id);
 		const seeker = await Seeker.findById(req.user.id);
 		const author = await Seeker.findById(comment.author._id);
+		const request = await Promotion.findOne({ targetSeeker: author._id });
 
 		const liked = seeker.likedComments.find((item) => item == req.params.id);
 		const disliked = seeker.dislikedComments.find(
@@ -139,16 +141,14 @@ exports.upvote = async (req, res, next) => {
 			);
 		}
 
-		// if (author.points < 500 - 1) {
 		author.points++;
-		if (author.points >= 500) {
-			author.rank = 'expert';
-		} else if (author.points >= 150) {
-			author.rank = 'shaman';
-		} else if (author.points >= 50) {
-			author.rank = 'apprentice';
-		}
-		// }
+		if (author.points < 500) {
+			if (author.points >= 150) {
+				author.rank = 'shaman';
+			} else if (author.points >= 50) {
+				author.rank = 'apprentice';
+			}
+		} else if (!request) await Promotion.create({ targetSeeker: author._id });
 
 		comment.upvotes = comment.incrementUpvotes();
 		seeker.likedComments = seeker.likedComments.concat([req.params.id]);
@@ -193,11 +193,11 @@ exports.downvote = async (req, res, next) => {
 		}
 
 		author.points--;
-		if (author.points < 50 - 10) {
+		if (author.rank === 'apprentice' && author.points < 50 - 10) {
 			author.rank = 'user';
-		} else if (author.points < 150 - 10) {
+		} else if (author.rank === 'shaman' && author.points < 150 - 10) {
 			author.rank = 'apprentice';
-		} else if (author.points < 500 - 10) {
+		} else if (author.rank === 'expert' && author.points < 500 - 10) {
 			author.rank = 'shaman';
 		}
 

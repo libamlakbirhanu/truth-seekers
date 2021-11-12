@@ -114,13 +114,7 @@ class profile extends Component {
 	promote = () => {
 		const { targetUser } = this.state;
 		targetUser.points++;
-		if (targetUser.points >= 500) {
-			targetUser.rank = 'expert';
-			this.setState({
-				...this.state,
-				targetUser: { ...targetUser },
-			});
-		} else if (targetUser.points >= 150) {
+		if (targetUser.points >= 150) {
 			targetUser.rank = 'shaman';
 			this.setState({
 				...this.state,
