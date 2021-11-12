@@ -10,13 +10,13 @@ import {
 	MARK_NOTIFICATIONS_READ,
 	UPVOTE_COMMENT,
 	DOWNVOTE_COMMENT,
+	REPORT,
+	SET_REPORTS,
 } from '../types';
 
 const promote = (state) => {
 	state.currentUser.points++;
-	if (state.currentUser.points >= 500) {
-		state.currentUser.rank = 'expert';
-	} else if (state.currentUser.points >= 150) {
+	if (state.currentUser.points >= 150) {
 		state.currentUser.rank = 'shaman';
 	} else if (state.currentUser.points >= 50) {
 		state.currentUser.rank = 'apprentice';
@@ -25,11 +25,18 @@ const promote = (state) => {
 
 const demote = (state) => {
 	state.currentUser.points--;
-	if (state.currentUser.points < 50 - 10) {
+	if (
+		(state.currentUser.rank =
+			'apprentice' && state.currentUser.points < 50 - 10)
+	) {
 		state.currentUser.rank = 'user';
-	} else if (state.currentUser.points < 150 - 10) {
+	} else if (
+		(state.currentUser.rank = 'shaman' && state.currentUser.points < 150 - 10)
+	) {
 		state.currentUser.rank = 'apprentice';
-	} else if (state.currentUser.points < 500 - 10) {
+	} else if (
+		(state.currentUser.rank = 'expert' && state.currentUser.points < 500 - 10)
+	) {
 		state.currentUser.rank = 'shaman';
 	}
 };
@@ -39,6 +46,7 @@ const initialState = {
 	currentUser: null,
 	admin: false,
 	notifications: [],
+	reports: [],
 	loading: false,
 };
 
@@ -134,6 +142,7 @@ const reducer = (state = initialState, action) => {
 				state.notifications = [...action.payload.notifications];
 				state.notifications.forEach((notification) => {
 					notification.readBy &&
+					state.currentUser &&
 					notification.readBy.includes(state.currentUser._id)
 						? (notification.read = true)
 						: (notification.read = false);
@@ -148,6 +157,19 @@ const reducer = (state = initialState, action) => {
 				notification.read = true;
 				notification.readBy.concat(state.currentUser._id);
 			});
+
+			return {
+				...state,
+			};
+		case REPORT:
+			return {
+				...state,
+				reports: [...state.reports, action.payload],
+			};
+		case SET_REPORTS:
+			if (state.reports !== action.payload.docs) {
+				state.reports = [...action.payload.docs];
+			}
 
 			return {
 				...state,

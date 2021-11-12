@@ -9,7 +9,6 @@ import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import FlagIcon from '@material-ui/icons/Flag';
 import Tooltip from '@material-ui/core/Tooltip';
 import StarIcon from '@material-ui/icons/Star';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,6 +17,7 @@ import dayjs from 'dayjs';
 
 import { connect } from 'react-redux';
 
+import Report from './Report';
 import Delete from './Delete';
 import EditComment from './EditComment';
 import {
@@ -26,6 +26,7 @@ import {
 	downvoteComment,
 	editComment,
 } from './../redux/actions/dataActions';
+import { reportComment } from './../redux/actions/userActions';
 
 const styles = {
 	commentContainer: {
@@ -137,11 +138,16 @@ export class Comment extends Component {
 
 		const reportButton =
 			currentUser && currentUser._id !== comment.author._id ? (
-				<Tooltip title="report" placement="top">
-					<IconButton>
-						<FlagIcon style={{ color: 'red' }} fontSize="small" />
-					</IconButton>
-				</Tooltip>
+				<Report
+					onclick={(reason) =>
+						this.props.reportComment(
+							comment._id,
+							comment.author._id,
+							reason,
+							currentUser._id
+						)
+					}
+				/>
 			) : null;
 
 		return (
@@ -226,5 +232,6 @@ export default connect(mapStateToProps, {
 	deleteComment,
 	upvoteComment,
 	downvoteComment,
+	reportComment,
 	editComment,
 })(withStyles(styles)(Comment));

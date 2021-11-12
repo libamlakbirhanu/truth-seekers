@@ -44,7 +44,7 @@ const Admin = ({ classes, user }) => {
 		user.currentUser && user.currentUser.defaultCredentials
 			? setActive('change password')
 			: setActive('notifications');
-	}, [user]);
+	}, [user.currentUser]);
 
 	const toggleTabBarTexts = () => {
 		if (window.innerWidth <= 800) setTabBarText(false);

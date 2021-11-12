@@ -14,7 +14,6 @@ import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import FlagIcon from '@material-ui/icons/Flag';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
@@ -27,8 +26,10 @@ import {
 	deleteSeek,
 	editSeek,
 } from '../redux/actions/dataActions';
+import { reportSeek } from './../redux/actions/userActions';
 
 import Delete from './Delete';
+import Report from './Report';
 import EditDetails from './EditDetails';
 
 const styles = {
@@ -135,7 +136,7 @@ class Seek extends Component {
 			<Tooltip title="upvote" placement="top">
 				<IconButton
 					onClick={() => {
-						promote();
+						promote && promote();
 						upvoteSeek(seek.id);
 					}}
 				>
@@ -160,7 +161,7 @@ class Seek extends Component {
 			<Tooltip title="downvote" placement="top">
 				<IconButton
 					onClick={() => {
-						demote();
+						demote && demote();
 						downvoteSeek(seek.id);
 					}}
 				>
@@ -182,11 +183,16 @@ class Seek extends Component {
 
 		const reportButton =
 			currentUser && currentUser._id !== seek.author._id ? (
-				<Tooltip title="report" placement="top">
-					<IconButton>
-						<FlagIcon style={{ color: 'red' }} fontSize="small" />
-					</IconButton>
-				</Tooltip>
+				<Report
+					onclick={(reason) =>
+						this.props.reportSeek(
+							seek.id,
+							seek.author._id,
+							reason,
+							currentUser._id
+						)
+					}
+				/>
 			) : null;
 
 		const editButton =
@@ -309,5 +315,6 @@ export default connect(mapStateToProps, {
 	upvoteSeek,
 	downvoteSeek,
 	deleteSeek,
+	reportSeek,
 	editSeek,
 })(withRouter(withStyles(styles)(Seek)));

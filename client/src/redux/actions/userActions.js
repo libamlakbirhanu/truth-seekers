@@ -14,7 +14,10 @@ import {
 	UPLOAD_PHOTO,
 	SET_NOTIFICATIONS,
 	MARK_NOTIFICATIONS_READ,
+	REPORT,
+	SET_REPORTS,
 } from '../types';
+import store from '../store';
 
 export const userLogin = (userData, history, admin) => (dispatch) => {
 	dispatch({
@@ -192,6 +195,7 @@ export const updatePassword = (passwords, history, admin) => (dispatch) => {
 				dispatch({
 					type: CLEAR_SUCCESS,
 				});
+				history.push(admin ? '/admin' : '/login');
 			}, 1500);
 		})
 		.catch((err) => {
@@ -324,13 +328,17 @@ export const setNotifications = () => (dispatch) => {
 		)
 		.catch((err) => console.error(err));
 
-	setInterval(() => {
-		axios
-			.get('/api/seekers/notifications')
-			.then((res) =>
-				dispatch({ type: SET_NOTIFICATIONS, payload: res.data.data })
-			)
-			.catch((err) => console.error(err));
+	const timer = setInterval(() => {
+		if (!store.getState().user.isAuthenticated) {
+			clearInterval(timer);
+		} else {
+			axios
+				.get('/api/seekers/notifications')
+				.then((res) =>
+					dispatch({ type: SET_NOTIFICATIONS, payload: res.data.data })
+				)
+				.catch((err) => console.error(err));
+		}
 	}, 5000);
 };
 
@@ -377,3 +385,61 @@ export const authCheck = (admin) => (dispatch) => {
 				.catch((err) => {});
 		});
 };
+
+export const setReports = () => (dispatch) => {
+	axios
+		.get('/api/admins/reports')
+		.then((res) => {
+			console.log('what the fuck bro');
+			dispatch({ type: SET_REPORTS, payload: res.data.data });
+		})
+		.catch((err) => console.error(err));
+
+	const timer = setInterval(() => {
+		if (!store.getState().user.admin) {
+			clearInterval(timer);
+		} else {
+			axios
+				.get('/api/admins/reports')
+				.then((res) => dispatch({ type: SET_REPORTS, payload: res.data.data }))
+				.catch((err) => console.error(err));
+		}
+	}, 5000);
+};
+
+export const reportSeek =
+	(targetDoc, targetSeeker, reason, reporterId) => (dispatch) => {
+		axios
+			.post(`/api/seeks/create-report`, {
+				targetDoc,
+				targetSeeker,
+				reason,
+				reporterId,
+			})
+			.then((res) => {
+				dispatch({
+					type: REPORT,
+					payload: res.data.doc,
+				});
+				console.log(res.data.doc);
+			})
+			.catch((err) => console.error(err));
+	};
+
+export const reportComment =
+	(targetDoc, targetSeeker, reason, reporterId) => (dispatch) => {
+		axios
+			.post(`/api/comments/create-report`, {
+				targetDoc,
+				targetSeeker,
+				reason,
+				reporterId,
+			})
+			.then((res) => {
+				dispatch({
+					type: REPORT,
+					payload: res.data.doc,
+				});
+			})
+			.catch((err) => console.error(err));
+	};

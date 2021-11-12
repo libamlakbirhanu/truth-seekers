@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Admin = require('./../models/Admin');
 const Seeker = require('./../models/Seeker');
+const Report = require('./../models/Report');
 const {
 	isEmpty,
 	structureAndSendEmail,
@@ -64,5 +65,21 @@ exports.verifyUser = async (req, res, next) => {
 		return customErrorMessage('something went wong please try again', 500, res);
 	} catch (err) {
 		return customErrorMessage('invalid key', 400, res);
+	}
+};
+
+exports.reports = async (req, res, next) => {
+	try {
+		if (!req.user) return;
+
+		const docs = await Report.find();
+
+		return res.status(200).json({
+			status: 'success',
+			length: docs.length,
+			data: { docs },
+		});
+	} catch (err) {
+		return errorMessage(err, 500, res);
 	}
 };
