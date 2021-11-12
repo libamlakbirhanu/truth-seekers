@@ -16,6 +16,7 @@ import {
 	MARK_NOTIFICATIONS_READ,
 	REPORT,
 	SET_REPORTS,
+	SET_PROMOTIONS,
 } from '../types';
 import store from '../store';
 
@@ -390,7 +391,6 @@ export const setReports = () => (dispatch) => {
 	axios
 		.get('/api/admins/reports')
 		.then((res) => {
-			console.log('what the fuck bro');
 			dispatch({ type: SET_REPORTS, payload: res.data.data });
 		})
 		.catch((err) => console.error(err));
@@ -402,6 +402,28 @@ export const setReports = () => (dispatch) => {
 			axios
 				.get('/api/admins/reports')
 				.then((res) => dispatch({ type: SET_REPORTS, payload: res.data.data }))
+				.catch((err) => console.error(err));
+		}
+	}, 5000);
+};
+
+export const setPromotions = () => (dispatch) => {
+	axios
+		.get('/api/admins/promotions')
+		.then((res) => {
+			dispatch({ type: SET_PROMOTIONS, payload: res.data.data });
+		})
+		.catch((err) => console.error(err));
+
+	const timer = setInterval(() => {
+		if (!store.getState().user.isAuthenticated) {
+			clearInterval(timer);
+		} else {
+			axios
+				.get('/api/admins/promotions')
+				.then((res) =>
+					dispatch({ type: SET_PROMOTIONS, payload: res.data.data })
+				)
 				.catch((err) => console.error(err));
 		}
 	}, 5000);

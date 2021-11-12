@@ -12,6 +12,7 @@ import {
 	DOWNVOTE_COMMENT,
 	REPORT,
 	SET_REPORTS,
+	SET_PROMOTIONS,
 } from '../types';
 
 const promote = (state) => {
@@ -47,6 +48,7 @@ const initialState = {
 	admin: false,
 	notifications: [],
 	reports: [],
+	promotions: [],
 	loading: false,
 };
 
@@ -169,6 +171,14 @@ const reducer = (state = initialState, action) => {
 		case SET_REPORTS:
 			if (state.reports !== action.payload.docs) {
 				state.reports = [...action.payload.docs];
+			}
+
+			return {
+				...state,
+			};
+		case SET_PROMOTIONS:
+			if (state.promotions !== action.payload.docs) {
+				state.promotions = [...action.payload.docs];
 			}
 
 			return {

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const Admin = require('./../models/Admin');
 const Seeker = require('./../models/Seeker');
 const Report = require('./../models/Report');
+const Promotion = require('./../models/Promotion');
 const {
 	isEmpty,
 	structureAndSendEmail,
@@ -80,6 +81,23 @@ exports.reports = async (req, res, next) => {
 			data: { docs },
 		});
 	} catch (err) {
+		return errorMessage(err, 500, res);
+	}
+};
+
+exports.getPromotions = async (req, res, next) => {
+	try {
+		if (!req.user) return;
+
+		const docs = await Promotion.find();
+
+		return res.status(200).json({
+			status: 'success',
+			length: docs.length,
+			data: { docs },
+		});
+	} catch (err) {
+		console.log(err);
 		return errorMessage(err, 500, res);
 	}
 };

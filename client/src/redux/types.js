@@ -25,6 +25,7 @@ export const DELETE_SEEK = 'DELETE_SEEK';
 export const REPORT = 'REPORT';
 export const SET_REPORTS = 'SET_REPORTS';
 export const REMOVE_REPORT = 'REMOVE_REPORT';
+export const SET_PROMOTIONS = 'SET_PROMOTIONS';
 export const CLEAR_SEEK = 'CLEAR_SEEK';
 export const POST_SEEK = 'POST_SEEK';
 export const EDIT_SEEK = 'EDIT_SEEK';
