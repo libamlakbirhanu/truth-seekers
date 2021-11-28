@@ -135,7 +135,7 @@ exports.createReport = async (req, res, next, model) => {
 	try {
 		const { targetDoc, targetSeeker, reason, reporterId } = req.body;
 		const doc = await model.findById(targetDoc);
-		const reporter = await Report.findOne({ reporters: reporterId });
+		const reporter = await Report.findOne({ targetDoc, reporters: reporterId });
 
 		if (!reporter) {
 			const report = await Report.create({

@@ -32,7 +32,16 @@ router.patch(
 	(req, res, next) => authController.protect(req, res, next, Admin),
 	(req, res, next) => authController.updatePassword(req, res, next, Admin, true)
 );
-
+router.get(
+	'/reports',
+	(req, res, next) => authController.protect(req, res, next, Admin),
+	adminController.reports
+);
+router.get(
+	'/promotions',
+	(req, res, next) => authController.protect(req, res, next, Admin),
+	adminController.getPromotions
+);
 // router.patch(
 // 	'/',
 // 	adminController.protect,

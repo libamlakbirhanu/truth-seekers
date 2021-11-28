@@ -45,21 +45,13 @@ class AdminNotifications extends Component {
 				_id: 1,
 				createdAt: Date.now(),
 				targetDocument: '12341234123412343',
-				message:
-					'mother fuckers tryna be all gangster and shit fuck all that non sense',
+				message: 'There is a new report',
 			},
 			{
 				_id: 2,
 				createdAt: Date.now(),
 				targetDocument: '12341234123412343',
-				message: 'mother fuckers tryna be all gangster and shit',
-			},
-			{
-				_id: 3,
-				createdAt: Date.now(),
-				targetDocument: '12341234123412343',
-				message:
-					'mother fuckers tryna be all gangster and shit fuck all that non sense',
+				message: 'There is a seeker pending for promotion to expert',
 			},
 		];
 

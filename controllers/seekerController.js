@@ -42,14 +42,14 @@ exports.uploadPhoto = upload.single('photo');
 
 exports.resizePhoto = (req, res, next) => {
 	if (!req.file) return next();
-	console.log(req.file.fieldname);
+
 	req.file.filename = `${req.file.fieldname}-${req.user.id}-${Date.now()}.jpeg`;
 
 	sharp(req.file.buffer)
 		.resize(500, 500)
 		.toFormat('jpeg')
 		.jpeg({ quality: 90 })
-		.toFile(`images/${req.file.filename}`)
+		.toFile(`assets/image/seekers/${req.file.filename}`)
 		.then(() => next())
 		.catch((err) => console.error(err));
 };
@@ -92,17 +92,12 @@ exports.updateMe = async (req, res, next) => {
 
 		if (
 			req.user.photo !== 'default.jpg' &&
-			fs.existsSync(
-				`client/build/static/assets/image/seekers/${req.user.photo}`
-			) &&
+			fs.existsSync(`assets/image/seekers/${req.user.photo}`) &&
 			req.file
 		)
-			fs.unlink(
-				`client/build/static/assets/image/seekers/${req.user.photo}`,
-				(err) => {
-					if (err) console.error(err);
-				}
-			);
+			fs.unlink(`assets/image/seekers/${req.user.photo}`, (err) => {
+				if (err) console.error(err);
+			});
 
 		const doc = await Seeker.findByIdAndUpdate(userId, filteredBody, {
 			new: true,

@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const Seeker = require('../../models/Seeker');
+const Comment = require('../../models/Comment');
 const commentController = require('./../../controllers/commentController');
+const seekController = require('./../../controllers/seekController');
 const authController = require('./../../controllers/authController');
 
 router.post(
@@ -29,6 +31,12 @@ router.delete(
 	'/:id',
 	(req, res, next) => authController.protect(req, res, next, Seeker),
 	commentController.deleteComment
+);
+
+router.post(
+	'/create-report',
+	(req, res, next) => authController.protect(req, res, next, Seeker),
+	(req, res, next) => seekController.createReport(req, res, next, Comment)
 );
 
 module.exports = router;
