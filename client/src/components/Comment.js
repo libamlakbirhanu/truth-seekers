@@ -161,7 +161,7 @@ export class Comment extends Component {
 					}}
 				>
 					<img
-						src={`http://localhost:5000/static/image/seekers/${comment.author.photo}`}
+						src={`http://localhost:5000/static/assets/image/seekers/${comment.author.photo}`}
 						alt="seeker"
 						className={classes.image}
 					/>

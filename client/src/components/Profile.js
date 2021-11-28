@@ -94,7 +94,7 @@ const Profile = (props) => {
 
 	const imageUrl =
 		isAuthenticated && currentUser
-			? `http://localhost:5000/static/image/seekers/${currentUser.photo}`
+			? `http://localhost:5000/static/assets/image/seekers/${currentUser.photo}`
 			: '';
 
 	const profileMarkup = (
